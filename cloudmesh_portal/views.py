@@ -8,7 +8,38 @@ from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from django.contrib import messages
 
+from django.shortcuts import render
+
 from .forms import ContactForm, FilesForm, ContactFormSet
+import json
+
+from cloudmesh_client.comet.cluster import Cluster
+from cloudmesh_client.comet.comet import Comet
+
+
+from django.template.defaulttags import register
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+def comet_list(request):
+    c = Comet.logon()
+    r = json.loads(Cluster.simple_list(format="json"))
+
+    print "RRR", r, type(r)
+
+
+    order = ['id',
+             'type',
+            'cluster',
+            'name',
+            'ip']
+            # 'kind']
+
+    context = {'comet': r,
+               'order': order}
+    return render(request, 'cloudmesh_portal/comet_list.html', context)
 
 
 # http://yuji.wordpress.com/2013/01/30/django-form-field-in-initial-data-requires-a-fieldfile-instance/
@@ -16,7 +47,11 @@ class FakeField(object):
     storage = default_storage
 
 
+
+
+
 fieldfile = FieldFile(None, FakeField, 'dummy.txt')
+
 
 
 class HomePageView(TemplateView):
@@ -26,7 +61,6 @@ class HomePageView(TemplateView):
         context = super(HomePageView, self).get_context_data(**kwargs)
         messages.info(self.request, 'This is a demo of a message.')
         return context
-
 
 class DefaultFormsetView(FormView):
     template_name = 'cloudmesh_portal/formset.html'

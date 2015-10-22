@@ -54,7 +54,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.flatpages',
     'rest_framework_swagger',
+    'django_jinja',
     'bootstrap3',
+    'bootstrap_themes',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,6 +91,13 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_LOADERS = (
+    'django_jinja.loaders.FileSystemLoader',
+    'django_jinja.loaders.AppLoader',
+)
+
+DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 WSGI_APPLICATION = 'cloudmesh_portal.wsgi.application'
 
@@ -126,6 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+cm_theme = 'cosmo'
+
 # Default settings
 BOOTSTRAP3 = {
 
@@ -133,23 +144,27 @@ BOOTSTRAP3 = {
     'jquery_url': '//code.jquery.com/jquery.min.js',
 
     # The Bootstrap base URL
-    # 'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/',
-    'base_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/',
+    'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/',
 
     # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
-    'css_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css',
+    # 'css_url': None,
+    'css_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/' +
+               cm_theme + '/bootstrap.min.css',
 
     # The complete URL to the Bootstrap CSS file (None means no theme)
-    'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/',
+    'theme_url': None,
+    #'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly
+    # /bootstrap.min.css',
+    # 'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/',
 
     # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
-    'javascript_url': None,
+    'javascript_url':  None,
 
     # Put JavaScript in the HEAD section of the HTML document (only relevant if you use bootstrap3.html)
-    'javascript_in_head': False,
+    'javascript_in_head': True,
 
     # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
-    'include_jquery': False,
+    'include_jquery': True,
 
     # Label class to use in horizontal forms
     'horizontal_label_class': 'col-md-3',

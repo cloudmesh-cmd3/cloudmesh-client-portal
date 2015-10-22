@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.contrib.flatpages.sitemaps import FlatPageSitemap
 from django.contrib.sitemaps.views import sitemap
 from .views import HomePageView, FormHorizontalView, FormInlineView, PaginationView, FormWithFilesView, \
-    DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView
+    DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView, \
+    comet_list
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -37,4 +38,7 @@ urlpatterns = [
     url(r'^form_with_files$', FormWithFilesView.as_view(), name='form_with_files'),
     url(r'^pagination$', PaginationView.as_view(), name='pagination'),
     url(r'^misc$', MiscView.as_view(), name='misc'),
+    url(r'^comet/list$', comet_list, name='comet_list'),
 ]
+
+

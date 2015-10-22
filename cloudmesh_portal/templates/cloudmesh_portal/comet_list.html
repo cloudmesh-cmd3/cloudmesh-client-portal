@@ -1,0 +1,57 @@
+{% extends 'cloudmesh_portal/base.html' %}
+
+{% load bootstrap3 %}
+
+
+
+
+{% block title %}
+    Comet
+{% endblock %}
+
+{% block content %}
+
+
+<link href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css"
+      rel="stylesheet">
+
+
+
+<div class="table-responsive">
+<table class="table" id="listTable"}
+<thead>
+    <tr>
+    {% for attribute in order %}
+            <th> {{ attribute }} </th>
+    {% endfor %}
+    </tr>
+
+</thead>
+<tbody>
+
+    {% for index, cluster in comet.items %}
+    <tr>
+        {% for a in order %}
+            <td> {{ cluster|get_item:a }} </td>
+        {% endfor %}
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div>
+
+
+
+<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#listTable').DataTable();
+});
+</script>
+
+
+
+
+{% endblock %}
