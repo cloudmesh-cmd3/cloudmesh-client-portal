@@ -19,7 +19,7 @@ from django.contrib.flatpages.sitemaps import FlatPageSitemap
 from django.contrib.sitemaps.views import sitemap
 from .views import HomePageView, FormHorizontalView, FormInlineView, PaginationView, FormWithFilesView, \
     DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView, \
-    comet_list
+    comet_list, comet_list_queue,cloudmesh_clouds
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -39,6 +39,9 @@ urlpatterns = [
     url(r'^pagination$', PaginationView.as_view(), name='pagination'),
     url(r'^misc$', MiscView.as_view(), name='misc'),
     url(r'^comet/list$', comet_list, name='comet_list'),
+    url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
+    url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
 ]
+
 
 

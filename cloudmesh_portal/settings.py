@@ -54,7 +54,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.flatpages',
     'rest_framework_swagger',
-    'django_jinja',
     'bootstrap3',
     'bootstrap_themes',
 )
@@ -92,12 +91,6 @@ TEMPLATES = [
     },
 ]
 
-TEMPLATE_LOADERS = (
-    'django_jinja.loaders.FileSystemLoader',
-    'django_jinja.loaders.AppLoader',
-)
-
-DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.jinja'
 
 WSGI_APPLICATION = 'cloudmesh_portal.wsgi.application'
 

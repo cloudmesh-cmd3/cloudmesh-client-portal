@@ -4,9 +4,6 @@
 
 {% load url from future %}
 
-
-
-
 {% block bootstrap3_content %}
 
 <nav class="navbar navbar-default">
@@ -27,8 +24,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle"
              data-toggle="dropdown"
-             role="button" aria-expanded="false">Admin
-              <span class="caret"></span></a>
+             role="button" aria-expanded="false">Admin</a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="docs/">docs</a></li>
             <li><a href="admin/">admin</a></li>
@@ -36,9 +32,7 @@
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-             role="button" aria-expanded="false">Action <span
-                  class="caret"></span></a>
-                  class="caret"></span></a>
+             role="button" aria-expanded="false">Action </a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="{% url 'home' %}">home</a></li>
             <li><a href="{% url 'formset_default' %}">formset</a></li>
