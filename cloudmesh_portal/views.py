@@ -79,11 +79,11 @@ def comet_list_queue(request):
     format = "json"
     order = [
         "jobid",
-        # "nodelist",
+        "nodelist",
         "name",
         "partition",
         "st",
-        # "user",
+        "user",
         "time",
         "nodes",
     ]
