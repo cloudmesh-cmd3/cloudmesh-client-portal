@@ -7,6 +7,12 @@ migrate:
 run: migrate
 	python manage.py runserver
 
+cleandb:
+	rm -f db.*
+
+initdb: cleandb
+	python manage.py syncdb
+
 doc:
 	open http://127.0.0.1:8000/docs/
 
@@ -22,3 +28,5 @@ clean:
 	find . -name "*~" -exec rm {} \;
 	find . -name "*.pyc" -exec rm {} \;
 	echo "clean done"
+
+
