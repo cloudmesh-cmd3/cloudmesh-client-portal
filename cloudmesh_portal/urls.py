@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^comet/list$', comet_list, name='comet_list'),
     url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
     url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
+
 ]
 
 
