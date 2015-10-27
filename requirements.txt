@@ -1,4 +1,9 @@
 django-rest-swagger
 django-bootstrap3
 django-admin-bootstrapped
+django-bootstrap-themes
 django-jinja
+djangorestframework
+markdown
+django-filter
+aldjemy
