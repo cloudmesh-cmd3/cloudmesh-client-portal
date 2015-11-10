@@ -139,7 +139,7 @@ def comet_ll(request):
     c = Comet.logon()
     data = json.loads(Cluster.simple_list(format="json"))
 
-    pprint(type(data), data)
+    # pprint(type(data), data)
     order = [
         "name",
         "project",
@@ -168,11 +168,11 @@ def comet_ll(request):
 
 def comet_list(request):
     c = Comet.logon()
-    data = Cluster.list(format="dict")
+    data = json.loads(Cluster.list(format="json"))
 
     dictionary = {}
 
-    for item in data:
+    for item in data.values():
         dictionary[item["name"]] = item
 
     order = [
