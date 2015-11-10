@@ -141,12 +141,29 @@ def comet_list(request):
     c = Comet.logon()
     data = json.loads(Cluster.simple_list(format="json"))
 
-    order = ['id',
-             'type',
-             'cluster',
-             'name',
-             'ip']
-    # 'kind']
+    order=[
+      "name",
+      "project",
+      "nodes",
+      "computes",
+      "frontend name",
+      "frontend state",
+      "frontend type",
+      "frontend rocks_name",
+      "description",
+    ],
+    header=[
+      "Name",
+      "Project",
+      "Count",
+      "Nodes",
+      "Frontend (Fe)",
+      "State (Fe)",
+      "Type (Fe)",
+      "Rocks name (Fe)",
+      "Description",
+    ],
+
     return (dict_table(request, "Comet List", data, order))
 
 
