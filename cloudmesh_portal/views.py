@@ -120,7 +120,10 @@ def cloudmesh_vms(request):
 
 @register.filter
 def get_item(dictionary, key):
-    return dictionary.get(key)
+    value = dictionary.get(key)
+    if value is None:
+        value = "-"
+    return value
 
 
 def dict_table(request, title, data, order, header=None):
