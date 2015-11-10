@@ -23,6 +23,107 @@ from django.template.defaulttags import register
 from cloudmesh_client.common.ConfigDict import ConfigDict
 from pprint import pprint
 
+from sqlalchemy.orm import sessionmaker
+from cloudmesh_client.db.model import DEFAULT, IMAGE
+from cloudmesh_client.db.CloudmeshDatabase import CloudmeshDatabase
+from cloudmesh_client.cloud.default import Default
+from cloudmesh_client.cloud.image import Image
+from cloudmesh_client.cloud.flavor import Flavor
+from cloudmesh_client.cloud.vm import Vm
+from cloudmesh_client.cloud import list as cloudmesh_list
+import json
+
+from cloudmesh_base.util import banner
+
+### REVIEW
+image = IMAGE
+
+
+
+def Session():
+    from aldjemy.core import get_engine
+    engine = get_engine()
+    _Session = sessionmaker(bind=engine)
+    return _Session()
+
+session = Session()
+
+print "IIIII", image
+# REVIEW
+
+def message(msg):
+    return HttpResponse("Message: %s." % msg)
+
+def cloudmesh_vclusters(request):
+    return message("Not yet Implemented")
+
+def cloudmesh_defaults(request):
+
+    banner("hallo")
+    data = json.loads(Default.list(format='json'))
+    print "PPPP", data
+
+    print json.dumps(data, indent=4)
+
+
+    # data = Default.list(format='dict')
+    # print ("DDD", data)
+
+
+    order = ['kind',
+             'name',
+             'value',
+             'project',
+             'user',
+             'type',
+             'id',
+             'cloud']
+    return (dict_table(request, "Cloudmesh Default", data, order))
+
+def cloudmesh_images(request):
+
+    banner("images")
+    # TODO: make the cloudname a parameter
+    data = Image.list("juno", format='dict')
+    print json.dumps(data, indent=4)
+    # TODO set proper columns
+    order = ['kind',
+             'name',
+             'value',
+             'project',
+             'user',
+             'type',
+             'id',
+             'cloud']
+    return (dict_table(request, "Cloudmesh Images", data, order))
+
+def cloudmesh_flavors(request):
+
+    data = Flavor.list("juno", format='dict')
+    print json.dumps(data, indent=4)
+    order = ['kind',
+             'name',
+             'value',
+             'project',
+             'user',
+             'type',
+             'id',
+             'cloud']
+    return (dict_table(request, "Cloudmesh Flavors", data, order))
+
+def cloudmesh_vms(request):
+    data = Vm.list(format='dict')
+    print json.dumps(data, indent=4)
+    order = ['kind',
+             'name',
+             'value',
+             'project',
+             'user',
+             'type',
+             'id',
+             'cloud']
+    return (dict_table(request, "Cloudmesh VMs", data, order))
+
 
 @register.filter
 def get_item(dictionary, key):
@@ -101,6 +202,18 @@ class FakeField(object):
 
 fieldfile = FieldFile(None, FakeField, 'dummy.txt')
 
+
+
+class StatusPageView(TemplateView):
+    template_name = 'cloudmesh_portal/status.html'
+
+    context = {}
+    context["data"] = "hallo"
+
+    def get_context_data(self, **kwargs):
+        context = super(StatusPageView, self).get_context_data(**kwargs)
+        # messages.info(self.request, 'This is a demo of a message.')
+        return context
 
 class HomePageView(TemplateView):
     template_name = 'cloudmesh_portal/home.html'

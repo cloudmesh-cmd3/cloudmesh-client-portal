@@ -1,3 +1,5 @@
+jinja2schema
+jinja2schema
 django-rest-swagger
 django-bootstrap3
 django-admin-bootstrapped
@@ -7,3 +9,4 @@ djangorestframework
 markdown
 django-filter
 aldjemy
+nwdiag

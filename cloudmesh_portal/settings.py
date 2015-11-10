@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'rest_framework',
     'rest_framework_swagger',
     'bootstrap3',
     'bootstrap_themes',
@@ -126,7 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    '/static/',
+)
+
+STATIC_URL = os.path.join(BASE_DIR, "static/")
 
 cm_theme = 'cosmo'
 
@@ -195,3 +201,4 @@ BOOTSTRAP3 = {
         'inline': 'bootstrap3.renderers.InlineFieldRenderer',
     },
 }
+

@@ -1,10 +1,11 @@
 view:
-	open http://127.0.0.1:8000/
+	open http://127.0.0.1:8000/status
 
 migrate:
 	python manage.py migrate
 
 run: migrate
+	killall python
 	python manage.py runserver
 
 cleandb:
@@ -14,7 +15,10 @@ initdb: cleandb
 	python manage.py syncdb
 
 doc:
-	open http://127.0.0.1:8000/docs/
+	open http://127.0.0.1:8080/docs/
+
+install:
+	cd ../client; python setup.py install
 
 
 ######################################################################
