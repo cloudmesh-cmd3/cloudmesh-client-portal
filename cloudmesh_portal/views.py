@@ -142,7 +142,7 @@ def comet_ll(request):
     c = Comet.logon()
     data = json.loads(Cluster.simple_list(format="json"))
 
-    pprint(data)
+    pprint(type(data), data)
     order = [
         "name",
         "project",
@@ -171,9 +171,13 @@ def comet_ll(request):
 
 def comet_list(request):
     c = Comet.logon()
-    print("HHHJHJJHJHJHHJHJ")
-    data = json.loads(Cluster.list(format="json"))
-    # pprint(data)
+    data = Cluster.list(format="dict")
+
+    dictionary = {}
+
+    for item in data:
+        dictionary[item["name"]] = item
+
     order = [
         "name",
         "state",
@@ -187,9 +191,7 @@ def comet_list(request):
         "memory",
     ]
 
-    print("KKKKKKK", order)
-
-    return (dict_table(request, "Comet List", data, order))
+    return (dict_table(request, "Comet List", dictionary, order))
 
 
 def cloudmesh_clouds(request):
