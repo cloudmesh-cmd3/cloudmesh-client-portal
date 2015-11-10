@@ -127,20 +127,29 @@ def cloudmesh_vms(request):
 
 @register.filter
 def get_item(dictionary, key):
+    print (dictionary.get(key))
     return dictionary.get(key)
 
 
-def dict_table(request, title, data, order):
+def dict_table(request, title, data, order, header=None):
+    print ("ORDER", type(order))
+    print ("DATA", type(data))
     context = {'title': title,
                'order': order,
                'data': data}
+    if header is not None:
+        context['header'] = header
+    print ("------------------")
+    pprint(context)
+    print (type(order))
     return render(request, 'cloudmesh_portal/dict_table.html', context)
 
 
-def comet_list(request):
+def comet_ll(request):
     c = Comet.logon()
     data = json.loads(Cluster.simple_list(format="json"))
 
+    pprint (data)
     order=[
       "name",
       "project",
@@ -151,7 +160,7 @@ def comet_list(request):
       "frontend type",
       "frontend rocks_name",
       "description",
-    ],
+    ]
     header=[
       "Name",
       "Project",
@@ -162,9 +171,30 @@ def comet_list(request):
       "Type (Fe)",
       "Rocks name (Fe)",
       "Description",
-    ],
+    ]
 
     return (dict_table(request, "Comet List", data, order))
+
+def comet_list(request):
+    c = Comet.logon()
+    data = json.loads(Cluster.list(format="json"))
+
+    pprint (data)
+                                   order=[
+                                   "name",
+                                   "state",
+                                   "kind",
+                                   "type"
+                                   "ip",
+                                   "rocks_name",
+                                   "cpus",
+                                   "cluster",
+                                   "host",
+                                   "memory",
+                                   ]
+
+    return (dict_table(request, "Comet List", data, order))
+
 
 
 def cloudmesh_clouds(request):

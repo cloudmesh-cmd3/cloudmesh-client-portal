@@ -71,6 +71,7 @@ urlpatterns = [
     url(r'^cm/flavor/$', cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^cm/vm/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vcluster/$', cloudmesh_vclusters, name='cloudmesh_vcluster'),
+    url(r'^comet/overview', comet_ll, name='comet_ll'),
     url(r'^comet/list$', comet_list, name='comet_list'),
     url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
     url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
