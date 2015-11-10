@@ -11,6 +11,9 @@
       type="text/css"
       href="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.css"/>
 
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         $('#dictTable').DataTable({
@@ -26,6 +29,7 @@
 <table  id="dictTable" class="table table-striped table-bordered">
     <thead>
         <tr>
+            <th>Power</th>
         {% for attribute in order %}
                 <th> {{ attribute }} </th>
         {% endfor %}
@@ -34,6 +38,22 @@
     <tbody>
         {% for index, element in data.items %}
         <tr>
+            <td>
+                {{ element|get_item:"state" }}
+                <a href="#"
+                   {% if element|get_item:"state" == "active" %}
+                    ACTIVE
+                    <font color="FF00CC">
+                   {% elif element|get_item:"state" == "None" %}
+                    NONE
+                        <font color="FF00FF">
+                            {% else %}
+                    <font color="FF0000">
+                        {% endif %}
+                    <i class="fa fa-power-off"></i>
+                    </font>
+                    </a>
+                </td>
             {% for a in order %}
                 <td> {{ element|get_item:a }} </td>
             {% endfor %}

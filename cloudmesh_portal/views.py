@@ -120,21 +120,15 @@ def cloudmesh_vms(request):
 
 @register.filter
 def get_item(dictionary, key):
-    print (dictionary.get(key))
     return dictionary.get(key)
 
 
 def dict_table(request, title, data, order, header=None):
-    print ("ORDER", type(order))
-    print ("DATA", type(data))
     context = {'title': title,
                'order': order,
                'data': data}
     if header is not None:
         context['header'] = header
-    print ("------------------")
-    pprint(context)
-    print (type(order))
     return render(request, 'cloudmesh_portal/dict_table.html', context)
 
 
@@ -182,7 +176,7 @@ def comet_list(request):
         "name",
         "state",
         "kind",
-        "type"
+        "type",
         "ip",
         "rocks_name",
         "cpus",
