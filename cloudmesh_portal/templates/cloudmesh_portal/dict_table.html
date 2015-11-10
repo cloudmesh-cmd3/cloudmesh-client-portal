@@ -39,23 +39,61 @@
         {% for index, element in data.items %}
         <tr>
             <td>
-                {{ element|get_item:"state" }}
-                <a href="#"
-                   {% if element|get_item:"state" == "active" %}
-                    ACTIVE
-                    <font color="FF00CC">
-                   {% elif element|get_item:"state" == "None" %}
-                    NONE
-                        <font color="FF00FF">
-                            {% else %}
-                    <font color="FF0000">
-                        {% endif %}
+                <a href="#">
+
+                   {% ifequal element|get_item:"state" "active" %}
+                        <font color="00CC00">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "nostate" %}
+                        <font color="C0C0C0">{% endifequal %}
+
+
+                   {% ifequal element|get_item:"state" "paused" %}
+                        <font color="336699">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "inactive" %}
+                        <font color="C0C0C0">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "off" %}
+                        <font color="FF0000">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" None %}
+                        <font color="C0C0C0">{% endifequal %}
+
                     <i class="fa fa-power-off"></i>
                     </font>
                     </a>
                 </td>
             {% for a in order %}
-                <td> {{ element|get_item:a }} </td>
+                 <td>
+
+                   {% ifequal a "state" %}
+                      {% ifequal element|get_item:"state" "active" %}
+                        <font color="00CC00">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "nostate" %}
+                        <font color="C0C0C0">{% endifequal %}
+
+
+                   {% ifequal element|get_item:"state" "paused" %}
+                        <font color="336699">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "inactive" %}
+                        <font color="C0C0C0">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" "off" %}
+                        <font color="FF0000">{% endifequal %}
+
+                   {% ifequal element|get_item:"state" None %}
+                        <font color="C0C0C0">{% endifequal %}
+                           {{ element|get_item:a }}
+                    <font></td>
+                {% endifequal %}
+                {% ifnotequal a "state" %}
+                        {{ element|get_item:a }}
+                {% endifnotequal %}
+                    </td>
+
             {% endfor %}
         </tr>
         {% endfor %}
