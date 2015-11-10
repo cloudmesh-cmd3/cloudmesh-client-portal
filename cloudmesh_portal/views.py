@@ -23,6 +23,8 @@ from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
 from cloudmesh_base.util import banner
+from cloudmesh_portal.cloudmesh_portal.charts import Chart
+
 
 from .forms import ContactForm, FilesForm, ContactFormSet
 
@@ -38,9 +40,6 @@ def Session():
 
 
 session = Session()
-
-print "IIIII", image
-
 
 # REVIEW
 
@@ -133,6 +132,40 @@ def dict_table(request, title, data, order, header=None):
     if header is not None:
         context['header'] = header
     return render(request, 'cloudmesh_portal/dict_table.html', context)
+
+
+class StatusPageView(TemplateView):
+    template_name = 'cloudmesh_portal/status.html'
+
+    context = {}
+    c = Comet.logon()
+    data = json.loads(Cluster.simple_list(format="json"))
+    pprint(data)
+    print (type(data))
+
+    clusters = []
+    for key in data:
+        cluster = {}
+        cluster["name"] = data[key]["name"]
+        cluster["total"] = data[key]["nodes"]
+        cluster["status"] = {
+                'up': 0,
+                'down': 0,
+                'unkown': cluster["total"],
+        }
+
+    pprint (clusters)
+    context["clusters"] = clusters
+
+    Chart.cluster_overview_pie(clusters, 'pie.svg')
+    Chart.cluster_overview_radarclusters(cluster, 'radar.svg')
+    Chart.cluster_overview_pie_vector(cluster, 'pie_vector.svg')
+
+
+    def get_context_data(self, **kwargs):
+        context = super(StatusPageView, self).get_context_data(**kwargs)
+        # messages.info(self.request, 'This is a demo of a message.')
+        return context
 
 
 def comet_ll(request):
@@ -244,16 +277,6 @@ class FakeField(object):
 fieldfile = FieldFile(None, FakeField, 'dummy.txt')
 
 
-class StatusPageView(TemplateView):
-    template_name = 'cloudmesh_portal/status.html'
-
-    context = {}
-    context["data"] = "hallo"
-
-    def get_context_data(self, **kwargs):
-        context = super(StatusPageView, self).get_context_data(**kwargs)
-        # messages.info(self.request, 'This is a demo of a message.')
-        return context
 
 
 class HomePageView(TemplateView):

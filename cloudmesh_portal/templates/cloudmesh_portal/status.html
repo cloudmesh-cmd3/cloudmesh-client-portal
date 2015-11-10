@@ -2,7 +2,10 @@
 
 {% block title %}Comet Virtual Cluster Status{% endblock %}
 
+
 {% block content %}
+
+{% load staticfiles %}
 
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script>
@@ -20,6 +23,8 @@
         ['Durham, NC', 'Durham: 0'],
         ['Madison, WI', 'Madison: 0']
         ['Columbus, OH', 'Columbus: 0']
+        ['Bozeman, MT', 'Bozeman: 0']
+        ['Los Angeles, CA', 'Los Angeles']
       ]);
 
     var options = { showTip: true };
@@ -30,35 +35,22 @@
   };
   </script>
 
-{% load staticfiles %}
 
-<div class="table-responsive">
-  <table class="table">
+{{nodes}}
 
-  <tr>
-         <td>
+
 <embed width="500px"
        type="image/svg+xml"
        src="{% static "cloudmesh_portal/pie.svg"%}"/>
-</td><td>
 <embed width="500px"
        type="image/svg+xml"
        src="{% static "cloudmesh_portal/pie_vector.svg"%}"/>
-     </td>    </tr>
-
-<tr>
-       <td>
 <embed width="500px"
        type="image/svg+xml"
-       src="{% static "cloudmesh_portal/radar.svg"%}"
-/>
-</td>
-       <td>
-<div id="chart_div" style="width:500px"></div>
-</td>
-</tr>
-  </table>
-</div>
+       src="{% static "cloudmesh_portal/radar.svg"%}"/>
+
+
+<div id="chart_div"></div>
 
 <p>
 This code has been adopted from cloudmesh
