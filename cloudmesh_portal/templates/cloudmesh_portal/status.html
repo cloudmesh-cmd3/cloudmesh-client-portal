@@ -1,0 +1,67 @@
+{% extends 'cloudmesh_portal/base.html' %}
+
+{% block title %}Comet Virtual Cluster Status{% endblock %}
+
+{% block content %}
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script>
+    google.load('visualization', '1', { 'packages': ['map'] });
+    google.setOnLoadCallback(drawMap);
+
+
+    function drawMap() {
+
+      var data = google.visualization.arrayToDataTable([
+        ['City', 'Nodes'],
+        ['Bloomington, IN ', 'Indiana: 40'],
+        ['San Diego', 'San Diego: 120'],
+        ['Austin, TX', 'Austin: 0'],
+        ['Durham, NC', 'Durham: 0'],
+        ['Madison, WI', 'Madison: 0']
+        ['Columbus, OH', 'Columbus: 0']
+      ]);
+
+    var options = { showTip: true };
+
+    var map = new google.visualization.Map(document.getElementById('chart_div'));
+
+    map.draw(data, options);
+  };
+  </script>
+
+{% load staticfiles %}
+
+<div class="table-responsive">
+  <table class="table">
+
+  <tr>
+         <td>
+<embed width="500px"
+       type="image/svg+xml"
+       src="{% static "cloudmesh_portal/pie.svg"%}"/>
+</td><td>
+<embed width="500px"
+       type="image/svg+xml"
+       src="{% static "cloudmesh_portal/pie_vector.svg"%}"/>
+     </td>    </tr>
+
+<tr>
+       <td>
+<embed width="500px"
+       type="image/svg+xml"
+       src="{% static "cloudmesh_portal/radar.svg"%}"
+/>
+</td>
+       <td>
+<div id="chart_div" style="width:500px"></div>
+</td>
+</tr>
+  </table>
+</div>
+
+<p>
+This code has been adopted from cloudmesh
+</p>
+{% endblock %}
+
