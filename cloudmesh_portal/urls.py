@@ -20,7 +20,8 @@ from django.contrib.sitemaps.views import sitemap
 from .views import HomePageView, StatusPageView, FormHorizontalView, \
     FormInlineView, PaginationView, FormWithFilesView, \
     DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView, \
-    comet_list, comet_list_queue,cloudmesh_clouds, cloudmesh_defaults, \
+    comet_list, comet_ll, comet_list_queue,cloudmesh_clouds, \
+    cloudmesh_defaults, \
     cloudmesh_images, cloudmesh_flavors, cloudmesh_vms, cloudmesh_vclusters
 
 
@@ -71,7 +72,7 @@ urlpatterns = [
     url(r'^cm/flavor/$', cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^cm/vm/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vcluster/$', cloudmesh_vclusters, name='cloudmesh_vcluster'),
-    url(r'^comet/overview', comet_ll, name='comet_ll'),
+    url(r'^comet/ll', comet_ll, name='comet_ll'),
     url(r'^comet/list$', comet_list, name='comet_list'),
     url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
     url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),

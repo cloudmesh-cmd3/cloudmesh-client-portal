@@ -1,43 +1,33 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.core.files.storage import default_storage
+from pprint import pprint
+import json
 
+from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.fields.files import FieldFile
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from django.contrib import messages
-
 from django.shortcuts import render
 from django.http import HttpResponse
-
-from .forms import ContactForm, FilesForm, ContactFormSet
-import json
-
 from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
 from cloudmesh_client.cloud.hpc.hpc import Hpc
-
 from django.template.defaulttags import register
-
 from cloudmesh_client.common.ConfigDict import ConfigDict
-from pprint import pprint
-
 from sqlalchemy.orm import sessionmaker
-from cloudmesh_client.db.model import DEFAULT, IMAGE
-from cloudmesh_client.db.CloudmeshDatabase import CloudmeshDatabase
+from cloudmesh_client.db.model import IMAGE
 from cloudmesh_client.cloud.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
-from cloudmesh_client.cloud import list as cloudmesh_list
-import json
-
 from cloudmesh_base.util import banner
+
+from .forms import ContactForm, FilesForm, ContactFormSet
 
 ### REVIEW
 image = IMAGE
-
 
 
 def Session():
@@ -46,22 +36,24 @@ def Session():
     _Session = sessionmaker(bind=engine)
     return _Session()
 
+
 session = Session()
 
 print "IIIII", image
+
+
 # REVIEW
 
 def message(msg):
     return HttpResponse("Message: %s." % msg)
 
+
 def cloudmesh_vclusters(request):
     return message("Not yet Implemented")
 
-def cloudmesh_defaults(request):
 
-    banner("hallo")
+def cloudmesh_defaults(request):
     data = json.loads(Default.list(format='json'))
-    print "PPPP", data
 
     print json.dumps(data, indent=4)
 
@@ -80,8 +72,8 @@ def cloudmesh_defaults(request):
              'cloud']
     return (dict_table(request, "Cloudmesh Default", data, order))
 
-def cloudmesh_images(request):
 
+def cloudmesh_images(request):
     banner("images")
     # TODO: make the cloudname a parameter
     data = Image.list("juno", format='dict')
@@ -97,8 +89,8 @@ def cloudmesh_images(request):
              'cloud']
     return (dict_table(request, "Cloudmesh Images", data, order))
 
-def cloudmesh_flavors(request):
 
+def cloudmesh_flavors(request):
     data = Flavor.list("juno", format='dict')
     print json.dumps(data, indent=4)
     order = ['kind',
@@ -110,6 +102,7 @@ def cloudmesh_flavors(request):
              'id',
              'cloud']
     return (dict_table(request, "Cloudmesh Flavors", data, order))
+
 
 def cloudmesh_vms(request):
     data = Vm.list(format='dict')
@@ -149,52 +142,54 @@ def comet_ll(request):
     c = Comet.logon()
     data = json.loads(Cluster.simple_list(format="json"))
 
-    pprint (data)
-    order=[
-      "name",
-      "project",
-      "nodes",
-      "computes",
-      "frontend name",
-      "frontend state",
-      "frontend type",
-      "frontend rocks_name",
-      "description",
+    pprint(data)
+    order = [
+        "name",
+        "project",
+        "nodes",
+        "computes",
+        "frontend name",
+        "frontend state",
+        "frontend type",
+        "frontend rocks_name",
+        "description",
     ]
-    header=[
-      "Name",
-      "Project",
-      "Count",
-      "Nodes",
-      "Frontend (Fe)",
-      "State (Fe)",
-      "Type (Fe)",
-      "Rocks name (Fe)",
-      "Description",
+    header = [
+        "Name",
+        "Project",
+        "Count",
+        "Nodes",
+        "Frontend (Fe)",
+        "State (Fe)",
+        "Type (Fe)",
+        "Rocks name (Fe)",
+        "Description",
     ]
 
     return (dict_table(request, "Comet List", data, order))
+
 
 def comet_list(request):
     c = Comet.logon()
+    print("HHHJHJJHJHJHHJHJ")
     data = json.loads(Cluster.list(format="json"))
+    # pprint(data)
+    order = [
+        "name",
+        "state",
+        "kind",
+        "type"
+        "ip",
+        "rocks_name",
+        "cpus",
+        "cluster",
+        "host",
+        "memory",
+    ]
 
-    pprint (data)
-                                   order=[
-                                   "name",
-                                   "state",
-                                   "kind",
-                                   "type"
-                                   "ip",
-                                   "rocks_name",
-                                   "cpus",
-                                   "cluster",
-                                   "host",
-                                   "memory",
-                                   ]
+    print("KKKKKKK", order)
 
     return (dict_table(request, "Comet List", data, order))
-
 
 
 def cloudmesh_clouds(request):
@@ -250,7 +245,6 @@ class FakeField(object):
 fieldfile = FieldFile(None, FakeField, 'dummy.txt')
 
 
-
 class StatusPageView(TemplateView):
     template_name = 'cloudmesh_portal/status.html'
 
@@ -261,6 +255,7 @@ class StatusPageView(TemplateView):
         context = super(StatusPageView, self).get_context_data(**kwargs)
         # messages.info(self.request, 'This is a demo of a message.')
         return context
+
 
 class HomePageView(TemplateView):
     template_name = 'cloudmesh_portal/home.html'
