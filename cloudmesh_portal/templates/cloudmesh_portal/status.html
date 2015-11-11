@@ -8,35 +8,37 @@
 {% load staticfiles %}
 
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script>
-    google.load('visualization', '1', { 'packages': ['map'] });
-    google.setOnLoadCallback(drawMap);
 
+
+ <script type='text/javascript'>
+   google.load('visualization', '1', {'packages': ['geomap']});
+   google.setOnLoadCallback(drawMap);
 
     function drawMap() {
 
       var data = google.visualization.arrayToDataTable([
         ['City', 'Nodes'],
-        ['Bloomington, IN ', 'Indiana: 40'],
-        ['San Diego', 'San Diego: 120'],
-        ['Austin, TX', 'Austin: 0'],
-        ['Durham, NC', 'Durham: 0'],
-        ['Madison, WI', 'Madison: 0'],
-        ['Columbus, OH', 'Columbus: 0'],
-        ['Bozeman, MT', 'Bozeman: 0'],
-        ['Los Angeles, CA', 'Los Angeles']
+        ['Bloomington, IN ', 40],
+        ['San Diego, CA', 120],
+        ['Austin, TX', 100],
+        ['Durham, NC', 100],
+        ['Madison, WI', 100],
+        ['Columbus, OH', 100],
+        ['Bozeman, MT', 100],
+        ['Los Angeles, CA', 100]
       ]);
 
-    var options = { showTip: true };
 
-    var map = new google.visualization.Map(document.getElementById('chart_div'));
+      var options = {};
+      options['region'] = 'US';
+      options['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
+      options['dataMode'] = 'markers';
 
-    map.draw(data, options);
-  };
-  </script>
-
-
-{{nodes}}
+      var container = document.getElementById('map_canvas');
+      var geomap = new google.visualization.GeoMap(container);
+      geomap.draw(data, options);
+    };
+ </script>
 
 
 <embed width="500px"
@@ -50,7 +52,11 @@
        src="{% static "cloudmesh_portal/radar.svg"%}"/>
 
 
-<div id="chart_div"></div>
+
+<div id='map_canvas'  style='width:400px'></div>
+
+
+
 
 <p>
 This code has been adopted from cloudmesh
