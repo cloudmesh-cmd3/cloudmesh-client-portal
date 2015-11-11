@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import sys
 
-
 SITE_ID = 1
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -92,7 +91,6 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'cloudmesh_portal.wsgi.application'
 
 
@@ -145,24 +143,28 @@ BOOTSTRAP3 = {
     # The Bootstrap base URL
     'base_url': '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/',
 
-    # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
+    # The complete URL to the Bootstrap CSS file (None means derive it
+    # from base_url)
     # 'css_url': None,
     'css_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/' +
                cm_theme + '/bootstrap.min.css',
 
     # The complete URL to the Bootstrap CSS file (None means no theme)
     'theme_url': None,
-    #'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly
+    # 'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly
     # /bootstrap.min.css',
     # 'theme_url': 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/',
 
-    # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
-    'javascript_url':  None,
+    # The complete URL to the Bootstrap JavaScript file (None means
+    # derive it from base_url)
+    'javascript_url': None,
 
-    # Put JavaScript in the HEAD section of the HTML document (only relevant if you use bootstrap3.html)
+    # Put JavaScript in the HEAD section of the HTML document (only relevant
+    # if you use bootstrap3.html)
     'javascript_in_head': True,
 
-    # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3 template tags)
+    # Include jQuery with Bootstrap JavaScript (affects django-bootstrap3
+    # template tags)
     'include_jquery': True,
 
     # Label class to use in horizontal forms
@@ -186,11 +188,13 @@ BOOTSTRAP3 = {
     # Class to indicate error (better to set this in your Django form)
     'error_css_class': 'has-error',
 
-    # Class to indicate success, meaning the field has valid input (better to set this in your Django form)
+    # Class to indicate success, meaning the field has valid input
+    # (better to set this in your Django form)
     'success_css_class': 'has-success',
 
-    # Renderers (only set these if you have studied the source and understand the inner workings)
-    'formset_renderers':{
+    # Renderers (only set these if you have studied the source and
+    # understand the inner workings)
+    'formset_renderers': {
         'default': 'bootstrap3.renderers.FormsetRenderer',
     },
     'form_renderers': {
@@ -201,4 +205,3 @@ BOOTSTRAP3 = {
         'inline': 'bootstrap3.renderers.InlineFieldRenderer',
     },
 }
-

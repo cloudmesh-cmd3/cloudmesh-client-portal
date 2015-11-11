@@ -22,14 +22,11 @@ from cloudmesh_client.cloud.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
+
 from cloudmesh_base.util import banner
-from cloudmesh_portal.cloudmesh_portal.charts import Chart
 
-
+from cloudmesh_portal.charts import Chart
 from .forms import ContactForm, FilesForm, ContactFormSet
-
-### REVIEW
-image = IMAGE
 
 
 def Session():
@@ -41,7 +38,6 @@ def Session():
 
 session = Session()
 
-# REVIEW
 
 def message(msg):
     return HttpResponse("Message: %s." % msg)
@@ -56,10 +52,8 @@ def cloudmesh_defaults(request):
 
     print json.dumps(data, indent=4)
 
-
     # data = Default.list(format='dict')
     # print ("DDD", data)
-
 
     order = ['kind',
              'name',
@@ -145,22 +139,70 @@ class StatusPageView(TemplateView):
 
     clusters = []
     for key in data:
-        cluster = {}
-        cluster["name"] = data[key]["name"]
-        cluster["total"] = data[key]["nodes"]
-        cluster["status"] = {
+        total = data[key]["nodes"]
+        name = data[key]["name"]
+        if name == "comet-fe1":
+            name = "free"
+        cluster = {
+            "name": name,
+            "total": total,
+            "status": {
                 'up': 0,
                 'down': 0,
-                'unkown': cluster["total"],
+                'pending': 0,
+                'unkown': total
+            }
         }
+        clusters.append(cluster)
 
-    pprint (clusters)
-    context["clusters"] = clusters
+    details = json.loads(Cluster.list(format="json"))
 
-    Chart.cluster_overview_pie(clusters, 'pie.svg')
-    Chart.cluster_overview_radarclusters(cluster, 'radar.svg')
-    Chart.cluster_overview_pie_vector(cluster, 'pie_vector.svg')
+    empty = {
+        'name': None,
+        'total': 0,
+        'status': {
+            'unkown': 0,
+            'active': 0,
+            'down': 0,
+            'pending':0
+        }
+    }
 
+    counter = {}
+    for id in data.keys():
+        counter[id] = dict(empty)
+
+    for key, node in details.items():
+        if node['kind'] == 'compute':
+            name = node['cluster']
+            count = counter[name]['status']
+            if node['state'] in [None, 'unkown', 'nostate']:
+                count['unkown'] += 1
+            elif node['state'] in ['active']:
+                count['active'] += 1
+            elif node['state'] in ['pending']:
+                count['pending'] += 1
+            elif node['state'] in ['down']:
+                count['down'] += 1
+            counter[name]['total'] +=1
+        counter[name]['name'] = name
+
+    pprint(counter)
+
+    banner("C")
+    counter_list = []
+    for key, cluster in counter.items():
+        print (cluster)
+        counter_list.append(cluster)
+
+    banner("D")
+    pprint(counter_list)
+
+    #context["clusters"] = counter_list
+
+    Chart.cluster_overview_pie(counter_list, filename='pie.svg')
+    Chart.cluster_overview_radar(counter_list, filename='radar.svg')
+    Chart.cluster_overview_pie_vector(counter_list, filename='pie_vector.svg')
 
     def get_context_data(self, **kwargs):
         context = super(StatusPageView, self).get_context_data(**kwargs)
@@ -275,8 +317,6 @@ class FakeField(object):
 
 
 fieldfile = FieldFile(None, FakeField, 'dummy.txt')
-
-
 
 
 class HomePageView(TemplateView):

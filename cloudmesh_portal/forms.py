@@ -37,7 +37,8 @@ class ContactBaseFormSet(BaseFormSet):
 
     def clean(self):
         super(ContactBaseFormSet, self).clean()
-        raise forms.ValidationError("This error was added to show the non form errors styling")
+        raise forms.ValidationError("This error was added to "
+                                    "show the non form errors styling")
 
 ContactFormSet = formset_factory(TestForm, formset=ContactBaseFormSet,
                                  extra=2,
@@ -59,5 +60,6 @@ class ArticleForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(ArticleForm, self).clean()
-        raise forms.ValidationError("This error was added to show the non field errors styling.")
+        raise forms.ValidationError("This error was added to "
+                                    "show the non field errors styling.")
         return cleaned_data

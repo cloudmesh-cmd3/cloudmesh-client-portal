@@ -1,16 +1,16 @@
-import pygal
-from pprint import pprint
 import os
-from pygal.style import BlueStyle
 
+import pygal
+from pygal.style import BlueStyle
 
 clusters = [
     {
         'name': "free",
         'total': 20,
         'status': {
-            'up': 5,
+            'active': 5,
             'down': 10,
+            'pending': 0,
             'unkown': 5,
         }
     },
@@ -18,7 +18,8 @@ clusters = [
         'name': "v1",
         'total': 15,
         'status': {
-            'up': 5,
+            'active': 5,
+            'pending': 0,
             'down': 5,
             'unkown': 5,
         }
@@ -27,7 +28,8 @@ clusters = [
         'name': "v2",
         'total': 15,
         'status': {
-            'up': 10,
+            'active': 10,
+            'pending': 0,
             'down': 2,
             'unkown': 3,
         }
@@ -39,9 +41,7 @@ clusters = [
 
 
 class Chart(object):
-
-
-    path =  os.path.join("..", "..", "static", "cloudmesh_portal")
+    path = os.path.join("static", "cloudmesh_portal")
 
     @classmethod
     def to_path(cls, name):
@@ -85,14 +85,17 @@ class Chart(object):
                               no_data_font_size=30),
                           print_labels=True,
                           print_values=True)
-        chart.title = 'Comet Virtual Cluster Nodes used by Projects with Status'
+        chart.title = 'Comet Virtual Cluster Nodes ' \
+                      'used by Projects with Status'
 
         for cluster in clusters:
             state = cluster['status']
             # data = [state["up"], state["down"], state['unkown']]
             data = [
-                {'value': state["up"], 'color': 'green', 'value_font_size': '24'},
+                {'value': state["active"], 'color': 'green',
+                 'value_font_size': '24'},
                 {'value': state["down"], 'color': 'red'},
+                {'value': state["pending"], 'color': 'yellow'},
                 {'value': state["unkown"], 'color': 'white'},
             ]
 
@@ -116,21 +119,22 @@ class Chart(object):
                                 no_data_font_size=30), )
         chart.title = 'Comet Virtual Cluster Radar for Status of the Nodes'
 
-        chart.x_labels = ['up', 'down', 'unkown', 'total']
+        chart.x_labels = ['pending', 'active', 'unkown', 'down', 'total']
 
         for cluster in clusters:
             state = cluster['status']
-            data = [state["up"], state["down"], state['unkown'], cluster['total']]
+            data = [state["active"],
+                    state["down"],
+                    state['pending'],
+                    cluster['total']]
             chart.add(cluster['name'], data)
         if filename is not None:
             chart.render_to_file(cls.to_path(filename))
         return chart
 
-
-
-#cluster_overview_pie(clusters).render_to_file(to_path('pie.svg'))
-#cluster_overview_radar(clusters).render_to_file(to_path('radar.svg'))
-#cluster_overview_pie_vector(clusters).render_to_file(to_path(
+# cluster_overview_pie(clusters).render_to_file(to_path('pie.svg'))
+# cluster_overview_radar(clusters).render_to_file(to_path('radar.svg'))
+# cluster_overview_pie_vector(clusters).render_to_file(to_path(
 # 'pie_vector.svg'))
 
 # cluster_overview_pie(clusters).render_in_browser()
