@@ -65,7 +65,14 @@ class Chart(object):
         chart.title = 'Comet Virtual Cluster Nodes used by Projects'
 
         for cluster in clusters:
-            chart.add(cluster['name'], cluster['total'])
+            # chart.add(cluster['name'], cluster['total'])
+            chart.add(cluster['name'],
+                      [{'value': cluster['total'],
+                        'label': '{}'.format(cluster['total'])
+                        }
+                       ]
+                      )
+
         if filename is not None:
             chart.render_to_file(cls.to_path(filename))
         return chart
