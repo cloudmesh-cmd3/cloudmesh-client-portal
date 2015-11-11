@@ -25,7 +25,7 @@ from cloudmesh_client.cloud.vm import Vm
 
 from cloudmesh_base.util import banner
 
-from cloudmesh_portal.charts import Chart
+from charts import Chart
 from .forms import ContactForm, FilesForm, ContactFormSet
 
 
