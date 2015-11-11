@@ -147,7 +147,8 @@ class StatusPageView(TemplateView):
             "name": name,
             "total": total,
             "status": {
-                'up': 0,
+                'active': 0,
+                'nostate': 0,
                 'down': 0,
                 'pending': 0,
                 'unkown': total
@@ -157,52 +158,64 @@ class StatusPageView(TemplateView):
 
     details = json.loads(Cluster.list(format="json"))
 
-    empty = {
-        'name': None,
-        'total': 0,
-        'status': {
-            'unkown': 0,
-            'active': 0,
-            'down': 0,
-            'pending':0
-        }
-    }
-
     counter = {}
     for id in data.keys():
-        counter[id] = dict(empty)
+        counter[id] =  {
+            'name': None,
+            'total': 0,
+            'status': {
+                'unkown': 0,
+                'active': 0,
+                'down': 0,
+                'pending':0,
+                'nostate':0
+            }
+        }
 
     for key, node in details.items():
+
         if node['kind'] == 'compute':
+
             name = node['cluster']
-            count = counter[name]['status']
-            if node['state'] in [None, 'unkown', 'nostate']:
-                count['unkown'] += 1
-            elif node['state'] in ['active']:
-                count['active'] += 1
-            elif node['state'] in ['pending']:
-                count['pending'] += 1
-            elif node['state'] in ['down']:
-                count['down'] += 1
+            state = node['state']
+            if state is None:
+                state = 'unkown'
+
+            element = counter[name]
+            counter[name]['status'][state] +=1
             counter[name]['total'] +=1
-        counter[name]['name'] = name
+            counter[name]['name'] = name
 
-    pprint(counter)
+    #
+    # delete the free nodes for now
+    #
 
-    banner("C")
+    for count in counter:
+        if count != "comet-fe1":
+            counter['comet-fe1']['total'] = counter['comet-fe1']['total'] - \
+                counter[count]['total']
+
+    counter['comet-fe1']['name'] = 'free'
     counter_list = []
     for key, cluster in counter.items():
-        print (cluster)
         counter_list.append(cluster)
-
-    banner("D")
-    pprint(counter_list)
 
     #context["clusters"] = counter_list
 
     Chart.cluster_overview_pie(counter_list, filename='pie.svg')
-    Chart.cluster_overview_radar(counter_list, filename='radar.svg')
+
+
+    #
+    # delete the overall count
+    #
+    del counter['comet-fe1']
+    counter_list = []
+    for key, cluster in counter.items():
+        counter_list.append(cluster)
+
+
     Chart.cluster_overview_pie_vector(counter_list, filename='pie_vector.svg')
+    Chart.cluster_overview_radar(counter_list, filename='radar.svg')
 
     def get_context_data(self, **kwargs):
         context = super(StatusPageView, self).get_context_data(**kwargs)
