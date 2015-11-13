@@ -160,30 +160,35 @@ class StatusPageView(TemplateView):
 
     counter = {}
     for id in data.keys():
-        counter[id] =  {
+        counter[id] = {
             'name': None,
             'total': 0,
             'status': {
                 'unkown': 0,
                 'active': 0,
                 'down': 0,
-                'pending':0,
-                'nostate':0
+                'pending': 0,
+                'nostate': 0,
+                'nostate-error': 0
             }
         }
 
+    print (counter)
     for key, node in details.items():
 
         if node['kind'] == 'compute':
 
             name = node['cluster']
             state = node['state']
-            if state is None:
+
+            if state in [None, 'None']:
                 state = 'unkown'
 
+            print ("SSSSSSS", state, name, node['kind'])
+
             element = counter[name]
-            counter[name]['status'][state] +=1
-            counter[name]['total'] +=1
+            counter[name]['status'][state] += 1
+            counter[name]['total'] += 1
             counter[name]['name'] = name
 
     #
@@ -193,17 +198,16 @@ class StatusPageView(TemplateView):
     for count in counter:
         if count != "comet-fe1":
             counter['comet-fe1']['total'] = counter['comet-fe1']['total'] - \
-                counter[count]['total']
+                                            counter[count]['total']
 
     counter['comet-fe1']['name'] = 'free'
     counter_list = []
     for key, cluster in counter.items():
         counter_list.append(cluster)
 
-    #context["clusters"] = counter_list
+    # context["clusters"] = counter_list
 
     Chart.cluster_overview_pie(counter_list, filename='pie.svg')
-
 
     #
     # delete the overall count
@@ -212,7 +216,6 @@ class StatusPageView(TemplateView):
     counter_list = []
     for key, cluster in counter.items():
         counter_list.append(cluster)
-
 
     Chart.cluster_overview_pie_vector(counter_list, filename='pie_vector.svg')
     Chart.cluster_overview_radar(counter_list, filename='radar.svg')

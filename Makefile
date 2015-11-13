@@ -5,7 +5,6 @@ migrate:
 	python manage.py migrate
 
 run: migrate
-	killall python
 	python manage.py runserver
 
 cleandb:
