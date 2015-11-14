@@ -33,55 +33,40 @@
              data-toggle="dropdown"
              role="button" aria-expanded="false">Admin</a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/status/">status</a></li>
-            <li><a href="/docs/">docs</a></li>
-            <li><a href="/admin/">admin</a></li>
+            <li><a href="/status/">Status</a></li>
+            <li><a href="https://localhost:8443/nucleus/docs/#!/v1">REST API</a></li>
+            <li><a href="/admin/">Management</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-             role="button" aria-expanded="false">Comet Virtual Cluster </a>
+             role="button" aria-expanded="false">Virtual Cluster </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/comet/ll">Cluster Overview</a></li>
-            <li><a href="/comet/list">Cluster List</a></li>
+            <li><a href="/comet/ll">Overview</a></li>
+            <li><a href="/comet/list">List</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-             role="button" aria-expanded="false">Comet HPC </a>
+             role="button" aria-expanded="false">HPC </a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="/comet/queue">Queue</a></li>
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-             role="button" aria-expanded="false">cm</a>
+             role="button" aria-expanded="false">Cloudmesh</a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="/cm/default/">Defaults</a></li>
             <li><a href="/cm/image/">Images</a></li>
             <li><a href="/cm/flavor/">Flavor</a></li>
             <li><a href="/cm/vm/">Vm</a></li>
-            <li><a href="/cm/vcluster/">Virtual Cluster</a></li>
+            <!--            <li><a href="/cm/vcluster/">Virtual Cluster</a></li> -->
           </ul>
         </li>
 
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-             role="button" aria-expanded="false">Action </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{% url 'home' %}">home</a></li>
-            <li><a href="{% url 'formset_default' %}">formset</a></li>
-            <li><a href="{% url 'form_default' %}">form</a></li>
-            <li><a href="{% url 'form_by_field' %}">form_by_field</a></li>
-            <li><a href="{% url 'form_horizontal' %}">form_horizontal</a></li>
-            <li><a href="{% url 'form_inline' %}">form_inline</a></li>
-            <li><a href="{% url 'form_with_files' %}">form_with_files</a></li>
-            <li><a href="{% url 'pagination' %}">pagination</a></li>
-            <li><a href="{% url 'misc' %}">miscellaneous</a></li>
-          </ul>
-        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>

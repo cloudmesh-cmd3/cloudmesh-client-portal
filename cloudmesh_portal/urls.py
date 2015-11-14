@@ -24,8 +24,8 @@ from .views import HomePageView, StatusPageView, FormHorizontalView, \
     FormInlineView, PaginationView, FormWithFilesView, \
     DefaultFormView, MiscView, DefaultFormsetView, DefaultFormByFieldView, \
     comet_list, comet_ll, comet_list_queue, cloudmesh_clouds, \
-    cloudmesh_defaults, \
-    cloudmesh_images, cloudmesh_flavors, cloudmesh_vms, cloudmesh_vclusters
+     cloudmesh_vclusters
+from cm.views import cloudmesh_defaults, cloudmesh_images, cloudmesh_flavors, cloudmesh_vms
 
 
 # Serializers define the API representation.

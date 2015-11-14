@@ -23,7 +23,7 @@ from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
 
-from cloudmesh_base.util import banner
+
 
 from charts import Chart
 from .forms import ContactForm, FilesForm, ContactFormSet
@@ -47,69 +47,6 @@ def cloudmesh_vclusters(request):
     return message("Not yet Implemented")
 
 
-def cloudmesh_defaults(request):
-    data = json.loads(Default.list(format='json'))
-
-    print json.dumps(data, indent=4)
-
-    # data = Default.list(format='dict')
-    # print ("DDD", data)
-
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh Default", data, order))
-
-
-def cloudmesh_images(request):
-    banner("images")
-    # TODO: make the cloudname a parameter
-    data = Image.list("juno", format='dict')
-    print json.dumps(data, indent=4)
-    # TODO set proper columns
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh Images", data, order))
-
-
-def cloudmesh_flavors(request):
-    data = Flavor.list("juno", format='dict')
-    print json.dumps(data, indent=4)
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh Flavors", data, order))
-
-
-def cloudmesh_vms(request):
-    data = Vm.list(format='dict')
-    print json.dumps(data, indent=4)
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh VMs", data, order))
-
 
 @register.filter
 def get_item(dictionary, key):
@@ -119,7 +56,7 @@ def get_item(dictionary, key):
     return value
 
 
-def dict_table(request, title, data, order, header=None):
+def dict_table(request, title, data, order=None, header=None):
     context = {'title': title,
                'order': order,
                'data': data}
@@ -254,7 +191,7 @@ def comet_ll(request):
         "Description",
     ]
 
-    return (dict_table(request, "Comet List", data, order))
+    return (dict_table(request, "Comet List", data, order=order))
 
 
 def comet_list(request):
@@ -279,7 +216,7 @@ def comet_list(request):
         "memory",
     ]
 
-    return (dict_table(request, "Comet List", dictionary, order))
+    return (dict_table(request, "Comet List", dictionary, order=order))
 
 
 def cloudmesh_clouds(request):
@@ -304,7 +241,7 @@ def cloudmesh_clouds(request):
     headers = ['username']
     headers.extend(attributes)
 
-    return (dict_table(request, "Cloud List", data, headers))
+    return (dict_table(request, "Cloud List", data, order=headers))
 
 
 def comet_list_queue(request):
@@ -324,7 +261,7 @@ def comet_list_queue(request):
     data = json.loads(Hpc.queue(cluster, format=format))
     print (data)
 
-    return (dict_table(request, "Comet Queue", data, order))
+    return (dict_table(request, "Comet Queue", data, order=order))
 
 
 # http://yuji.wordpress.com/2013/01/30/django-form-field-in-initial-data-requires-a-fieldfile-instance/
@@ -340,7 +277,7 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        messages.info(self.request, 'This is a demo of a message.')
+        # messages.info(self.request, 'This is a demo of a message.')
         return context
 
 

@@ -1,12 +1,11 @@
 {% extends 'cloudmesh_portal/base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Comet Ghost {% endblock %}
 
 {% block content %}
 
+{% load staticfiles %}
 
- <h2>Section</h2>
-
-<p>This is <em>bootstrap3</em> for <strong>Django</strong>.</p>
+<img src="{% static "icons/ghost.png" %}" width="500px"/>
 
 {% endblock %}
