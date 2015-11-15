@@ -62,11 +62,12 @@ def dict_table(request, title, data, order=None, header=None):
                'data': data}
     if header is not None:
         context['header'] = header
-    return render(request, 'cloudmesh_portal/dict_table.html', context)
+    return render(request, 'cloudmesh_portal/dict_table.jinja', context)
 
 
 class StatusPageView(TemplateView):
-    template_name = 'cloudmesh_portal/status.html'
+    #template_name = 'cloudmesh_portal/status.html'
+    template_name = 'cloudmesh_portal/status.jinja'
 
     context = {}
     c = Comet.logon()
@@ -156,6 +157,10 @@ class StatusPageView(TemplateView):
 
     Chart.cluster_overview_pie_vector(counter_list, filename='pie_vector.svg')
     Chart.cluster_overview_radar(counter_list, filename='radar.svg')
+
+
+    context['pid'] = str(Comet.find_tunnel())
+    context['tunnel'] = str(Comet.is_tunnel())
 
     def get_context_data(self, **kwargs):
         context = super(StatusPageView, self).get_context_data(**kwargs)
@@ -273,7 +278,7 @@ fieldfile = FieldFile(None, FakeField, 'dummy.txt')
 
 
 class HomePageView(TemplateView):
-    template_name = 'cloudmesh_portal/home.html'
+    template_name = 'cloudmesh_portal/home.jinja'
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)

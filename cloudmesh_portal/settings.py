@@ -58,6 +58,10 @@ INSTALLED_APPS = (
     'bootstrap_themes',
 )
 
+INSTALLED_APPS += ('django_jinja',)
+INSTALLED_APPS += ('bootstrapform_jinja',)
+INSTALLED_APPS += ('django_jinja.contrib._humanize',)
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -74,11 +78,36 @@ ROOT_URLCONF = 'cloudmesh_portal.urls'
 
 # os.path.join(BASE_DIR, 'templates'),
 
+"""
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'cloudmesh_portal', 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'cloudmesh_portal', 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+"""
+
+TEMPLATES = [
+    {
+        "BACKEND": "django_jinja.backend.Jinja2",
+        'DIRS': [os.path.join(BASE_DIR, 'cloudmesh_portal', 'templates')],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "match_extension": ".jinja",
+        }
+    },
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'cloudmesh_portal', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

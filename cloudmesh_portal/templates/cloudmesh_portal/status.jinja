@@ -1,21 +1,31 @@
-{% extends 'cloudmesh_portal/base.html' %}
+{% extends 'cloudmesh_portal/layout/dashboard.jinja' %}
 
 {% block title %}Comet Virtual Cluster Status{% endblock %}
 
 
-{% block content %}
-
-Tunnel Status: {{ pid }}
-
-Tunnel Status: {{ tunnel }}
-
-
-<p>
+{% block graphA %}
+<embed
+       type="image/svg+xml"
+       src="{{ static("cloudmesh_portal/pie.svg") }}"/>
+{% endblock %}
 
 
-{% load staticfiles %}
 
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+{% block graphB %}
+<embed
+       type="image/svg+xml"
+       src="{{ static("cloudmesh_portal/pie_vector.svg") }}"/>
+{% endblock %}
+
+{% block graphC %}
+<embed
+       type="image/svg+xml"
+       src="{{ static("cloudmesh_portal/radar.svg") }}"/>
+{% endblock %}
+
+{% block graphD %}
+
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 
  <script type='text/javascript'>
@@ -39,10 +49,11 @@ Tunnel Status: {{ tunnel }}
 
       var options = {};
       options['title'] = 'Projects using Comet Virtual Clusters';
-      options['width'] = 500;
+      <!-- options['width'] = 500; -->
       options['region'] = 'US';
       options['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
       options['dataMode'] = 'markers';
+      options["padding"] = "0px";
 
       var container = document.getElementById('map_canvas');
       var geomap = new google.visualization.GeoMap(container);
@@ -50,25 +61,8 @@ Tunnel Status: {{ tunnel }}
     };
  </script>
 
-
-<embed width="500px"
-       type="image/svg+xml"
-       src="{% static "cloudmesh_portal/pie.svg"%}"/>
-<embed width="500px"
-       type="image/svg+xml"
-       src="{% static "cloudmesh_portal/pie_vector.svg"%}"/>
-<embed width="500px"
-       type="image/svg+xml"
-       src="{% static "cloudmesh_portal/radar.svg"%}"/>
-
-<embed width="500px">
-<div id='map_canvas' width="500px"></div>
+<embed>
+<div id='map_canvas'></div>
 </embed>
 
-
-
-<p>
-This code has been adopted from cloudmesh
-</p>
 {% endblock %}
-
