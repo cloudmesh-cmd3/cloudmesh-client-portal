@@ -17,6 +17,13 @@
       integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
       crossorigin="anonymous">
 
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <!-- Custom styles for this template -->
     <link href="navbar-fixed-top.css" rel="stylesheet">
     <link href="map.css" rel="stylesheet">
@@ -111,26 +118,20 @@
 </nav>
 
 
+<div class="container">
 
-    <div class="container">
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
 
-      {% block jumbotron %}
-      {% endblock %}
+    {% block jumbotron %}{% endblock %}
 
+    {% block title %}{% endblock %}
 
-    {% block title %}
-    {% endblock %}
+    {% block dashboard %}{% endblock %}
 
-    {% block dashboard %}
-    {% endblock %}
+    {% block content %}{% endblock %}
 
-
-
-    {% block content %}
-
-    {% endblock %}
-
-    </div> <!-- /container -->
+</div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript
@@ -140,6 +141,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
             integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
             crossorigin="anonymous"></script>
+
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
 
 
 
