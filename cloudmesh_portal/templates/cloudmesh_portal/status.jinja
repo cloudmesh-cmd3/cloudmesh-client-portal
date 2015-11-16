@@ -4,26 +4,37 @@
 
 
 {% block graphA %}
-<embed
+<img
        type="image/svg+xml"
        src="{{ static("cloudmesh_portal/pie.svg") }}"/>
+<p>
 {% endblock %}
 
 
 
 {% block graphB %}
-<embed
+<img
        type="image/svg+xml"
        src="{{ static("cloudmesh_portal/pie_vector.svg") }}"/>
+<p>
 {% endblock %}
 
 {% block graphC %}
-<embed
+<img
        type="image/svg+xml"
        src="{{ static("cloudmesh_portal/radar.svg") }}"/>
+<p>
 {% endblock %}
 
 {% block graphD %}
+
+
+
+<div style="background-color:#EBEBEB;">
+<center>
+Allocation of the Virtual Clusters par site
+</center>
+<br>
 
  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
@@ -61,8 +72,12 @@
     };
  </script>
 
-<embed>
-<div id='map_canvas'></div>
-</embed>
+<div class="embed-responsive embed-responsive-16by9">
+<div class="embed-responsive-item" id='map_canvas'></div>
 
+</div>
+
+<div height="100%" style="background-color:#EBEBEB;">
+<br><br>
+<div>
 {% endblock %}
