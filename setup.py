@@ -17,26 +17,23 @@
 # ------------------------------------------------------------------------#
 from __future__ import print_function
 from setuptools import setup, find_packages
+# noinspection PyPep8Naming
 from setuptools.command.test import test as TestCommand
 from setuptools.command.install import install
-import os
-import shutil
 import sys
 import platform
-import fnmatch
 import os
-
 
 try:
     import cloudmesh_base
-    print ("Using cloudmesh_base version:", cloudmesh_base.__version__)
+
+    print("Using cloudmesh_base version:", cloudmesh_base.__version__)
 except:
     # os.system("pip install cloudmesh_base")
     os.system("pip install git+https://github.com/cloudmesh/base.git")
 
 from cloudmesh_base.util import banner
-from cloudmesh_base.setup import os_execute, get_version_from_git
-
+from cloudmesh_base.setup import os_execute
 
 from cloudmesh_portal.version import __version__
 
@@ -57,7 +54,7 @@ requirements = [
     "aldjemy",
     "nwdiag",
     "pygal"
-    ]
+]
 
 
 class UploadToPypi(install):
@@ -73,7 +70,8 @@ class UploadToPypi(install):
             python setup.py sdist --format=bztar,zip upload
             python setup.py bdist_wheel upload
             """
-        os_execute(commands)    
+        os_execute(commands)
+
 
 class InstallBase(install):
     """Install the cloudmesh_portal package."""
@@ -84,7 +82,7 @@ class InstallBase(install):
         banner("Install readline")
         commands = None
         this_platform = platform.system().lower()
-        if  this_platform in ['darwin']:
+        if this_platform in ['darwin']:
             commands = """
                 easy_install readline
                 """
@@ -94,7 +92,6 @@ class InstallBase(install):
                 """
         if commands:
             os_execute(commands)
-        import cloudmesh_client
         banner("Install Cloudmesh_portal {:}".format(__version__))
         install.run(self)
 
@@ -105,9 +102,9 @@ def read(fname):
 
 home = os.path.expanduser("~")
 
-#home + '/.cloudmesh'
-#print [ (home + '/.cloudmesh/' + d, [os.path.join(d, f) for f in files]) for d, folders, files in os.walk('etc')],
-#sys.exit()
+# home + '/.cloudmesh'
+# print [ (home + '/.cloudmesh/' + d, [os.path.join(d, f) for f in files]) for d, folders, files in os.walk('etc')],
+# sys.exit()
 
 """
 data_files= [ (os.path.join(home, '.cloudmesh'),
@@ -123,21 +120,25 @@ for root, dirnames, filenames in os.walk(os.path.join('cloudmesh_client', 'etc')
 data_dirs = matches
 """
 
+
 # Hack because for some reason requirements does not work
 #
 # os.system("pip install -r requirements.txt")
 
 class Tox(TestCommand):
     user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
+
     def initialize_options(self):
         TestCommand.initialize_options(self)
         self.tox_args = None
+
     def finalize_options(self):
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
+
     def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
+        # import here, cause outside the eggs aren't loaded
         import tox
         import shlex
         args = self.tox_args
@@ -145,6 +146,7 @@ class Tox(TestCommand):
             args = shlex.split(self.tox_args)
         errno = tox.cmdline(args=args)
         sys.exit(errno)
+
 
 setup(
     version=__version__,
@@ -175,21 +177,21 @@ setup(
     keywords="cloud cmd commandshell plugins",
     packages=find_packages(),
     install_requires=requirements,
-    #include_package_data=True,
-    #data_files= data_files,
+    # include_package_data=True,
+    # data_files= data_files,
     # package_data={'cloudmesh_portal': data_dirs},
-    #entry_points={
+    # entry_points={
     #    'console_scripts': [
     #        'cm = cloudmesh_client.shell.cm:main',
     #        'ghost = cloudmesh_client.shell.ghost:main',
     #
     #    ],
-    #},
+    # },
     tests_require=['tox'],
     cmdclass={
         'install': InstallBase,
         'pypi': UploadToPypi,
         'test': Tox,
     },
-    dependency_links = []
+    dependency_links=[]
 )

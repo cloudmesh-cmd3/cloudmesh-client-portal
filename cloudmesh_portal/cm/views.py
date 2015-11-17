@@ -128,7 +128,7 @@ def cloudmesh_flavors(request):
         'swap',
         'vcpus',
     ]
-    return (dict_table(request, title="Cloudmesh Flavors", data=data, order=order))
+    return dict_table(request, title="Cloudmesh Flavors", data=data, order=order)
 
 
 def cloudmesh_vms(request):
@@ -142,4 +142,4 @@ def cloudmesh_vms(request):
              'type',
              'id',
              'cloud']
-    return (dict_table(request, title="Cloudmesh VMs", data=data, order=order))
+    return dict_table(request, title="Cloudmesh VMs", data=data, order=order)

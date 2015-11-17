@@ -9,13 +9,13 @@ from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
 from cloudmesh_client.cloud.hpc.hpc import Hpc
 from django.template.defaulttags import register
-from cloudmesh_client.common.ConfigDict import ConfigDict
 from sqlalchemy.orm import sessionmaker
+from django_jinja import library
 
 from charts import Chart
-from django_jinja import library
-import jinja2
 
+
+# noinspection PyPep8Naming
 def Session():
     from aldjemy.core import get_engine
     engine = get_engine()
@@ -25,8 +25,9 @@ def Session():
 
 session = Session()
 
+
 @library.global_function
-def state_color(state, is_safe=True):
+def state_color(state):
     if state in ["R", "ACTIVE", "up"]:
         return '<span class="label label-success"> {} </span>'.format(state)
     elif state in ["down", "down*", "fail"]:
@@ -34,10 +35,12 @@ def state_color(state, is_safe=True):
     else:
         return '<span class="label label-default"> {} </span>'.format(state)
 
+
 def message(msg):
     return HttpResponse("Message: %s." % msg)
 
 
+# noinspection PyUnusedLocal
 def cloudmesh_vclusters(request):
     return message("Not yet Implemented")
 
@@ -59,14 +62,15 @@ def dict_table(request, **kwargs):
 def comet_logon(request):
     c = None
     try:
-        c= Comet.logon(request)
+        c = Comet.logon()
+        print("LOGON OK")
         return render(request,
                       'cloudmesh_portal/logon_error.jinja')
     except:
         return c
 
+
 def comet_status(request):
-    context = {}
     c = comet_logon(request)
     data = json.loads(Cluster.simple_list(format="json"))
     pprint(data)
@@ -94,8 +98,8 @@ def comet_status(request):
     details = json.loads(Cluster.list(format="json"))
 
     counter = {}
-    for id in data.keys():
-        counter[id] = {
+    for index in details.keys():
+        counter[index] = {
             'name': None,
             'total': 0,
             'status': {
@@ -120,8 +124,6 @@ def comet_status(request):
                 state = 'unkown'
 
             print ("SSSSSSS", state, name, node['kind'])
-
-            element = counter[name]
             counter[name]['status'][state] += 1
             counter[name]['total'] += 1
             counter[name]['name'] = name
@@ -193,8 +195,7 @@ def comet_ll(request):
         "Description",
     ]
 
-    return (dict_table(request, title="Comet List", data=data, order=order))
-
+    return dict_table(request, title="Comet List", data=data, header=header, order=order)
 
 
 def comet_list(request):
@@ -219,14 +220,12 @@ def comet_list(request):
         "memory",
     ]
 
-    return (dict_table(request, title="Comet List", data=dictionary, order=order))
-
-
+    return dict_table(request, title="Comet List", data=dictionary, order=order)
 
 
 def comet_list_queue(request):
     cluster = "comet"
-    format = "json"
+    output_format = "json"
     order = [
         "jobid",
         "nodelist",
@@ -238,15 +237,15 @@ def comet_list_queue(request):
         "nodes",
     ]
 
-    data = json.loads(Hpc.queue(cluster, format=format))
+    data = json.loads(Hpc.queue(cluster, format=output_format))
     print (data)
 
-    return (dict_table(request, title="Comet Queue", data=data, order=order))
+    return dict_table(request, title="Comet Queue", data=data, order=order)
 
 
 def comet_info(request):
     cluster = "comet"
-    format = "json"
+    output_format = "json"
     order = [
         'partition',
         'nodes',
@@ -257,12 +256,16 @@ def comet_info(request):
         'nodelist',
         # 'updated',
     ]
-    data = json.loads(Hpc.info(cluster, format=format))
+    data = json.loads(Hpc.info(cluster, format=output_format))
     print (data)
 
-    return (dict_table(request, title="Comet Queue", data=data, order=order))
+    return dict_table(request, title="Comet Queue", data=data, order=order)
 
 
 def homepage(request):
+    context = {
+        'title': "Comet Home"
+    }
     return render(request,
-                  'cloudmesh_portal/home.jinja')
+                  'cloudmesh_portal/home.jinja',
+                  context)

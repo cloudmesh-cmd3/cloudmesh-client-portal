@@ -56,10 +56,10 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
 )
 
-#INSTALLED_APPS += ('bootstrap3',)
-#INSTALLED_APPS += ('bootstrap_themes',)
+# INSTALLED_APPS += ('bootstrap3',)
+# INSTALLED_APPS += ('bootstrap_themes',)
 INSTALLED_APPS += ('django_jinja',)
-#INSTALLED_APPS += ('bootstrapform_jinja',)
+# INSTALLED_APPS += ('bootstrapform_jinja',)
 INSTALLED_APPS += ('django_jinja.contrib._humanize',)
 
 MIDDLEWARE_CLASSES = (
@@ -117,6 +117,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+# noinspection PyRedeclaration
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', ]
 
 # Internationalization
