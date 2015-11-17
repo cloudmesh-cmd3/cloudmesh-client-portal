@@ -1,5 +1,5 @@
 view:
-	open http://127.0.0.1:8000/status
+	open http://127.0.0.1:8000/comet/status
 
 migrate:
 	python manage.py migrate
