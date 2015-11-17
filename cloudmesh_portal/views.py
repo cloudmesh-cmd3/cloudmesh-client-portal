@@ -13,7 +13,8 @@ from cloudmesh_client.common.ConfigDict import ConfigDict
 from sqlalchemy.orm import sessionmaker
 
 from charts import Chart
-
+from django_jinja import library
+import jinja2
 
 def Session():
     from aldjemy.core import get_engine
@@ -24,6 +25,14 @@ def Session():
 
 session = Session()
 
+@library.global_function
+def state_color(state, is_safe=True):
+    if state in ["R", "ACTIVE", "up"]:
+        return '<span class="label label-success"> {} </span>'.format(state)
+    elif state in ["down", "down*", "fail"]:
+        return '<span class="label label-danger"> {} </span>'.format(state)
+    else:
+        return '<span class="label label-default"> {} </span>'.format(state)
 
 def message(msg):
     return HttpResponse("Message: %s." % msg)
@@ -213,41 +222,6 @@ def comet_list(request):
     return (dict_table(request, title="Comet List", data=dictionary, order=order))
 
 
-def cloudmesh_clouds(request):
-    config = ConfigDict(filename="cloudmesh.yaml")
-    clouds = config["cloudmesh.clouds"]
-    data = {}
-    attributes = ['cm_host',
-                  'cm_label',
-                  'cm_heading',
-                  'cm_type',
-                  'cm_type_version']
-    for cloud in clouds:
-        data[cloud] = {}
-        for attribute in attributes:
-            data[cloud][attribute] = clouds[cloud][attribute]
-        print clouds[cloud]['cm_type']
-        if clouds[cloud]['cm_type'] == "ec2":
-            data[cloud]['username'] = clouds[cloud]['credentials']['userid']
-        elif clouds[cloud]['cm_type'] == "azure":
-            data[cloud]['username'] = 'not implemented'
-        elif clouds[cloud]['cm_type'] == "openstack":
-            data[cloud]['username'] = clouds[cloud]['credentials'][
-                'OS_PASSWORD']
-
-    headers = ['username']
-    headers.extend(attributes)
-
-    pprint(data)
-
-    context = {
-        'data': data,
-        'title': "Cloud List",
-        'order': headers,
-    }
-    return render(request,
-                  'cloudmesh_portal/dict_table.jinja',
-                  context)
 
 
 def comet_list_queue(request):

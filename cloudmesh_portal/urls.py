@@ -21,10 +21,10 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
 from .views import homepage, \
-    comet_list, comet_ll, comet_list_queue, cloudmesh_clouds, \
+    comet_list, comet_ll, comet_list_queue,  \
     cloudmesh_vclusters, comet_info, comet_status
 from cm.views import cloudmesh_defaults, cloudmesh_images, \
-    cloudmesh_flavors, cloudmesh_vms
+    cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds
 
 
 # Serializers define the API representation.

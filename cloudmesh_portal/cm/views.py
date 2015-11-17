@@ -1,25 +1,67 @@
+from __future__ import unicode_literals
+from pprint import pprint
 import json
 
+from django.shortcuts import render
+from cloudmesh_client.common.ConfigDict import ConfigDict
 from cloudmesh_client.cloud.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
 from cloudmesh_base.util import banner
-from django.shortcuts import render
+
+from ..views import dict_table
 
 
-def dict_table(request, title, data, order=None, header=None):
-    context = {'title': title,
-               'order': order,
-               'data': data}
-    if header is not None:
-        context['header'] = header
-    return render(request, 'cloudmesh_portal/dict_table.html', context)
+def cloudmesh_clouds(request):
+    config = ConfigDict(filename="cloudmesh.yaml")
+    clouds = config["cloudmesh.clouds"]
+    data = {}
+    attributes = ['cm_label',
+                  'cm_host',
+                  'cm_heading',
+                  'cm_type',
+                  'cm_type_version']
+
+    for cloud in clouds:
+        data[cloud] = {}
+        for attribute in attributes:
+            data[cloud][attribute] = clouds[cloud][attribute]
+        print clouds[cloud]['cm_type']
+        if clouds[cloud]['cm_type'] == "ec2":
+            data[cloud]['username'] = clouds[cloud]['credentials']['userid']
+        elif clouds[cloud]['cm_type'] == "azure":
+            data[cloud]['username'] = 'not implemented'
+        elif clouds[cloud]['cm_type'] == "openstack":
+            data[cloud]['username'] = clouds[cloud]['credentials'][
+                'OS_USERNAME']
+
+    order = [
+        'cm_label',
+        'username',
+        'cm_host',
+        'cm_heading',
+        'cm_type',
+        'cm_type_version'
+    ]
+
+    pprint(data)
+
+    context = {
+        'data': data,
+        'title': "Cloud List",
+        'order': order,
+    }
+    return render(request,
+                  'cloudmesh_portal/dict_table.jinja',
+                  context)
 
 
 #
 # CLOUDMESH DEFAULTS
 #
+
+
 def cloudmesh_defaults(request):
     data = json.loads(Default.list(format='json'))
 
@@ -39,8 +81,8 @@ def cloudmesh_defaults(request):
     ]
 
     return (dict_table(request,
-                       "Cloudmesh Default",
-                       data,
+                       title="Cloudmesh Default",
+                       data=data,
                        header=header,
                        order=order))
 
@@ -51,29 +93,42 @@ def cloudmesh_images(request):
     data = Image.list("juno", format='dict')
     print json.dumps(data, indent=4)
     # TODO set proper columns
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh Images", data, order=order))
+    order = [
+        'id',
+        'name',
+        'cloud',
+        'minDisk',
+        'minRam',
+        'os_image_size',
+        'progress',
+        'project',
+        'status',
+    ]
+    return (dict_table(request,
+                       title="Cloudmesh Images",
+                       data=data,
+                       order=order))
 
 
 def cloudmesh_flavors(request):
     data = Flavor.list("juno", format='dict')
     print json.dumps(data, indent=4)
-    order = ['kind',
-             'name',
-             'value',
-             'project',
-             'user',
-             'type',
-             'id',
-             'cloud']
-    return (dict_table(request, "Cloudmesh Flavors", data, order=order))
+
+    order = [
+        'id',
+        'name',
+        'cloud',
+        'disk',
+        'os_flavor_acces',
+        'os_flv_disabled',
+        'os_flv_ext_data',
+        'project',
+        'ram',
+        'rxtx_factor',
+        'swap',
+        'vcpus',
+    ]
+    return (dict_table(request, title="Cloudmesh Flavors", data=data, order=order))
 
 
 def cloudmesh_vms(request):
@@ -87,4 +142,4 @@ def cloudmesh_vms(request):
              'type',
              'id',
              'cloud']
-    return (dict_table(request, "Cloudmesh VMs", data, order=order))
+    return (dict_table(request, title="Cloudmesh VMs", data=data, order=order))

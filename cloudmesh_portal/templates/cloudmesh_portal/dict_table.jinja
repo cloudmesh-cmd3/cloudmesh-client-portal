@@ -6,14 +6,6 @@
 
 {% block content %}
 
-JINJA
-
-<link rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.css"/>
-
-<link rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
@@ -35,25 +27,26 @@ JINJA
         {% endfor %}
         </tr>
     </thead>
+    {% if data is mapping  %}
     <tbody>
         {% for element in data %}
         <tr>
 
             {% for a in order %}
                <td>
+                   {% if a in ["st","status", "avail", "state", "down"] %}
+                        {{ state_color(data[element][a]) |safe }}
+                   {% else %}
                         {{ data[element][a] }}
+                   {% endif %}
                </td>
 
             {% endfor %}
         </tr>
         {% endfor %}
     </tbody>
+    {% endif %}
 </table>
-
-
-
-<script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
 
 
 
