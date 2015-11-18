@@ -28,7 +28,7 @@ session = Session()
 
 @library.global_function
 def state_color(state):
-    if state in ["R", "ACTIVE", "up"]:
+    if state in ["R", "ACTIVE", "up", "active"]:
         return '<span class="label label-success"> {} </span>'.format(state)
     elif state in ["down", "down*", "fail"]:
         return '<span class="label label-danger"> {} </span>'.format(state)
