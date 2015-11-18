@@ -73,7 +73,6 @@
              data-toggle="dropdown"
              role="button" aria-expanded="false">Admin</a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/comet/status/">Status</a></li>
             <li><a href="https://localhost:8443/nucleus/docs/#!/v1">REST API</a></li>
             <li><a href="/admin/">Management</a></li>
           </ul>
@@ -83,6 +82,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
              role="button" aria-expanded="false">Virtual Cluster </a>
           <ul class="dropdown-menu" role="menu">
+            <li><a href="/comet/status/">Status</a></li>
             <li><a href="/comet/ll">Overview</a></li>
             <li><a href="/comet/list">List</a></li>
           </ul>
@@ -135,7 +135,24 @@
 
     <!--h1> {{ title }} </h1-->
 
-    {% block dashboard %}{% endblock %}
+  {% block dashboard %}
+     <div class="row placeholders">
+            <div class="col-xs-1 col-sm-6 placeholder">
+              {% block graphA %}{% endblock %}
+            </div>
+            <div class="col-xs-6 col-sm-6 placeholder">
+              {% block graphB %}{% endblock %}
+            </div>
+         </div>
+         <div class="row placeholders">
+            <div class="col-xs-1 col-sm-6 placeholder">
+              {% block graphC %}{% endblock %}
+            </div>
+            <div class="col-xs-6 col-sm-6 placeholder">
+              {% block graphD %}{% endblock %}
+            </div>
+          </div>
+    {% endblock %}
 
     {% block content %}{% endblock %}
 

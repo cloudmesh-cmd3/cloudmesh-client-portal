@@ -2,7 +2,6 @@
 
 {% block title %}Comet Virtual Cluster Status{% endblock %}
 
-{% block content %}
 
 {% block graphA %}
 <img
@@ -10,7 +9,6 @@
        src="{{ static("cloudmesh_portal/pie.svg") }}"/>
 <p>
 {% endblock %}
-
 
 
 {% block graphB %}
@@ -61,7 +59,6 @@ Allocation of the Virtual Clusters par site
 
       var options = {};
       options['title'] = 'Projects using Comet Virtual Clusters';
-      <!-- options['width'] = 500; -->
       options['region'] = 'US';
       options['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
       options['dataMode'] = 'markers';
@@ -73,14 +70,12 @@ Allocation of the Virtual Clusters par site
     };
  </script>
 
-<div class="embed-responsive embed-responsive-16by9">
-<div class="embed-responsive-item" id='map_canvas'></div>
+<div class="embed-responsive embed-responsive-16by9" height="100%">
+<div class="embed-responsive-item" id='map_canvas' width="100%"></div>
 
 </div>
 
 <div height="100%" style="background-color:#EBEBEB;">
 <br><br>
 <div>
-{% endblock %}
-
 {% endblock %}
