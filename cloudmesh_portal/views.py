@@ -73,8 +73,8 @@ def comet_logon(request):
 def comet_status(request):
     c = comet_logon(request)
     data = json.loads(Cluster.simple_list(format="json"))
-    pprint(data)
-    print (type(data))
+    # pprint(data)
+    # print (type(data))
 
     clusters = []
     for key in data:
@@ -98,21 +98,24 @@ def comet_status(request):
     details = json.loads(Cluster.list(format="json"))
 
     counter = {}
-    for index in details.keys():
-        counter[index] = {
-            'name': None,
-            'total': 0,
-            'status': {
-                'unkown': 0,
-                'active': 0,
-                'down': 0,
-                'pending': 0,
-                'nostate': 0,
-                'nostate-error': 0
-            }
-        }
+    for node in details.values():
+        clustername = node["cluster"]
+        if clustername is not None:
+            if clustername not in counter:
+                counter[clustername] = {
+                    'name': None,
+                    'total': 0,
+                    'status': {
+                        'unkown': 0,
+                        'active': 0,
+                        'down': 0,
+                        'pending': 0,
+                        'nostate': 0,
+                        'nostate-error': 0
+                    }
+                }
 
-    print (counter)
+    # print (counter)
     for key, node in details.items():
 
         if node['kind'] == 'compute':
@@ -123,11 +126,11 @@ def comet_status(request):
             if state in [None, 'None']:
                 state = 'unkown'
 
-            print ("SSSSSSS", state, name, node['kind'])
+            # print ("SSSSSSS", state, name, node['kind'])
             counter[name]['status'][state] += 1
             counter[name]['total'] += 1
             counter[name]['name'] = name
-
+    pprint (counter)
     #
     # delete the free nodes for now
     #
