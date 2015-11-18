@@ -183,7 +183,6 @@ def comet_ll(request):
         "frontend name",
         "frontend state",
         "frontend type",
-        "frontend rocks_name",
         "description",
     ]
     header = [
@@ -194,7 +193,6 @@ def comet_ll(request):
         "Frontend (Fe)",
         "State (Fe)",
         "Type (Fe)",
-        "Rocks name (Fe)",
         "Description",
     ]
 
@@ -215,11 +213,10 @@ def comet_list(request):
         "state",
         "kind",
         "type",
+        "mac",
         "ip",
-        "rocks_name",
         "cpus",
         "cluster",
-        "host",
         "memory",
     ]
 
