@@ -1,7 +1,8 @@
-{% extends 'cloudmesh_portal/layout/dashboard.jinja' %}
+{% extends 'cloudmesh_portal/layout/index.jinja' %}
 
 {% block title %}Comet Virtual Cluster Status{% endblock %}
 
+{% block content %}
 
 {% block graphA %}
 <img
@@ -80,4 +81,6 @@ Allocation of the Virtual Clusters par site
 <div height="100%" style="background-color:#EBEBEB;">
 <br><br>
 <div>
+{% endblock %}
+
 {% endblock %}

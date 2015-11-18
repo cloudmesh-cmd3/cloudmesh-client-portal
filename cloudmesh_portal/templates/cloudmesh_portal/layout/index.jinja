@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
-    <title>{{ title }}</title>
+    {% block title %} {{ title }} {% endblock %}
+    <!--title>{{ title }}</title-->
 
 
 
@@ -133,7 +133,7 @@
 
     {% block jumbotron %}{% endblock %}
 
-    <h1> {{ title }} </h1>
+    <!--h1> {{ title }} </h1-->
 
     {% block dashboard %}{% endblock %}
 
