@@ -1,0 +1,61 @@
+{% extends 'cloudmesh_portal/layout/index.jinja' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#dictTable').DataTable({
+           aLengthMenu: [
+                [10, 20, 50, 100, 200, -1],
+                [10, 20, 50, 100, 200, "All"]
+            ],
+            iDisplayLength: 10,
+            responsive: true,
+        });
+    } );
+</script>
+
+<table  id="dictTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Action</th>
+            {% for attribute in order %}
+                    <th> {{ attribute }} </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    {% if data is mapping  %}
+    <tbody>
+        {% for element in data %}
+        <tr>
+            <td>
+                {{ icon("on") |safe}}
+                {{ icon("terminal") |safe}}
+                {{ icon("refresh") |safe}}
+                {{ icon("chart") |safe}}
+                {{ icon("info") |safe}}
+            </td>
+            {% for a in order %}
+               <td>
+                   {% if a in ["st","status", "avail", "state", "down"] %}
+                        {{ state_color(data[element][a]) |safe }}
+                   {% else %}
+                        {{ data[element][a] }}
+                   {% endif %}
+               </td>
+
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% endif %}
+</table>
+
+
+
+{% endblock %}

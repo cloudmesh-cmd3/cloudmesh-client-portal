@@ -20,10 +20,12 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
-from .views import homepage, \
-    comet_list, comet_ll, comet_list_queue,  \
-    cloudmesh_vclusters, comet_info, comet_status
-from cm.views import cloudmesh_defaults, cloudmesh_images, \
+
+from .comet.views import comet_list, comet_ll, comet_list_queue, \
+    comet_info, comet_status
+
+from .views import homepage, cloudmesh_vclusters
+from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds
 
 
