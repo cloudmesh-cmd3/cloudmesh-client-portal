@@ -8,9 +8,31 @@ from cloudmesh_client.cloud.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
-from cloudmesh_base.util import banner
+from cloudmesh_base.util import banner, path_expand
 
 from ..views import dict_table
+
+
+def cloudmesh_launcher(request):
+    if request.method == 'POST':
+        print "HHHHHH", request.form.keys()
+        for key in request.form.keys():
+            print key, ":", request.form[key]
+    else:
+        print "HEY JUDE"
+
+    launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
+
+    context = {}
+    context['recipies']=launcher_config["cloudmesh.launcher.recipes"]
+
+    pprint (context)
+
+    return render(request,
+                  'cloudmesh_portal/mesh_launch.jinja',
+                  context)
+
+
 
 
 def cloudmesh_clouds(request):

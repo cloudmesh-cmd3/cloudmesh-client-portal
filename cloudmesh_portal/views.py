@@ -51,6 +51,8 @@ def icon(name, color=None):
         icon = '<i class="fa fa-desktop"></i>'
     elif name in ["info"]:
         icon = '<i class="fa fa-info-circle"></i>'
+    elif name in ["launch"]:
+        icon = '<i class="fa fa-rocket"></i>'
     else:
         icon = '<i class="fa fa-question-circle"></i>'
     return start + icon + stop

@@ -1,8 +1,4 @@
-<!-- -*- mode: Org; auto-fill-mode 0 -*- -->
-
-{% extends "layout/index.html" %}
-{% from "_helper.html" import href_image_button %}
-
+{% extends 'cloudmesh_portal/layout/index.jinja' %}
 
 {% block content %}
 <div class="page-header">
@@ -87,7 +83,8 @@
       {% endfor %}
     </div>
     <div class="panel-footer">
-         <button formaction="/cm/launch/launch_servers/" class="btn btn-success"> <i class="fa fa-rocket fa-lg"></i> Start </button>
+         <button formaction="/cm/launch/launch_servers/" class="btn btn-success"> {{ icon("launch") | safe }}</i>
+             Start </button>
     </div>
   </div>
 
