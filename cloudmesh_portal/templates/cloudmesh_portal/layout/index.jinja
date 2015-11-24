@@ -45,6 +45,7 @@
 
   <body>
 
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -93,8 +94,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"
              role="button" aria-expanded="false">HPC </a>
           <ul class="dropdown-menu" role="menu">
-              <li><a href="/comet/queue">Queue</a></li>
-              <li><a href="/comet/queue/info">Info</a></li>
+              <li><a href="/hpc/list">Clusters</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -135,7 +135,7 @@
 
     {% block jumbotron %}{% endblock %}
 
-    <!--h1> {{ title }} </h1-->
+    <h1> {{ title }} </h1>
 
   {% block dashboard %}
      <div class="row placeholders">

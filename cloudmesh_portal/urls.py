@@ -29,6 +29,7 @@ from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
     cloudmesh_launcher
 
+from .hpc.views import hpc_list, hpc_info, hpc_queue
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -48,15 +49,18 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^pages/', include('django.contrib.flatpages.urls')),
     # Remove the sitemap in production
-
     url(r'^sitemap\.xml$', sitemap,
         {'sitemaps': {'flatpages': FlatPageSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
+    #
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^docs/', include('rest_framework_swagger.urls')),
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^$', homepage, name='home'),
+    url(r'^hpc/list/$', hpc_list, name='hpc_list'),
+    url(r'^hpc/queue/(?P<cluster>\w+)/$', hpc_queue, name='hpc_queue'),
+    url(r'^hpc/info/(?P<cluster>\w+)/$', hpc_info, name='hpc_info'),
     url(r'^cm/launcher/$', cloudmesh_launcher, name='cloudmesh_launcher'),
     url(r'^cm/clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
     url(r'^cm/default/$', cloudmesh_defaults, name='cloudmesh_default'),
