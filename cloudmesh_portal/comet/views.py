@@ -192,13 +192,13 @@ def comet_list_queue(request):
     output_format = "json"
     order = [
         "jobid",
-        "nodelist",
-        "name",
-        "partition",
-        "st",
         "user",
-        "time",
+        "partition",
         "nodes",
+        "st",
+        "name",
+        "nodelist",
+        "time",
     ]
 
     data = json.loads(Hpc.queue(cluster, format=output_format))
