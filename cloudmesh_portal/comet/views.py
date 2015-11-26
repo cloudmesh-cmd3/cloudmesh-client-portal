@@ -93,13 +93,13 @@ def comet_status(request):
     #
     # delete the free nodes for now
     #
+    if 'comet-fe1' in counter:
+        for count in counter:
+            if count != "comet-fe1":
+                counter['comet-fe1']['total'] = counter['comet-fe1']['total'] - \
+                                                counter[count]['total']
 
-    for count in counter:
-        if count != "comet-fe1":
-            counter['comet-fe1']['total'] = counter['comet-fe1']['total'] - \
-                                            counter[count]['total']
-
-    counter['comet-fe1']['name'] = 'free'
+        counter['comet-fe1']['name'] = 'free'
     counter_list = []
     for key, cluster in counter.items():
         counter_list.append(cluster)
@@ -111,7 +111,8 @@ def comet_status(request):
     #
     # delete the overall count
     #
-    del counter['comet-fe1']
+    if 'comet-fe1' in counter:
+        del counter['comet-fe1']
     counter_list = []
     for key, cluster in counter.items():
         counter_list.append(cluster)
@@ -192,13 +193,13 @@ def comet_list_queue(request):
     output_format = "json"
     order = [
         "jobid",
-        "nodelist",
-        "name",
-        "partition",
-        "st",
         "user",
-        "time",
+        "partition",
         "nodes",
+        "st",
+        "name",
+        "nodelist",
+        "time",
     ]
 
     data = json.loads(Hpc.queue(cluster, format=output_format))
