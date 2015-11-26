@@ -8,6 +8,7 @@ from cloudmesh_client.cloud.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
+from cloudmesh_client.cloud.launcher import Launcher
 from cloudmesh_base.util import banner, path_expand
 
 from ..views import dict_table
@@ -32,6 +33,21 @@ def cloudmesh_launcher(request):
                   'cloudmesh_portal/mesh_launch.jinja',
                   context)
 
+
+def cloudmesh_launcher_start(request):
+    context = {
+        'title': "Comet Home"
+    }
+
+    launcher = Launcher()
+
+    response = launcher.run()
+
+    context["response"] = response
+
+    return render(request,
+                  'cloudmesh_portal/mesh_launch2.jinja',
+                  context)
 
 
 

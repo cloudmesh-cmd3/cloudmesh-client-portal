@@ -27,7 +27,7 @@ from .comet.views import comet_list, comet_ll, comet_list_queue, \
 from .views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
-    cloudmesh_launcher
+    cloudmesh_launcher, cloudmesh_launcher_start
 
 
 # Serializers define the API representation.
@@ -58,6 +58,7 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^$', homepage, name='home'),
     url(r'^cm/launcher/$', cloudmesh_launcher, name='cloudmesh_launcher'),
+    url(r'^cm/launcher/start/$', cloudmesh_launcher_start, name='cloudmesh_launcher_start'),
     url(r'^cm/clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
     url(r'^cm/default/$', cloudmesh_defaults, name='cloudmesh_default'),
     url(r'^cm/image/$', cloudmesh_images, name='cloudmesh_image'),
