@@ -1,0 +1,15 @@
+{% extends 'cloudmesh_portal/layout/index.jinja' %}
+
+{% block content %}
+<div class="page-header">
+  <h1> <i class="fa fa-rocket"></i> Cloudmesh Launcher</h1>
+</div>
+
+{%if response %}
+    <div name="response" style="font-weight:bold">
+        {{response}}
+    </div>
+{% endif %}
+
+
+{% endblock %}

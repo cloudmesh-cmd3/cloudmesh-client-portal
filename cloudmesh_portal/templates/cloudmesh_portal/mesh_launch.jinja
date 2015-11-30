@@ -26,6 +26,7 @@
       {{ recipie['description'] }}
       
       <form class="form-horizontal" role="form" method="POST">
+      {% csrf_token %}
       <fieldset>
       <legend>Parameters</legend>
       <input type="hidden" name="name" value="{{ name }}">
@@ -83,7 +84,7 @@
       {% endfor %}
     </div>
     <div class="panel-footer">
-         <button formaction="/cm/launch/launch_servers/" class="btn btn-success"> {{ icon("launch") | safe }}</i>
+         <button formaction="/cm/launcher/start/" class="btn btn-success"> {{ icon("launch") | safe }}</i>
              Start </button>
     </div>
   </div>
