@@ -170,14 +170,16 @@ def cloudmesh_flavors(request):
 
 
 def cloudmesh_vms(request):
-    data = Vm.list(format='dict')
+    data = Vm.list(cloud="juno", output_format='dict')
     print json.dumps(data, indent=4)
-    order = ['kind',
-             'name',
-             'value',
+    order = ['id',
+             'uuid',
+             'label',
+             'status',
+             'static_ip',
+             'floating_ip',
+             'key_name',
              'project',
              'user',
-             'type',
-             'id',
              'cloud']
     return dict_table(request, title="Cloudmesh VMs", data=data, order=order)
