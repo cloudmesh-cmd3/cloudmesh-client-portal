@@ -41,6 +41,9 @@ def cloudmesh_launcher_start(request):
         'title': "Comet Home"
     }
 
+    print (request)
+    print (request.POST)
+
     launcher = Launcher()
 
     response = launcher.run()
