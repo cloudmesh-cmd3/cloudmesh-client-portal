@@ -37,18 +37,20 @@ def cloudmesh_launcher(request):
 
 
 def cloudmesh_launcher_start(request):
-    context = {
-        'title': "Comet Home"
-    }
+    parameters = dict(request.POST)
 
-    print (request)
-    print (request.POST)
+    if 'csrfmiddlewaretoken' in parameters:
+        del parameters['csrfmiddlewaretoken']
 
     launcher = Launcher()
 
     response = launcher.run()
 
-    context["response"] = response
+    context = {
+        'title': '<div><i class="fa fa-rocket"></i> Cloudmesh Launcher</div>',
+        "response": response,
+        "parameters": parameters,
+    }
 
     return render(request,
                   'cloudmesh_portal/mesh_launch2.jinja',
