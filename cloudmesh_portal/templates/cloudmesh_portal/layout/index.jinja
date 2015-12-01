@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% block title %} {{ title }} {% endblock %}
-    <!--title>{{ title }}</title-->
-
-
+    {% block title %} {{ title | safe }} {% endblock %}
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -135,7 +132,7 @@
 
     {% block jumbotron %}{% endblock %}
 
-    <h1> {{ title }} </h1>
+    <h1> {{ title | safe }} </h1>
 
   {% block dashboard %}
      <div class="row placeholders">

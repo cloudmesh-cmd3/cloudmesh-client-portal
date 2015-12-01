@@ -24,8 +24,10 @@ def cloudmesh_launcher(request):
 
     launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
 
-    context = {}
-    context['recipies']=launcher_config["cloudmesh.launcher.recipes"]
+    context = {
+        'recipies': launcher_config["cloudmesh.launcher.recipes"],
+        'title': '<div><i class="fa fa-rocket"></i> Cloudmesh Launcher </div>'
+    }
 
     pprint (context)
 
