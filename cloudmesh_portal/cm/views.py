@@ -42,6 +42,22 @@ def cloudmesh_launcher_start(request):
     if 'csrfmiddlewaretoken' in parameters:
         del parameters['csrfmiddlewaretoken']
 
+
+    if parameters["name"]:
+
+
+        launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
+        recipe = dict(launcher_config["cloudmesh.launcher.recipes"])
+
+
+        #print (launcher_config)
+        print ("OOOOOOOO")
+        print(json.dumps(recipe, indent=4))
+        print ("OOOOOOOO")
+        print (parameters["name"])
+        print ("OOOOOOOO")
+        #pprint (recipe[parameters["name"]])
+
     launcher = Launcher()
 
     response = launcher.run()
