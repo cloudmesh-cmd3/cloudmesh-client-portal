@@ -44,19 +44,18 @@ def cloudmesh_launcher_start(request):
 
 
     if parameters["name"]:
+        name = parameters["name"][0]
 
 
         launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
-        recipe = dict(launcher_config["cloudmesh.launcher.recipes"])
+        recipe = dict(launcher_config["cloudmesh.launcher.recipes"])[name]
 
-
-        #print (launcher_config)
-        print ("OOOOOOOO")
         print(json.dumps(recipe, indent=4))
-        print ("OOOOOOOO")
-        print (parameters["name"])
-        print ("OOOOOOOO")
-        #pprint (recipe[parameters["name"]])
+
+        if recipe["script"]["type"] in ["sh"]:
+            script = recipe["script"]["value"].format(**parameters)
+
+        print (script)
 
     launcher = Launcher()
 
