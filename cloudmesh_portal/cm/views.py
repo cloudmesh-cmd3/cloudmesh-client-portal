@@ -58,11 +58,10 @@ def cloudmesh_launcher_start(request):
 
         response = "error"
 
-        if recipe["script"]["type"] in ["sh"]:
+        if recipe["script"]["type"] in ["sh", "shell"]:
             script = recipe["script"]["value"].format(**parameters)
-            kind = "shell"
             print (script)
-            launcher = Launcher(kind)
+            launcher = Launcher("shell")
             print (type(launcher))
             response = launcher.run(script=script)
 
