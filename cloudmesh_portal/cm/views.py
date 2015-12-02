@@ -64,6 +64,7 @@ def cloudmesh_launcher_start(request):
             launcher = Launcher("shell")
             print (type(launcher))
             response = launcher.run(script=script)
+            parameters["script"] = script
 
     else:
         parameters = "error"
