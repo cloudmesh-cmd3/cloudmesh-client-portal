@@ -56,14 +56,18 @@ def cloudmesh_launcher_start(request):
 
         print(json.dumps(recipe, indent=4))
 
+        response = "error"
+
         if recipe["script"]["type"] in ["sh"]:
             script = recipe["script"]["value"].format(**parameters)
+            kind = "shell"
+            print (script)
+            launcher = Launcher(kind)
+            print (type(launcher))
+            response = launcher.run(script=script)
 
-        print (script)
-
-    launcher = Launcher()
-
-    response = launcher.run()
+    else:
+        parameters = "error"
 
     context = {
         'title': '<div><i class="fa fa-rocket"></i> Cloudmesh Launcher</div>',
