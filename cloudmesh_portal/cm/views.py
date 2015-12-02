@@ -38,13 +38,17 @@ def cloudmesh_launcher(request):
 
 def cloudmesh_launcher_start(request):
     parameters = dict(request.POST)
-
+    for key in parameters:
+        try:
+            parameters[key] = parameters[key][0]
+        except:
+            pass
     if 'csrfmiddlewaretoken' in parameters:
         del parameters['csrfmiddlewaretoken']
 
 
     if parameters["name"]:
-        name = parameters["name"][0]
+        name = parameters["name"]
 
 
         launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
