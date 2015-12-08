@@ -1,13 +1,12 @@
 from __future__ import unicode_literals
 import json
 
-from cloudmesh_client.cloud.hpc.hpc import Hpc
 from cloudmesh_client.common.ConfigDict import ConfigDict
-from cloudmesh_base.util import banner, path_expand
-from cloudmesh_portal.views import dict_table
-
-
+from cloudmesh_base.util import path_expand
 from django.shortcuts import render
+
+from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
+from cloudmesh_portal.views import dict_table
 
 def hpc_list(request):
     clusters = ConfigDict(path_expand("~/.cloudmesh/cloudmesh.yaml"))["cloudmesh.hpc"]
@@ -37,8 +36,8 @@ def hpc_queue(request, cluster=None):
         "nodelist",
         "time",
     ]
-
-    data = json.loads(Hpc.queue(cluster, format=output_format))
+    provider = BatchProvider(cluster)
+    data = json.loads(provider.queue(cluster, format=output_format))
     print (data)
 
     return dict_table(request,
@@ -59,7 +58,9 @@ def hpc_info(request, cluster=None):
         'nodelist',
         # 'updated',
     ]
-    data = json.loads(Hpc.info(cluster, format=output_format))
+    provider = BatchProvider(cluster)
+
+    data = json.loads(provider.info(cluster, format=output_format))
     print (data)
 
     return dict_table(request,

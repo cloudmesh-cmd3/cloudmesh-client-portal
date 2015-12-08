@@ -1,18 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from pprint import pprint
-import json
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from cloudmesh_client.comet.cluster import Cluster
-from cloudmesh_client.comet.comet import Comet
-from cloudmesh_client.cloud.hpc.hpc import Hpc
 from django.template.defaulttags import register
 from sqlalchemy.orm import sessionmaker
 from django_jinja import library
-
-from charts import Chart
 
 
 # noinspection PyPep8Naming

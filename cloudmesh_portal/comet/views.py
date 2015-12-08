@@ -5,7 +5,7 @@ import json
 from django.shortcuts import render
 from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
-from cloudmesh_client.cloud.hpc.hpc import Hpc
+from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
 from cloudmesh_base.hostlist import Parameter
 
 from ..charts import Chart
@@ -201,8 +201,8 @@ def comet_list_queue(request):
         "nodelist",
         "time",
     ]
-
-    data = json.loads(Hpc.queue(cluster, format=output_format))
+    provider = BatchProvider(cluster)
+    data = json.loads(provider.queue(cluster, format=output_format))
     print (data)
 
     return dict_table(request, title="Comet Queue", data=data, order=order)
@@ -221,7 +221,8 @@ def comet_info(request):
         'nodelist',
         # 'updated',
     ]
-    data = json.loads(Hpc.info(cluster, format=output_format))
+    provider = BatchProvider(cluster)
+    data = json.loads(provider.info(cluster, format=output_format))
     print (data)
 
     return dict_table(request, title="Comet Queue", data=data, order=order)
