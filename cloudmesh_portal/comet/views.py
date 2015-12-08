@@ -15,7 +15,7 @@ from ..views import dict_table
 def comet_dict_table(request, **kwargs):
     context = kwargs
     pprint(context)
-    return render(request, 'cloudmesh_portal/comet_dict_table.jinja', context)
+    return render(request, 'cloudmesh_portal/comet/comet_dict_table.jinja', context)
 
 
 def comet_logon(request):
@@ -24,7 +24,7 @@ def comet_logon(request):
         c = Comet.logon()
         print("LOGON OK")
         return render(request,
-                      'cloudmesh_portal/logon_error.jinja')
+                      'cloudmesh_portal/comet/logon_error.jinja')
     except:
         return c
 
@@ -126,7 +126,7 @@ def comet_status(request):
     }
 
     return render(request,
-                  'cloudmesh_portal/status.jinja',
+                  'cloudmesh_portal/comet/status.jinja',
                   context)
 
 
@@ -237,5 +237,5 @@ def comet_console(request, cluster, node=None):
     # print (url)
     context["url"] = url
     return render(request,
-                  'cloudmesh_portal/console.jinja',
+                  'cloudmesh_portal/comet/console.jinja',
                   context)

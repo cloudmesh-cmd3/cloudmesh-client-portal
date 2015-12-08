@@ -22,7 +22,7 @@ def hpc_list(request):
         "title": "Clusters",
         "order": order,
     }
-    return render(request, 'cloudmesh_portal/hpc_table.jinja', context)
+    return render(request, 'cloudmesh_portal/hpc/hpc_table.jinja', context)
 
 def hpc_queue(request, cluster=None):
     output_format = "json"
