@@ -227,3 +227,15 @@ def comet_info(request):
 
     return dict_table(request, title="Comet Queue", data=data, order=order)
 
+def comet_console(request, cluster, node=None):
+    c = comet_logon(request)
+    context = {}
+    context["title"] = "Comet Virtual Cluster Console"
+    context["cluster"] = cluster
+    context["node"] = node or "FE"
+    url = Comet.console_url(cluster, node)
+    # print (url)
+    context["url"] = url
+    return render(request,
+                  'cloudmesh_portal/console.jinja',
+                  context)
