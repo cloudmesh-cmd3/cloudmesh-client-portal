@@ -35,7 +35,11 @@
         <tr>
             <td>
                 {{ icon("on") |safe}}
-                {{ icon("terminal") |safe}}
+                {% if data[element]['cluster'] %}
+                    <a href="console/{{data[element]['cluster']}}/{{data[element]['name']}}"><i class="fa fa-desktop"></i></a>
+                {% else %}
+                    <a href="console/{{data[element]['name']}}/"><i class="fa fa-desktop"></i></a>
+                {% endif %}
                 {{ icon("refresh") |safe}}
                 {{ icon("chart") |safe}}
                 {{ icon("info") |safe}}
@@ -45,7 +49,7 @@
                    {% if a in ["st","status", "avail", "state", "down"] %}
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
-                        {{ data[element][a] }}
+                        {{ data[element][a]|safe }}
                    {% endif %}
                </td>
 

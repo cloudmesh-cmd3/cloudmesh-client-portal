@@ -136,7 +136,9 @@ def comet_ll(request):
     pprint (data)
     #data["terminal"] = Parameter.expand(data.keys())
     for entry in data:
-        data[entry]["terminal"] = ', '.join (Parameter.expand(data[entry]["computes"]))
+        nodes = Parameter.expand(data[entry]["computes"])
+        nodes_linked = ["<a href=\"console/{}/{}\">{}</a>".format(data[entry]['name'], node, node) for node in nodes]
+        data[entry]["terminal"] = '<br>'.join (nodes_linked)
     # pprint(type(data), data)
     order = [
         "name",
