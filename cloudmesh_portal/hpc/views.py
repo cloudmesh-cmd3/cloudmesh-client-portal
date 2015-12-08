@@ -9,7 +9,7 @@ from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
 from cloudmesh_portal.views import dict_table
 
 def hpc_list(request):
-    clusters = ConfigDict(path_expand("~/.cloudmesh/cloudmesh.yaml"))["cloudmesh.hpc"]
+    clusters = ConfigDict(path_expand("~/.cloudmesh/cloudmesh.yaml"))["cloudmesh.hpc.clusters"]
     print clusters
     data={}
     for cluster in clusters:
