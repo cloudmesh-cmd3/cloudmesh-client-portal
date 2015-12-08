@@ -14,6 +14,21 @@ from cloudmesh_base.util import banner, path_expand
 from ..views import dict_table
 
 
+
+def cloudmesh_launcher_table(request):
+
+    launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
+
+    context = {
+        'recipies': launcher_config["cloudmesh.launcher.recipes"],
+        'title': '<div><i class="fa fa-rocket"></i> Cloudmesh Launcher List </div>'
+    }
+
+    return render(request,
+                  'cloudmesh_portal/launcher/mesh_launch_table.jinja',
+                  context)
+
+
 def cloudmesh_launcher(request):
     if request.method == 'POST':
         print "HHHHHH", request.form.keys()
@@ -32,7 +47,7 @@ def cloudmesh_launcher(request):
     pprint (context)
 
     return render(request,
-                  'cloudmesh_portal/mesh_launch.jinja',
+                  'cloudmesh_portal/launcher/mesh_launch.jinja',
                   context)
 
 
@@ -76,7 +91,7 @@ def cloudmesh_launcher_start(request):
     }
 
     return render(request,
-                  'cloudmesh_portal/mesh_launch2.jinja',
+                  'cloudmesh_portal/launcher/mesh_launch_response.jinja',
                   context)
 
 
