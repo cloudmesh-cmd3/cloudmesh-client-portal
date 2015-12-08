@@ -22,7 +22,7 @@ from rest_framework import routers, serializers, viewsets
 
 
 from .comet.views import comet_list, comet_ll, comet_list_queue, \
-    comet_info, comet_status
+    comet_info, comet_status, comet_console
 
 from .views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
@@ -72,6 +72,8 @@ urlpatterns = [
     url(r'^comet/status', comet_status, name='comet_status'),
     url(r'^comet/ll', comet_ll, name='comet_ll'),
     url(r'^comet/list$', comet_list, name='comet_list'),
+    url(r'^comet/console/(?P<cluster>vc[0-9]+)/$', comet_console, name='comet_console'),
+    url(r'^comet/console/(?P<cluster>vc[0-9]+)/(?P<node>[-\w]+)/$', comet_console, name='comet_console'),
     url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
     url(r'^comet/queue/info$', comet_info, name='comet_info'),
     url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
