@@ -7,6 +7,30 @@ from django.shortcuts import render
 
 from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
 from cloudmesh_portal.views import dict_table
+from cloudmesh_client.cloud.experiment import Experiment
+
+def hpc_run_list(request, count=None, cluster=None):
+
+    cluster="india"
+    result = {}
+    ids = Experiment.list(cluster, format="list")
+    print (ids)
+    for count in ids:
+        result[count] = {
+            "list": Experiment.list(cluster, id=count, format="list")
+        }
+
+    print (result)
+    print (json.dumps(result, indent=4))
+
+    order = ["list"]
+    context = {
+        "data" : result,
+        "title": "HPC Experiments on {}".format(cluster),
+        "order": ["list"]
+    }
+
+    return render(request, 'cloudmesh_portal/hpc/run_table.jinja', context)
 
 def hpc_list(request):
     clusters = ConfigDict(path_expand("~/.cloudmesh/cloudmesh.yaml"))["cloudmesh.hpc.clusters"]

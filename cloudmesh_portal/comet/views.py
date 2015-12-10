@@ -122,7 +122,8 @@ def comet_status(request):
 
     context = {
         'pid': str(Comet.find_tunnel()),
-        'tunnel': str(Comet.is_tunnel())
+        'tunnel': str(Comet.is_tunnel()),
+        'title': "Comet Status"
     }
 
     return render(request,
