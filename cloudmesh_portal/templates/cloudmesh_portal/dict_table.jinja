@@ -35,7 +35,7 @@
 
             {% for a in order %}
                <td>
-                   {% if a in ["st","status", "avail", "state", "down"] %}
+                   {% if a in ["st","status", "avail", "state", "down", "active", "default"] %}
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
                         {{ data[element][a] }}

@@ -99,6 +99,8 @@ def cloudmesh_launcher_start(request):
 def cloudmesh_clouds(request):
     config = ConfigDict(filename="cloudmesh.yaml")
     clouds = config["cloudmesh.clouds"]
+    active = config["cloudmesh.active"]
+    default = Default.get_cloud()
     data = {}
     attributes = ['cm_label',
                   'cm_host',
@@ -118,8 +120,19 @@ def cloudmesh_clouds(request):
         elif clouds[cloud]['cm_type'] == "openstack":
             data[cloud]['username'] = clouds[cloud]['credentials'][
                 'OS_USERNAME']
+        if cloud in active:
+            data[cloud]['active'] = 'yes'
+        else:
+            data[cloud]['active'] = 'no'
+        if cloud in [default]:
+            data[cloud]['default'] = 'yes'
+        else:
+            data[cloud]['default'] = 'no'
+
 
     order = [
+        'default',
+        'active',
         'cm_label',
         'username',
         'cm_host',

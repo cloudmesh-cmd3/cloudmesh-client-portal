@@ -53,9 +53,9 @@ def icon(name, color=None):
 
 @library.global_function
 def state_color(state):
-    if state in ["R", "ACTIVE", "up", "active"]:
+    if state.lower() in ["r", "up", "active", 'yes', 'true']:
         return '<span class="label label-success"> {} </span>'.format(state)
-    elif state in ["down", "down*", "fail"]:
+    elif state.lower() in ["down", "down*", "fail", "false"]:
         return '<span class="label label-danger"> {} </span>'.format(state)
     elif "error" in str(state):
         return '<span class="label label-danger"> {} </span>'.format(state)
