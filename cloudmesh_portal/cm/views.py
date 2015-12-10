@@ -14,9 +14,7 @@ from cloudmesh_base.util import banner, path_expand
 from ..views import dict_table
 
 
-
 def cloudmesh_launcher_table(request):
-
     launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
 
     context = {
@@ -44,7 +42,7 @@ def cloudmesh_launcher(request):
         'title': '<div><i class="fa fa-rocket"></i> Cloudmesh Launcher </div>'
     }
 
-    pprint (context)
+    pprint(context)
 
     return render(request,
                   'cloudmesh_portal/launcher/mesh_launch.jinja',
@@ -61,10 +59,8 @@ def cloudmesh_launcher_start(request):
     if 'csrfmiddlewaretoken' in parameters:
         del parameters['csrfmiddlewaretoken']
 
-
     if parameters["name"]:
         name = parameters["name"]
-
 
         launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
         recipe = dict(launcher_config["cloudmesh.launcher.recipes"])[name]
@@ -95,6 +91,14 @@ def cloudmesh_launcher_start(request):
                   context)
 
 
+def url(msg, link):
+    print (locals())
+    data = {
+        'msg': msg,
+        'link': link
+    }
+    return '<a href="{link}"> {msg} </a>'.format(**data)
+
 
 def cloudmesh_clouds(request):
     config = ConfigDict(filename="cloudmesh.yaml")
@@ -107,8 +111,8 @@ def cloudmesh_clouds(request):
                   'cm_heading',
                   'cm_type',
                   'cm_type_version']
-
     for cloud in clouds:
+        name = {'cloud': cloud}
         data[cloud] = {}
         for attribute in attributes:
             data[cloud][attribute] = clouds[cloud][attribute]
@@ -128,17 +132,31 @@ def cloudmesh_clouds(request):
             data[cloud]['default'] = 'yes'
         else:
             data[cloud]['default'] = 'no'
-
+        data[cloud]['info'] = ", ".join([url('i', '/cm/image/{cloud}/'.format(**name)),
+                                           url('f', '/cm/flavor/{cloud}/'.format(**name)),
+                                           url('v', '/cm/vm/{cloud}/'.format(**name))])
 
     order = [
         'default',
         'active',
         'cm_label',
+        'info',
         'username',
         'cm_host',
         'cm_heading',
         'cm_type',
         'cm_type_version'
+    ]
+    header = [
+        'Default',
+        'Active',
+        'Label',
+        'Info',
+        'Username',
+        'Host',
+        'Description',
+        'Type',
+        'Version'
     ]
 
     pprint(data)
@@ -147,6 +165,7 @@ def cloudmesh_clouds(request):
         'data': data,
         'title': "Cloud List",
         'order': order,
+        'header': header,
     }
     return render(request,
                   'cloudmesh_portal/dict_table.jinja',
@@ -183,10 +202,12 @@ def cloudmesh_defaults(request):
                        order=order))
 
 
-def cloudmesh_images(request):
+def cloudmesh_images(request, cloud=None):
     banner("images")
+    if cloud is None:
+        cloud = Default.get_cloud()
     # TODO: make the cloudname a parameter
-    data = Image.list("juno", format='dict')
+    data = Image.list(cloud, format='dict')
     print json.dumps(data, indent=4)
     # TODO set proper columns
     order = [
@@ -201,13 +222,15 @@ def cloudmesh_images(request):
         'status',
     ]
     return (dict_table(request,
-                       title="Cloudmesh Images",
+                       title="Cloudmesh Images {}".format(cloud),
                        data=data,
                        order=order))
 
 
-def cloudmesh_flavors(request):
-    data = Flavor.list("juno", format='dict')
+def cloudmesh_flavors(request, cloud=None):
+    if cloud is None:
+        cloud = Default.get_cloud()
+    data = Flavor.list(cloud, format='dict')
     print json.dumps(data, indent=4)
 
     order = [
@@ -224,11 +247,15 @@ def cloudmesh_flavors(request):
         'swap',
         'vcpus',
     ]
-    return dict_table(request, title="Cloudmesh Flavors", data=data, order=order)
+    return dict_table(request,
+                      title="Cloudmesh Flavors {}".format(cloud),
+                      data=data, order=order)
 
 
-def cloudmesh_vms(request):
-    data = Vm.list(cloud="juno", output_format='dict')
+def cloudmesh_vms(request, cloud=None):
+    if cloud is None:
+        cloud = Default.get_cloud()
+    data = Vm.list(cloud=cloud, output_format='dict')
     print json.dumps(data, indent=4)
     order = ['id',
              'uuid',
@@ -240,4 +267,6 @@ def cloudmesh_vms(request):
              'project',
              'user',
              'cloud']
-    return dict_table(request, title="Cloudmesh VMs", data=data, order=order)
+    return dict_table(request,
+                      title="Cloudmesh VMs {}".format(cloud),
+                      data=data, order=order)
