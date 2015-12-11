@@ -27,7 +27,9 @@ from .comet.views import comet_list, comet_ll, comet_list_queue, \
 from .views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
-    cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table
+    cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
+    cloudmesh_cloud
+
 
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
@@ -66,7 +68,9 @@ urlpatterns = [
     url(r'^cm/launcher/$', cloudmesh_launcher, name='cloudmesh_launcher'),
     url(r'^cm/launcher/start/$', cloudmesh_launcher_start, name='cloudmesh_launcher_start'),
     url(r'^cm/clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
+    url(r'^cm/cloud/(?P<cloud>\w+)/$', cloudmesh_cloud, name='cloudmesh_cloud'),
     url(r'^cm/default/$', cloudmesh_defaults, name='cloudmesh_default'),
+    url(r'^cm/refresh/(?P<action>\w+)/(?P<cloud>\w+)/$', cloudmesh_refresh, name='cloudmesh_refresh'),
     url(r'^cm/image/$', cloudmesh_images, name='cloudmesh_image'),
     url(r'^cm/image/(?P<cloud>\w+)/$', cloudmesh_images, name='cloudmesh_image'),
     url(r'^cm/flavor/$', cloudmesh_flavors, name='cloudmesh_flavor'),

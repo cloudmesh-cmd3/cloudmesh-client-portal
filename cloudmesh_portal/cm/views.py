@@ -132,9 +132,11 @@ def cloudmesh_clouds(request):
             data[cloud]['default'] = 'yes'
         else:
             data[cloud]['default'] = 'no'
-        data[cloud]['info'] = ", ".join([url('i', '/cm/image/{cloud}/'.format(**name)),
-                                           url('f', '/cm/flavor/{cloud}/'.format(**name)),
-                                           url('v', '/cm/vm/{cloud}/'.format(**name))])
+        data[cloud]['info'] = ", ".join([
+            url('d', '/cm/cloud/{cloud}/'.format(**name)),
+            url('i', '/cm/image/{cloud}/'.format(**name)),
+            url('f', '/cm/flavor/{cloud}/'.format(**name)),
+            url('v', '/cm/vm/{cloud}/'.format(**name))])
 
     order = [
         'default',
@@ -169,6 +171,27 @@ def cloudmesh_clouds(request):
     }
     return render(request,
                   'cloudmesh_portal/dict_table.jinja',
+                  context)
+
+
+
+
+def cloudmesh_cloud(request, cloud=None):
+    if cloud is None:
+        cloud = Default.get_cloud()
+    config = ConfigDict(filename="cloudmesh.yaml")
+    cloud_config = dict(config["cloudmesh.clouds"][cloud])
+    active = cloud in config["cloudmesh.active"]
+    default = Default.get_cloud()
+
+    if 'OS_PASSWORD' in cloud_config['credentials']:
+        cloud_config['credentials']['OS_PASSWORD'] = '********'
+    context = {
+        'data': cloud_config,
+        'title': "Cloud {cm_heading}".format(**cloud_config),
+    }
+    return render(request,
+                  'cloudmesh_portal/cm/cloud_table.jinja',
                   context)
 
 
@@ -255,6 +278,34 @@ def cloudmesh_flavors(request, cloud=None):
 def cloudmesh_vms(request, cloud=None):
     if cloud is None:
         cloud = Default.get_cloud()
+    data = Vm.list(cloud=cloud, output_format='dict')
+    print json.dumps(data, indent=4)
+    order = ['id',
+             'uuid',
+             'label',
+             'status',
+             'static_ip',
+             'floating_ip',
+             'key_name',
+             'project',
+             'user',
+             'cloud']
+    return dict_table(request,
+                      title="Cloudmesh VMs {}".format(cloud),
+                      data=data, order=order)
+
+
+
+def cloudmesh_refresh(request, action=None, cloud=None):
+    if action is None:
+        action = ['image', 'flavor', 'vm']
+    else:
+        action = [action]
+
+    if cloud is None:
+        cloud = Default.get_cloud()
+        # TODO: should actually be all active clouds
+
     data = Vm.list(cloud=cloud, output_format='dict')
     print json.dumps(data, indent=4)
     order = ['id',
