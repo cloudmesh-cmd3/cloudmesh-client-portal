@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from pprint import pprint
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
 from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
@@ -14,7 +14,7 @@ from ..views import dict_table
 
 def comet_dict_table(request, **kwargs):
     context = kwargs
-    pprint(context)
+    # pprint(context)
     return render(request, 'cloudmesh_portal/comet/comet_dict_table.jinja', context)
 
 
@@ -242,3 +242,23 @@ def comet_console(request, cluster, node=None):
     return render(request,
                   'cloudmesh_portal/comet/console.jinja',
                   context)
+
+def comet_power(request, action, cluster, node=None):
+    c = comet_logon(request)
+    # dispatching action and parameters
+    if not node:
+        subject = 'FE'
+    else:
+        try:
+            node = int(node)
+            subject = "COMPUTESET"
+            node = str(node)
+        except ValueError:
+            if '[' in node and ']' in node:
+                subject = "HOSTS"
+            else:
+                subject = "HOST"
+
+    Cluster.power(cluster, subject, node, action)
+    print (request.META.get('HTTP_REFERER'))
+    return redirect(request.META.get('HTTP_REFERER'))

@@ -2,8 +2,10 @@
 
 {% block title %}Comet Virtual Cluster Console{% endblock %}
 {% block content %}
-<h4>Cluster: {{cluster}}</h4>
-<h4>Node: {{node}} </h4>
+<h4>Cluster: {{cluster}}
+&nbsp&nbsp&nbsp&nbsp
+Node: {{node}} </h4>
+<h4>Actions: <a href="/comet/power/reboot/{{cluster}}/{{node}}" class="btn btn-warning btn-small">REBOOT</a></h4>
 <div>
 <!--iframe src="{{ url }}" width="100%" height="600"></iframe-->
 <object data="{{ url}} " width="100%" height="600">
