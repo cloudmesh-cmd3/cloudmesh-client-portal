@@ -19,6 +19,7 @@ def Session():
 
 session = Session()
 
+
 @library.global_function
 def icon(name, color=None):
     if color is None:
@@ -28,28 +29,29 @@ def icon(name, color=None):
         start = '<font color="{}">'.format(color)
         stop = '</font>'
     if name in ["trash"]:
-        icon = '<i class="fa fa-trash-o"></i>'
+        icon_html = '<i class="fa fa-trash-o"></i>'
     elif name in ["cog"]:
-        icon = '<i class="fa fa-cog"></i>'
+        icon_html = '<i class="fa fa-cog"></i>'
     elif name in ["cog"]:
-        icon = '<i class="fa fa-info"></i>'
+        icon_html = '<i class="fa fa-info"></i>'
     elif name in ["off"]:
-        icon = '<i class="fa fa-power-off"></i>'
+        icon_html = '<i class="fa fa-power-off"></i>'
     elif name in ["on"]:
-        icon = '<i class="fa fa-power-off"></i>'
+        icon_html = '<i class="fa fa-power-off"></i>'
     elif name in ["refresh"]:
-        icon = '<i class="fa fa-refresh"></i>'
+        icon_html = '<i class="fa fa-refresh"></i>'
     elif name in ["chart"]:
-        icon = '<i class="fa fa-bar-chart"></i>'
+        icon_html = '<i class="fa fa-bar-chart"></i>'
     elif name in ["desktop", "terminal"]:
-        icon = '<i class="fa fa-desktop"></i>'
+        icon_html = '<i class="fa fa-desktop"></i>'
     elif name in ["info"]:
-        icon = '<i class="fa fa-info-circle"></i>'
+        icon_html = '<i class="fa fa-info-circle"></i>'
     elif name in ["launch"]:
-        icon = '<i class="fa fa-rocket"></i>'
+        icon_html = '<i class="fa fa-rocket"></i>'
     else:
-        icon = '<i class="fa fa-question-circle"></i>'
-    return start + icon + stop
+        icon_html = '<i class="fa fa-question-circle"></i>'
+    return start + icon_html + stop
+
 
 @library.global_function
 def state_color(state):

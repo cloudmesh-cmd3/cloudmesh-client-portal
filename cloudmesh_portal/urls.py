@@ -20,7 +20,6 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
-
 from .comet.views import comet_list, comet_ll, comet_list_queue, \
     comet_info, comet_status, comet_console
 
@@ -30,8 +29,8 @@ from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
     cloudmesh_cloud
 
-
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
+
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -90,4 +89,3 @@ urlpatterns = [
     url(r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework'))
 ]
-

@@ -30,6 +30,7 @@ def comet_logon(request):
 
 
 def comet_status(request):
+    # noinspection PyUnusedLocal
     c = comet_logon(request)
     data = json.loads(Cluster.simple_list(format="json"))
     # pprint(data)
@@ -89,15 +90,15 @@ def comet_status(request):
             counter[name]['status'][state] += 1
             counter[name]['total'] += 1
             counter[name]['name'] = name
-    pprint (counter)
+    pprint(counter)
     #
     # delete the free nodes for now
     #
     if 'comet-fe1' in counter:
         for count in counter:
             if count != "comet-fe1":
-                counter['comet-fe1']['total'] = counter['comet-fe1']['total'] - \
-                                                counter[count]['total']
+                counter['comet-fe1']['total'] = \
+                    counter['comet-fe1']['total'] - counter[count]['total']
 
         counter['comet-fe1']['name'] = 'free'
     counter_list = []
@@ -132,14 +133,15 @@ def comet_status(request):
 
 
 def comet_ll(request):
+    # noinspection PyUnusedLocal
     c = comet_logon(request)
     data = json.loads(Cluster.simple_list(format="json"))
-    pprint (data)
-    #data["terminal"] = Parameter.expand(data.keys())
+    pprint(data)
+    # data["terminal"] = Parameter.expand(data.keys())
     for entry in data:
         nodes = Parameter.expand(data[entry]["computes"])
         nodes_linked = ["<a href=\"console/{}/{}\">{}</a>".format(data[entry]['name'], node, node) for node in nodes]
-        data[entry]["terminal"] = '<br>'.join (nodes_linked)
+        data[entry]["terminal"] = '<br>'.join(nodes_linked)
     # pprint(type(data), data)
     order = [
         "name",
@@ -168,6 +170,7 @@ def comet_ll(request):
 
 
 def comet_list(request):
+    # noinspection PyUnusedLocal
     c = comet_logon(request)
     data = json.loads(Cluster.list(format="json"))
 
@@ -230,12 +233,13 @@ def comet_info(request):
 
     return dict_table(request, title="Comet Queue", data=data, order=order)
 
+
 def comet_console(request, cluster, node=None):
+    # noinspection PyUnusedLocal
     c = comet_logon(request)
-    context = {}
-    context["title"] = "Comet Virtual Cluster Console"
-    context["cluster"] = cluster
-    context["node"] = node or "FE"
+    context = {"title": "Comet Virtual Cluster Console",
+               "cluster": cluster,
+               "node": node or "FE"}
     url = Comet.console_url(cluster, node)
     # print (url)
     context["url"] = url

@@ -59,6 +59,7 @@ def cloudmesh_launcher_start(request):
     if 'csrfmiddlewaretoken' in parameters:
         del parameters['csrfmiddlewaretoken']
 
+    response = 'error'
     if parameters["name"]:
         name = parameters["name"]
 
@@ -172,8 +173,6 @@ def cloudmesh_clouds(request):
     return render(request,
                   'cloudmesh_portal/dict_table.jinja',
                   context)
-
-
 
 
 def cloudmesh_cloud(request, cloud=None):
@@ -293,7 +292,6 @@ def cloudmesh_vms(request, cloud=None):
     return dict_table(request,
                       title="Cloudmesh VMs {}".format(cloud),
                       data=data, order=order)
-
 
 
 def cloudmesh_refresh(request, action=None, cloud=None):
