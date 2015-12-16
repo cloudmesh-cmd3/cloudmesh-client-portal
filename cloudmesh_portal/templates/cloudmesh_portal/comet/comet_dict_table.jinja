@@ -34,15 +34,27 @@
         {% for element in data %}
         <tr>
             <td>
-                {{ icon("on") |safe}}
                 {% if data[element]['cluster'] %}
-                    <a href="console/{{data[element]['cluster']}}/{{data[element]['name']}}"><i class="fa fa-desktop"></i></a>
+                    {% if data[element]['state'] in ["active"] %}
+                        <a href="power/off/{{data[element]['cluster']}}/{{data[element]['name']}}">{{ icon("on", "green") |safe}}</a>
+                    {% else %}
+                        <a href="power/on/{{data[element]['cluster']}}/{{data[element]['name']}}">{{ icon("on", "red") |safe}}</a>
+                    {% endif %}
+                    <a href="console/{{data[element]['cluster']}}/{{data[element]['name']}}">{{ icon("terminal") |safe}}</a>
+                    <a href="power/reboot/{{data[element]['cluster']}}/{{data[element]['name']}}">{{ icon("refresh") |safe}}</a>
+                    {{ icon("chart") |safe}}
+                    {{ icon("info") |safe}}
                 {% else %}
-                    <a href="console/{{data[element]['name']}}/"><i class="fa fa-desktop"></i></a>
+                    {% if data[element]['frontend state'] in ["active"] %}
+                        <a href="power/off/{{data[element]['name']}}/">{{ icon("on", "green") |safe}}</a>
+                    {% else %}
+                        <a href="power/on/{{data[element]['name']}}/">{{ icon("on", "red") |safe}}</a>
+                    {% endif %}
+                    <a href="console/{{data[element]['name']}}/">{{ icon("terminal") |safe}}</a>
+                    <a href="power/reboot/{{data[element]['name']}}/">{{ icon("refresh") |safe}}</a>
+                    {{ icon("chart") |safe}}
+                    {{ icon("info") |safe}}
                 {% endif %}
-                {{ icon("refresh") |safe}}
-                {{ icon("chart") |safe}}
-                {{ icon("info") |safe}}
             </td>
             {% for a in order %}
                <td>
