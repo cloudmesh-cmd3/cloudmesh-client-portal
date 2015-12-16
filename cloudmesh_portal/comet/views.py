@@ -247,7 +247,9 @@ def comet_console(request, cluster, node=None):
                   'cloudmesh_portal/comet/console.jinja',
                   context)
 
+
 def comet_power(request, action, cluster, node=None):
+    # noinspection PyUnusedLocal
     c = comet_logon(request)
     # dispatching action and parameters
     if not node:
