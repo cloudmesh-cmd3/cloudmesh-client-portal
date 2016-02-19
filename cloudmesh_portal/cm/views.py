@@ -4,12 +4,12 @@ import json
 
 from django.shortcuts import render
 from cloudmesh_client.common.ConfigDict import ConfigDict
-from cloudmesh_client.cloud.default import Default
+from cloudmesh_client.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
 from cloudmesh_client.cloud.launcher import Launcher
-from cloudmesh_base.util import banner, path_expand
+from cloudmesh_client.util import banner, path_expand
 
 from ..views import dict_table
 

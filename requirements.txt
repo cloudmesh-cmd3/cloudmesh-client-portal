@@ -1,4 +1,3 @@
-cloudmesh_base
 cloudmesh_client
 jinja2schema
 django-rest-swagger

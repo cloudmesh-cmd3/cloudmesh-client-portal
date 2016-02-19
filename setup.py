@@ -40,7 +40,6 @@ from cloudmesh_portal.version import __version__
 banner("Installing Cloudmesh_portal {:}".format(__version__))
 
 requirements = [
-    "cloudmesh_base",
     "cloudmesh_client",
     "jinja2schema",
     "django-rest-swagger",

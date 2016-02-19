@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
 from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
-from cloudmesh_base.hostlist import Parameter
+from cloudmesh_client.common.hostlist import Parameter
 
 from ..charts import Chart
 from ..views import dict_table
