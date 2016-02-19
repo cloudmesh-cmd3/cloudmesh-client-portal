@@ -1,4 +1,5 @@
 cloudmesh_client
+cloudmesh_workflow
 jinja2schema
 django-rest-swagger
 django-bootstrap3

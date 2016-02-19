@@ -41,6 +41,7 @@ banner("Installing Cloudmesh_portal {:}".format(__version__))
 
 requirements = [
     "cloudmesh_client",
+    "cloudmesh_workflow",
     "jinja2schema",
     "django-rest-swagger",
     "django-bootstrap3",

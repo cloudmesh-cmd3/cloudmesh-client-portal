@@ -31,6 +31,8 @@ from .cm.views import cloudmesh_defaults, cloudmesh_images, \
 
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
+from .workflow.views import workflow_list, workflow_detail, workflow_graph
+
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -63,6 +65,11 @@ urlpatterns = [
     url(r'^hpc/run/list/$', hpc_run_list, name='hpc_run_list'),
     url(r'^hpc/queue/(?P<cluster>\w+)/$', hpc_queue, name='hpc_queue'),
     url(r'^hpc/info/(?P<cluster>\w+)/$', hpc_info, name='hpc_info'),
+    url(r'^cm/workflow/list$', workflow_list, name='workflow_list'),
+    url(r'^cm/workflow/detail/(?P<script>\w+)/$', workflow_detail,
+        name='workflow_detail'),
+    url(r'^cm/workflow/graph/(?P<script>\w+)/$', workflow_graph,
+        name='workflow_graph'),
     url(r'^cm/launcher/list$', cloudmesh_launcher_table, name='cloudmesh_launcher_table'),
     url(r'^cm/launcher/$', cloudmesh_launcher, name='cloudmesh_launcher'),
     url(r'^cm/launcher/start/$', cloudmesh_launcher_start, name='cloudmesh_launcher_start'),
