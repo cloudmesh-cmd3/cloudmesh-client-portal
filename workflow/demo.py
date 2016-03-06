@@ -1,3 +1,4 @@
+from __future__ import print_function
 from cloudmesh_workflow.workflow import Graph
 from cloudmesh_workflow.workflow import delayed
 from cloudmesh_workflow.workflow import evaluate
@@ -8,11 +9,12 @@ import os
 
 sleep_time = 1
 
+
 def test():
 
     @delayed()
     def A():
-        print 'A START'
+        print ('A START')
         # for i in xrange(10):
         #     print 'A', i
         time.sleep(sleep_time)
@@ -20,28 +22,27 @@ def test():
 
     @delayed()
     def B():
-        print 'B START'
+        print ('B START')
         time.sleep(sleep_time)
         # print 'B STOP'
 
     @delayed()
     def C():
-        print 'C START'
+        print ('C START')
         time.sleep(sleep_time)
         # print 'C STOP'
 
     @delayed()
     def D():
-        print 'D START'
+        print ('D START')
         time.sleep(sleep_time)
         # print 'D STOP'
 
     @delayed()
     def F():
-        print 'F START'
+        print ('F START')
         time.sleep(sleep_time)
         # print 'F STOP'
-
 
     def clean(G):
         H = G.copy()
@@ -53,9 +54,7 @@ def test():
             del H.node[n]['node']
             N[n] = node.name
 
-
         return H, N, E
-
 
     # node = ( A() | B() | C() )
     # node = ( A() & B() | C() )
@@ -66,13 +65,13 @@ def test():
     G = node.graph
     H, N, E = clean(G)
     evaluate(G)
-    #nx.write_dot(H, '/tmp/test.dot')
+    # nx.write_dot(H, '/tmp/test.dot')
     data = {
         'file': "/tmp/example"
     }
     nx.drawing.nx_pydot.write_dot(H, '{file}.dot'.format(**data))
     dot2svg("{file}.dot".format(**data))
-    #os.system("open {file}.svg".format(**data))
+    # os.system("open {file}.svg".format(**data))
     browser("{file}.svg".format(**data))
 
 test()

@@ -11,6 +11,7 @@ from cloudmesh_client.cloud.experiment import Experiment
 import os
 import glob
 
+
 def workflow_list(request):
 
     workflows = glob.glob('workflow/*.py')
@@ -40,7 +41,7 @@ def workflow_detail(request, script=None):
     context = {
         'workflow': content,
         'file': script,
-        'title': script.replace(".py","")
+        'title': script.replace(".py", "")
     }
 
     return render(request,
@@ -59,7 +60,7 @@ def workflow_graph(request, script=None):
     context = {
         'graph': svg,
         'file': script,
-        'title': script.replace(".py","")
+        'title': script.replace(".py", "")
     }
 
     return render(request,

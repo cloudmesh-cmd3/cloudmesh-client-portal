@@ -23,17 +23,8 @@ from setuptools.command.install import install
 import sys
 import platform
 import os
-
-try:
-    import cloudmesh_base
-
-    print("Using cloudmesh_base version:", cloudmesh_base.__version__)
-except:
-    # os.system("pip install cloudmesh_base")
-    os.system("pip install git+https://github.com/cloudmesh/base.git")
-
-from cloudmesh_base.util import banner
-from cloudmesh_base.setup import os_execute
+from cloudmesh_client.util import banner
+from cloudmesh_client.setup import os_execute
 
 from cloudmesh_portal.version import __version__
 

@@ -58,7 +58,7 @@ def comet_status(request):
     details = json.loads(Cluster.list(format="json"))
 
     counter = {}
-    for node in details.values():
+    for node in list(details.values()):
         clustername = node["cluster"]
         if clustername is not None:
             if clustername not in counter:
@@ -76,7 +76,7 @@ def comet_status(request):
                 }
 
     # print (counter)
-    for key, node in details.items():
+    for key, node in list(details.items()):
 
         if node['kind'] == 'compute':
 
@@ -102,7 +102,7 @@ def comet_status(request):
 
         counter['comet-fe1']['name'] = 'free'
     counter_list = []
-    for key, cluster in counter.items():
+    for key, cluster in list(counter.items()):
         counter_list.append(cluster)
 
     # context["clusters"] = counter_list
@@ -115,7 +115,7 @@ def comet_status(request):
     if 'comet-fe1' in counter:
         del counter['comet-fe1']
     counter_list = []
-    for key, cluster in counter.items():
+    for key, cluster in list(counter.items()):
         counter_list.append(cluster)
 
     Chart.cluster_overview_pie_vector(counter_list, filename='pie_vector.svg')
@@ -176,7 +176,7 @@ def comet_list(request):
 
     dictionary = {}
 
-    for item in data.values():
+    for item in list(data.values()):
         dictionary[item["name"]] = item
 
     order = [

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from __future__ import unicode_literals
 import json
 
@@ -35,7 +36,7 @@ def hpc_run_list(request, count=None, cluster=None):
 
 def hpc_list(request):
     clusters = ConfigDict(path_expand("~/.cloudmesh/cloudmesh.yaml"))["cloudmesh.hpc.clusters"]
-    print clusters
+    print (clusters)
     data = {}
     for cluster in clusters:
         data[cluster] = {

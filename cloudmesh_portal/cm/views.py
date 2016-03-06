@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from __future__ import print_function
 from pprint import pprint
 import json
 
@@ -29,11 +30,11 @@ def cloudmesh_launcher_table(request):
 
 def cloudmesh_launcher(request):
     if request.method == 'POST':
-        print "HHHHHH", request.form.keys()
+        print ("HHHHHH", request.form.keys())
         for key in request.form.keys():
-            print key, ":", request.form[key]
+            print (key, ":", request.form[key])
     else:
-        print "HEY JUDE"
+        print ("HEY JUDE")
 
     launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
 
@@ -117,7 +118,7 @@ def cloudmesh_clouds(request):
         data[cloud] = {}
         for attribute in attributes:
             data[cloud][attribute] = clouds[cloud][attribute]
-        print clouds[cloud]['cm_type']
+        print (clouds[cloud]['cm_type'])
         if clouds[cloud]['cm_type'] == "ec2":
             data[cloud]['username'] = clouds[cloud]['credentials']['userid']
         elif clouds[cloud]['cm_type'] == "azure":
@@ -230,7 +231,7 @@ def cloudmesh_images(request, cloud=None):
         cloud = Default.get_cloud()
     # TODO: make the cloudname a parameter
     data = Image.list(cloud, format='dict')
-    print json.dumps(data, indent=4)
+    print (json.dumps(data, indent=4))
     # TODO set proper columns
     order = [
         'id',
@@ -253,7 +254,7 @@ def cloudmesh_flavors(request, cloud=None):
     if cloud is None:
         cloud = Default.get_cloud()
     data = Flavor.list(cloud, format='dict')
-    print json.dumps(data, indent=4)
+    print (json.dumps(data, indent=4))
 
     order = [
         'id',
@@ -278,7 +279,7 @@ def cloudmesh_vms(request, cloud=None):
     if cloud is None:
         cloud = Default.get_cloud()
     data = Vm.list(cloud=cloud, output_format='dict')
-    print json.dumps(data, indent=4)
+    print (json.dumps(data, indent=4))
     order = ['id',
              'uuid',
              'label',
@@ -305,7 +306,7 @@ def cloudmesh_refresh(request, action=None, cloud=None):
         # TODO: should actually be all active clouds
 
     data = Vm.list(cloud=cloud, output_format='dict')
-    print json.dumps(data, indent=4)
+    print (json.dumps(data, indent=4))
     order = ['id',
              'uuid',
              'label',
