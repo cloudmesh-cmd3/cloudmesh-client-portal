@@ -234,9 +234,10 @@ def cloudmesh_images(request, cloud=None):
     print (json.dumps(data, indent=4))
     # TODO set proper columns
     order = [
+        'default',
         'id',
         'name',
-        'cloud',
+        'category',
         'minDisk',
         'minRam',
         'os_image_size',
@@ -244,6 +245,13 @@ def cloudmesh_images(request, cloud=None):
         'project',
         'status',
     ]
+    default_image = Default.get_image(cloud)
+    for image in data:
+        a = data[image]["name"]
+        print("A", a)
+        data[image]["default"] = str(data[image]["name"] == default_image)
+
+    print ("III", image)
     return (dict_table(request,
                        title="Cloudmesh Images {}".format(cloud),
                        data=data,
@@ -259,7 +267,7 @@ def cloudmesh_flavors(request, cloud=None):
     order = [
         'id',
         'name',
-        'cloud',
+        'category',
         'disk',
         'os_flavor_acces',
         'os_flv_disabled',

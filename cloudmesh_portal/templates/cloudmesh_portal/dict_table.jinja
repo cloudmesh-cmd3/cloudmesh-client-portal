@@ -20,6 +20,7 @@
     } );
 </script>
 
+<form>
 <table  id="dictTable" class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -41,11 +42,21 @@
 
             {% for a in order %}
                <td>
-                   {% if a in ["st","status", "avail", "state", "down", "active", "default"] %}
+                   {% if a in ["st","status", "avail", "state", "down", "active"] %}
+                        {{ state_color(data[element][a]) |safe }}
+                   {% else %}
+                   {% if a in ["default"] %}
+                        {{ data[element]["default"] }}
+                        <input type="radio" name="checkbox-default"
+                               value={{data[element]["name"]}}
+                               {% if data[element]["default"] == 'True' %} checked {% endif %} >
+                        {% if data[element]["default"] == 'True' %} x {% endif %}
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
                         {{ data[element][a] | safe}}
                    {% endif %}
+                   {% endif %}
+
                </td>
 
             {% endfor %}
@@ -54,7 +65,7 @@
     </tbody>
     {% endif %}
 </table>
-
+</form>
 
 
 {% endblock %}
