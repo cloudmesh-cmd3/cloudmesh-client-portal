@@ -92,6 +92,8 @@ def cloudmesh_launcher_start(request):
                   'cloudmesh_portal/launcher/mesh_launch_response.jinja',
                   context)
 
+def badge(msg):
+    return '<span class="label label-pill label-info">{}</span>'.format(msg)
 
 def url(msg, link):
     print (locals())
@@ -134,11 +136,11 @@ def cloudmesh_clouds(request):
             data[cloud]['default'] = 'yes'
         else:
             data[cloud]['default'] = 'no'
-        data[cloud]['info'] = ", ".join([
-            url('d', '/cm/cloud/{cloud}/'.format(**name)),
-            url('i', '/cm/image/{cloud}/'.format(**name)),
-            url('f', '/cm/flavor/{cloud}/'.format(**name)),
-            url('v', '/cm/vm/{cloud}/'.format(**name))])
+        data[cloud]['info'] = "".join([
+            badge(url('<i class="fa fa-file-text-o"></i>', '/cm/cloud/{cloud}/'.format(**name))),
+            badge(url('<i class="fa fa-file-image-o"></i>', '/cm/image/{cloud}/'.format(**name))),
+            badge(url('<i class="fa fa-wrench"></i>', '/cm/flavor/{cloud}/'.format(**name))),
+            badge(url('<i class="fa fa-database"></i>', '/cm/vm/{cloud}/'.format(**name)))])
 
     order = [
         'default',

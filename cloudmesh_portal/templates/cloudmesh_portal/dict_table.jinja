@@ -42,12 +42,14 @@
 
             {% for a in order %}
                <td>
+
                    {% if a in ["st","status", "avail", "state", "down", "active"] %}
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
                    {% if a in ["default"] %}
                         {{ data[element]["default"] }}
-                        <input type="radio" name="checkbox-default"
+                        <input type="radio"
+                               name="checkbox-default"
                                value={{data[element]["name"]}}
                                {% if data[element]["default"] == 'True' %} checked {% endif %} >
                         {% if data[element]["default"] == 'True' %} x {% endif %}
