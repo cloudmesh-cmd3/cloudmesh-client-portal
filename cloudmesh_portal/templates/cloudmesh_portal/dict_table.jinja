@@ -47,17 +47,18 @@
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
                    {% if a in ["default"] %}
-                        {{ data[element]["default"] }}
+
+                        {{ data[element]['cm_label'] }}
                         {% if data[element]["default"] %}
                         <input type="radio"
                                name="checkbox-default"
-                               value={{data[element]["name"]}}
+                               value="{{data[element]["cm_label"]}}"
                                checked="checked"
                         >
                         {% else %}
                         <input type="radio"
                                name="checkbox-default"
-                               value={{data[element]["name"]}}
+                               value="{{data[element]["cm_label"]}}""
                         >
                         {% endif %}
 
