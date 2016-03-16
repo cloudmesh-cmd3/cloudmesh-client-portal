@@ -55,14 +55,15 @@ def icon(name, color=None):
 
 @library.global_function
 def state_color(state):
-    if state.lower() in ["r", "up", "active", 'yes', 'true']:
-        return '<span class="label label-success"> {} </span>'.format(state)
-    elif state.lower() in ["down", "down*", "fail", "false"]:
-        return '<span class="label label-danger"> {} </span>'.format(state)
-    elif "error" in str(state):
-        return '<span class="label label-danger"> {} </span>'.format(state)
+    _state = str(state)
+    if _state.lower() in ["r", "up", "active", 'yes', 'true']:
+        return '<span class="label label-success"> {} </span>'.format(_state)
+    elif _state.lower() in ["down", "down*", "fail", "false"]:
+        return '<span class="label label-danger"> {} </span>'.format(_state)
+    elif "error" in str(_state):
+        return '<span class="label label-danger"> {} </span>'.format(_state)
     else:
-        return '<span class="label label-default"> {} </span>'.format(state)
+        return '<span class="label label-default"> {} </span>'.format(_state)
 
 
 def message(msg):
@@ -84,7 +85,9 @@ def get_item(dictionary, key):
 
 def dict_table(request, **kwargs):
     context = kwargs
-    pprint(context)
+    if "header" not in kwargs:
+        context["header"] = kwargs["order"]
+    # pprint(context)
     return render(request, 'cloudmesh_portal/dict_table.jinja', context)
 
 

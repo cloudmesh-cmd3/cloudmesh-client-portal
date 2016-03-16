@@ -48,11 +48,21 @@
                    {% else %}
                    {% if a in ["default"] %}
                         {{ data[element]["default"] }}
+                        {% if data[element]["default"] %}
                         <input type="radio"
                                name="checkbox-default"
                                value={{data[element]["name"]}}
-                               {% if data[element]["default"] == 'True' %} checked {% endif %} >
-                        {% if data[element]["default"] == 'True' %} x {% endif %}
+                               checked="checked"
+                        >
+                        {% else %}
+                        <input type="radio"
+                               name="checkbox-default"
+                               value={{data[element]["name"]}}
+                        >
+                        {% endif %}
+
+                        {{ data[element]["default"] }}
+
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
                         {{ data[element][a] | safe}}

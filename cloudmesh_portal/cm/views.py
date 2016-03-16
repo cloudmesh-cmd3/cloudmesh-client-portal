@@ -8,7 +8,9 @@ from cloudmesh_client.common.ConfigDict import ConfigDict
 from cloudmesh_client.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
+from cloudmesh_client.cloud.attributes import Attributes
 from cloudmesh_client.cloud.vm import Vm
+
 from cloudmesh_client.cloud.launcher import Launcher
 from cloudmesh_client.util import banner, path_expand
 
@@ -133,14 +135,14 @@ def cloudmesh_clouds(request):
         else:
             data[cloud]['active'] = 'no'
         if cloud in [default]:
-            data[cloud]['default'] = 'yes'
+            data[cloud]['default'] = True
         else:
-            data[cloud]['default'] = 'no'
+            data[cloud]['default'] = False
         data[cloud]['info'] = "".join([
-            badge(url('<i class="fa fa-file-text-o"></i>', '/cm/cloud/{cloud}/'.format(**name))),
-            badge(url('<i class="fa fa-file-image-o"></i>', '/cm/image/{cloud}/'.format(**name))),
-            badge(url('<i class="fa fa-wrench"></i>', '/cm/flavor/{cloud}/'.format(**name))),
-            badge(url('<i class="fa fa-database"></i>', '/cm/vm/{cloud}/'.format(**name)))])
+            url('<i class="fa fa-file-text-o"></i>', '/cm/cloud/{cloud}/'.format(**name)),
+            url('<i class="fa fa-file-image-o"></i>', '/cm/image/{cloud}/'.format(**name)),
+            url('<i class="fa fa-wrench"></i>', '/cm/flavor/{cloud}/'.format(**name)),
+            url('<i class="fa fa-database"></i>', '/cm/vm/{cloud}/'.format(**name))])
 
     order = [
         'default',
@@ -264,25 +266,18 @@ def cloudmesh_flavors(request, cloud=None):
     if cloud is None:
         cloud = Default.get_cloud()
     data = Flavor.list(cloud, format='dict')
-    print (json.dumps(data, indent=4))
 
-    order = [
-        'id',
-        'name',
-        'category',
-        'disk',
-        'os_flavor_acces',
-        'os_flv_disabled',
-        'os_flv_ext_data',
-        'project',
-        'ram',
-        'rxtx_factor',
-        'swap',
-        'vcpus',
-    ]
+    # print (json.dumps(data, indent=4))
+
+    order, header = Attributes.list(cloud,"flavor")
+
+    print("OOOO", order, header)
+
     return dict_table(request,
                       title="Cloudmesh Flavors {}".format(cloud),
-                      data=data, order=order)
+                      data=data,
+                      order=order,
+                      header=header)
 
 
 def cloudmesh_vms(request, cloud=None):
@@ -302,7 +297,8 @@ def cloudmesh_vms(request, cloud=None):
              'cloud']
     return dict_table(request,
                       title="Cloudmesh VMs {}".format(cloud),
-                      data=data, order=order)
+                      data=data,
+                      order=order)
 
 
 def cloudmesh_refresh(request, action=None, cloud=None):
@@ -329,4 +325,5 @@ def cloudmesh_refresh(request, action=None, cloud=None):
              'cloud']
     return dict_table(request,
                       title="Cloudmesh VMs {}".format(cloud),
-                      data=data, order=order)
+                      data=data,
+                      order=order)
