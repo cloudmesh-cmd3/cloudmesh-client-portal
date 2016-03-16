@@ -149,7 +149,6 @@ def cloudmesh_clouds(request):
         'active',
         'cm_label',
         'info',
-        'username',
         'cm_host',
         'cm_heading',
         'cm_type',
@@ -160,7 +159,6 @@ def cloudmesh_clouds(request):
         'Active',
         'Label',
         'Info',
-        'Username',
         'Host',
         'Description',
         'Type',
@@ -176,7 +174,7 @@ def cloudmesh_clouds(request):
         'header': header,
     }
     return render(request,
-                  'cloudmesh_portal/dict_table.jinja',
+                  'cloudmesh_portal/cm/cloud_list.jinja',
                   context)
 
 

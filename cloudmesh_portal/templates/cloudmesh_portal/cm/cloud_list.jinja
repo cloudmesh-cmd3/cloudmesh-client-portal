@@ -43,22 +43,33 @@
             {% for a in order %}
                <td>
 
-                   {% if a in ["st","status", "avail", "state", "down", "active"] %}
-                        {{ state_color(data[element][a]) |safe }}
-                   {% else %}
-                   {% if a in ["default"] %}
+                   {% if a in ["active"] %}
 
-                        <input id="abc"
+
+                       <input id="active"
+                        type="checkbox"
+                        name="checkbox_active"
+                        value="{{data[element]["cm_label"]}}"
+                                    {% if data[element]["default"] %}
+                                    checked="checked"
+                                    {% endif %}
+                        >
+
+                   {% endif %}
+
+                   {% if a in ["default"] %}
+                        <input id="default"
                                type="radio"
                                name="checkbox_default"
                                value="{{data[element]["cm_label"]}}"
                                             {% if data[element]["default"] %}
-                                            class="check" checked="checked"
+                                            checked="checked"
                                             {% endif %}
                         >
-                   {% else %}
-                        {{ data[element][a] | safe}}
                    {% endif %}
+                   {% if a not in ["active", "default"] %}
+                        {{ data[element][a] |safe }}
+
                    {% endif %}
 
                </td>
