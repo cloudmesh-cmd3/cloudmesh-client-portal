@@ -231,33 +231,27 @@ def cloudmesh_images(request, cloud=None):
     banner("images")
     if cloud is None:
         cloud = Default.get_cloud()
-    # TODO: make the cloudname a parameter
-    data = Image.list(cloud, format='dict')
-    print (json.dumps(data, indent=4))
-    # TODO set proper columns
-    order = [
-        'default',
-        'id',
-        'name',
-        'category',
-        'minDisk',
-        'minRam',
-        'os_image_size',
-        'progress',
-        'project',
-        'status',
-    ]
-    default_image = Default.get_image(cloud)
-    for image in data:
-        a = data[image]["name"]
-        print("A", a)
-        data[image]["default"] = str(data[image]["name"] == default_image)
 
-    print ("III", image)
-    return (dict_table(request,
+    data = Image.list(cloud, format='dict')
+
+    default = Default.get_image(cloud)
+
+    for index in data:
+        element = data[index]
+        element['default'] = element['name'] == default
+
+    # print (json.dumps(data, indent=4))
+
+    order, header = Attributes.list(cloud,"image")
+
+    order.insert(0,"default")
+    header.insert(0,"Default")
+
+    return dict_table(request,
                        title="Cloudmesh Images {}".format(cloud),
                        data=data,
-                       order=order))
+                       order=order,
+                       header=header)
 
 
 def cloudmesh_flavors(request, cloud=None):
@@ -265,11 +259,18 @@ def cloudmesh_flavors(request, cloud=None):
         cloud = Default.get_cloud()
     data = Flavor.list(cloud, format='dict')
 
+    default = Default.get_flavor(cloud)
+
+    for index in data:
+        element = data[index]
+        element['default'] = element['name'] == default
+
     # print (json.dumps(data, indent=4))
 
     order, header = Attributes.list(cloud,"flavor")
 
-    print("OOOO", order, header)
+    order.insert(0,"default")
+    header.insert(0,"Default")
 
     return dict_table(request,
                       title="Cloudmesh Flavors {}".format(cloud),
