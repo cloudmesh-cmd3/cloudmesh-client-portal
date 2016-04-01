@@ -10,6 +10,15 @@ python setup.py install
 
 cd ~/github/cloudmesh
 
+
+cd ~/github/cloudmesh
+git clone https://github.com/cloudmesh/workflow.git
+cd workflow
+pip install -r requirements.txt
+pip install .
+
+cd ~/github/cloudmesh
+
 git clone https://github.com/cloudmesh/portal.git
 cd portal
 pip install -r requirements.txt

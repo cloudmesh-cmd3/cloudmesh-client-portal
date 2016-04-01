@@ -13,3 +13,8 @@ aldjemy
 nwdiag
 pygal
 django-jinja-bootstrap-form
+backports.pbkdf2==0.1
+django-otp==0.3.4
+yubico-client==1.9.1
+django_yubico
+django-countries

@@ -52,8 +52,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'django_countries',
+    'django_yubico',
     'rest_framework',
     'rest_framework_swagger',
+    'cloudmesh_portal.users'
 )
 
 # INSTALLED_APPS += ('bootstrap3',)

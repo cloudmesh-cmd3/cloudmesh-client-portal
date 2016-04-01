@@ -56,7 +56,7 @@ requirements = [
     "pygal"
 ]
 
-
+œ
 class UploadToPypi(install):
     """Upload the package to pypi. -- only for Maintainers."""
 

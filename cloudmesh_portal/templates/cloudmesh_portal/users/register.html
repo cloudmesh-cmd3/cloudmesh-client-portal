@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% block content %}
+<div id="User Registration">
+<h1>{% trans 'Yubikey Register' %}</h1>
+    {% trans 'Please Register here:' %}</p>
+    <table>
+        <form action="" method="post" onkeypress="return event.keyCode != 13" id="register_form">{% csrf_token %}
+    {{ form.as_table }}
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+    <tr><td></td><td><input type="submit" id="yubikey_register_button"
+            value="{% trans 'Register' %}" /></td></tr>
+    </form>
+    </table>
+
+    <span>Please register your yubikey at <a href="https://upgrade.yubico.com/getapikey/" target="_blank">API</a> before registering here.</span><br>
+    <span>Please register your yubikey only if you intend to use it as a factor of authentication.</span>
+</div>
+{% endblock %}
