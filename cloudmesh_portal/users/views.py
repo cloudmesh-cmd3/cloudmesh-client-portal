@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, YubikeyForm
 from django.contrib.auth.models import User
 from models import PortalUser
 from django.views.decorators.cache import never_cache
@@ -8,7 +8,10 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login as auth_login
+
+# Ask for the user password after the token
+YUBIKEY_USE_PASSWORD = getattr(settings, 'YUBICO_USE_PASSWORD', False)
 
 # Name of the session key which stores user id
 YUBIKEY_SESSION_USER_ID = getattr(settings, 'YUBICO_SESSION_USER_ID',
@@ -63,21 +66,52 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
 
 
 @never_cache
-def login(request, template_name='cloudmesh_portal/users/register.html',
+def login(request, template_name='cloudmesh_portal/users/login.html',
              redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Displays the login form and handles the login action.
     """
-    redirect_to = redirect_field_name
+    redirect_to = settings.LOGIN_REDIRECT_URL
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user:
-                if user.is_active:
-                    user = form.user
-                else:
-                    return HttpResponseRedirect(reverse('yubico_django_login'))
-            
+            user = form.user
+
+            if YUBIKEY_USE_PASSWORD:
+                # Dual - Factor authentication, redirect to OTP page
+                request.session[YUBIKEY_SESSION_USER_ID] = user.pk
+                request.session[YUBIKEY_SESSION_AUTH_BACKEND] = user.backend
+                request.session[YUBIKEY_SESSION_ATTEMPT_COUNTER] = 1
+
+                return HttpResponseRedirect(reverse('yubico_django_password'))
+            else:
+                auth_login(request=request, user=user)
+
+                return HttpResponseRedirect(redirect_to)
+        else:
+            form = LoginForm()
+    else:
+        form = LoginForm()
+
+    dictionary = {'form': form, redirect_field_name: redirect_to}
+    return render_to_response(template_name, dictionary,
+                              context_instance=RequestContext(request))
+
+
+@never_cache
+def yubi_otp(request, template_name='cloudmesh_portal/users/password.html',
+             redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Displays the OTP form and handles the login action.
+    """
+    redirect_to = settings.LOGIN_REDIRECT_URL
+    if request.method == 'POST':
+        form = YubikeyForm(data=request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = YubikeyForm()
+
+    dictionary = {'form': form, redirect_field_name: redirect_to}
+    return render_to_response(template_name, dictionary,
+                              context_instance=RequestContext(request))

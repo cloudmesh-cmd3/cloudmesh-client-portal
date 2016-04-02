@@ -75,16 +75,14 @@ class LoginForm(forms.Form):
 
     def clean(self):
         username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
 
-    def clean_password(self):
-        password = self.cleaned_data['password']
-
-        if not self.user.check_password(password):
-            msg = _('The provided password is incorrect')
-            raise forms.ValidationError(msg)
+        if username and password:
+            self.user = authenticate(username=username,password=password)
 
         if self.user is None:
-            raise forms.ValidationError(_('The provided OTP is invalid.'))
+            raise forms.ValidationError(_('Invalid Credentials. Please '
+                                          'Register.'))
 
         return self.cleaned_data
 

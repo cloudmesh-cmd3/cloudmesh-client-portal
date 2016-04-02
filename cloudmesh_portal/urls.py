@@ -33,7 +33,7 @@ from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 
-from .users.views import register, login
+from .users.views import register, login, yubi_otp
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -64,6 +64,7 @@ urlpatterns = [
     url(r'^$', homepage, name='home'),
     url(r'^user/register/', register, name='yubico_django_register'),
     url(r'^user/login/', login, name='yubico_django_login'),
+    url(r'^user/yubikey/', yubi_otp, name='yubico_django_otp'),
     url(r'^hpc/list/$', hpc_list, name='hpc_list'),
     url(r'^hpc/run/list/$', hpc_run_list, name='hpc_run_list'),
     url(r'^hpc/queue/(?P<cluster>\w+)/$', hpc_queue, name='hpc_queue'),
