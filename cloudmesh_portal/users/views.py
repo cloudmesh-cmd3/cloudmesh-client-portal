@@ -11,22 +11,27 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 
+
 # Ask for the user password after the token
 YUBIKEY_USE_PASSWORD = getattr(settings, 'YUBICO_USE_PASSWORD', False)
+
 
 # Name of the session key which stores user id
 YUBIKEY_SESSION_USER_ID = getattr(settings, 'YUBICO_SESSION_USER_ID',
                                   'yubicodjango_user_id')
+
 
 # Name of the session key which stores the name of the backend user used to log
 # in.
 YUBIKEY_SESSION_AUTH_BACKEND = getattr(settings, 'YUBICO_SESSION_AUTH_BACKEND',
                                        'yubicodjango_auth_backend')
 
+
 # Name of the session key which stores attempt counter
 YUBIKEY_SESSION_ATTEMPT_COUNTER = getattr(settings,
                                           'YUBIKEY_SESSION_ATTEMPT_COUNTER',
                                           'yubicodjango_counter')
+
 
 # Django Yubico session keys
 SESSION_KEYS = [YUBIKEY_SESSION_USER_ID, YUBIKEY_SESSION_AUTH_BACKEND,
@@ -39,7 +44,6 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
     redirect_to = settings.LOGIN_REDIRECT_URL
     if request.user.is_authenticated():
         return HttpResponseRedirect(redirect_to)
-
     if request.method == 'POST':
         # POST request to send form
         form = RegisterForm(data=request.POST)
@@ -57,7 +61,6 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
                            citizen=form.cleaned_data['citizen'],
                            country=form.cleaned_data['country'])
             p.save()
-
         else:
             # Not a valid form, open Register form with an error message.
             form = RegisterForm()
@@ -77,6 +80,9 @@ def login(request, template_name='cloudmesh_portal/users/login.html',
     Displays the login form and handles the login action.
     """
     redirect_to = settings.LOGIN_REDIRECT_URL
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(redirect_to)
+
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():

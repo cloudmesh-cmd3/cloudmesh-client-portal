@@ -1,12 +1,13 @@
 {% load i18n %}
 
 {% block content %}
-<div id="yubikey_login">
-<h1>{% trans 'Yubikey Login' %}</h1>
-<p>{% trans 'Please touch the Yubikey button to login.' %}</p>
-<form action="" method="post" onkeypress="return event.keyCode != 13" id="yubico_form">{% csrf_token %}
+<div id="login">
+<h1>{% trans 'Login' %}</h1>
+<p>{% trans 'Please Login with username and password.' %}</p>
+<form action="" method="post" onkeypress="return event.keyCode != 13"
+      id="login_form">{% csrf_token %}
 {{ form.as_p }}
-<p><input type="submit" id="yubikey_login_button" value="{% trans 'Login' %}" /></p>
+<p><input type="submit" id="login_button" value="{% trans 'Login' %}" /></p>
 </form>
 </div>
 {% endblock %}

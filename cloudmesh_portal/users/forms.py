@@ -103,7 +103,6 @@ class YubikeyForm(forms.Form):
                                                   max_length=max_length)
 
     def clean(self):
-        username = self.cleaned_data.get('username')
 
         otp_list = []
         if not YUBICO_MULTI_MODE:

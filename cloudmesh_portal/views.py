@@ -89,6 +89,7 @@ def dict_table(request, **kwargs):
     return render(request, 'cloudmesh_portal/dict_table.jinja', context)
 
 
+@login_required(login_url='/user/login')
 def homepage(request):
     context = {
         'title': "Comet Home"
