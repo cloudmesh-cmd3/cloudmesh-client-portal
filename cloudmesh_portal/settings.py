@@ -146,6 +146,9 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = os.path.join(BASE_DIR, "static/")
+STATIC = '/static/'
+LOGIN_URL = '/user/login'
+LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 cm_theme = 'cosmo'
 

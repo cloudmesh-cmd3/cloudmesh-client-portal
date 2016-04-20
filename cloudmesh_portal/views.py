@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template.defaulttags import register
 from sqlalchemy.orm import sessionmaker
 from django_jinja import library
+from django.contrib.auth.decorators import login_required
 
 
 # noinspection PyPep8Naming

@@ -26,14 +26,18 @@ from .comet.views import comet_list, comet_ll, comet_list_queue, \
 from .views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
-    cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
+    cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table,  \
+    cloudmesh_refresh, \
     cloudmesh_cloud
 
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 
-from .users.views import register, login, yubi_otp
+from .users.accounts import profile
+
+from .users.views import register, login, yubi_otp, logout
+
 
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -57,14 +61,16 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap,
         {'sitemaps': {'flatpages': FlatPageSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
-    #
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^$', homepage, name='home'),
-    url(r'^user/register/', register, name='yubico_django_register'),
-    url(r'^user/login/', login, name='yubico_django_login'),
+    url(r'^user/register/', register, name='user_register'),
+    url(r'^user/login/', login, name='user_login'),
+    url(r'^user/logout', logout, name='user_logout'),
     url(r'^user/yubikey/', yubi_otp, name='yubico_django_otp'),
+    url(r'^accounts/profile/', profile, name='account_profile'),
     url(r'^hpc/list/$', hpc_list, name='hpc_list'),
     url(r'^hpc/run/list/$', hpc_run_list, name='hpc_run_list'),
     url(r'^hpc/queue/(?P<cluster>\w+)/$', hpc_queue, name='hpc_queue'),
@@ -74,27 +80,36 @@ urlpatterns = [
         name='workflow_detail'),
     url(r'^cm/workflow/graph/(?P<script>\w+)/$', workflow_graph,
         name='workflow_graph'),
-    url(r'^cm/launcher/list$', cloudmesh_launcher_table, name='cloudmesh_launcher_table'),
+    url(r'^cm/launcher/list$', cloudmesh_launcher_table,
+        name='cloudmesh_launcher_table'),
     url(r'^cm/launcher/$', cloudmesh_launcher, name='cloudmesh_launcher'),
-    url(r'^cm/launcher/start/$', cloudmesh_launcher_start, name='cloudmesh_launcher_start'),
+    url(r'^cm/launcher/start/$', cloudmesh_launcher_start,
+        name='cloudmesh_launcher_start'),
     url(r'^cm/clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),
     url(r'^cm/cloud/(?P<cloud>\w+)/$', cloudmesh_cloud, name='cloudmesh_cloud'),
     url(r'^cm/default/$', cloudmesh_defaults, name='cloudmesh_default'),
-    url(r'^cm/refresh/(?P<action>\w+)/(?P<cloud>\w+)/$', cloudmesh_refresh, name='cloudmesh_refresh'),
+    url(r'^cm/refresh/(?P<action>\w+)/(?P<cloud>\w+)/$', cloudmesh_refresh,
+        name='cloudmesh_refresh'),
     url(r'^cm/image/$', cloudmesh_images, name='cloudmesh_image'),
-    url(r'^cm/image/(?P<cloud>\w+)/$', cloudmesh_images, name='cloudmesh_image'),
+    url(r'^cm/image/(?P<cloud>\w+)/$', cloudmesh_images,
+        name='cloudmesh_image'),
     url(r'^cm/flavor/$', cloudmesh_flavors, name='cloudmesh_flavor'),
-    url(r'^cm/flavor/(?P<cloud>\w+)/$', cloudmesh_flavors, name='cloudmesh_flavor'),
+    url(r'^cm/flavor/(?P<cloud>\w+)/$', cloudmesh_flavors,
+        name='cloudmesh_flavor'),
     url(r'^cm/vm/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vm/(?P<cloud>\w+)/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vcluster/$', cloudmesh_vclusters, name='cloudmesh_vcluster'),
     url(r'^comet/status', comet_status, name='comet_status'),
     url(r'^comet/ll', comet_ll, name='comet_ll'),
     url(r'^comet/list$', comet_list, name='comet_list'),
-    url(r'^comet/console/(?P<cluster>vc[0-9]+)/$', comet_console, name='comet_console'),
-    url(r'^comet/console/(?P<cluster>vc[0-9]+)/(?P<node>[-\w]+)/$', comet_console, name='comet_console'),
-    url(r'^comet/power/(?P<action>\w+)/(?P<cluster>vc[0-9]+)/$', comet_power, name='comet_power'),
-    url(r'^comet/power/(?P<action>\w+)/(?P<cluster>vc[0-9]+)/(?P<node>[-\w]+)/$', comet_power, name='comet_power'),
+    url(r'^comet/console/(?P<cluster>vc[0-9]+)/$', comet_console,
+        name='comet_console'),
+    url(r'^comet/console/(?P<cluster>vc[0-9]+)/(?P<node>[-\w]+)/$',
+        comet_console, name='comet_console'),
+    url(r'^comet/power/(?P<action>\w+)/(?P<cluster>vc[0-9]+)/$', comet_power,
+        name='comet_power'),
+    url(r'^comet/power/(?P<action>\w+)/(?P<cluster>vc[0-9]+)/(?P<node>[-\w]+ '
+        r')/$', comet_power, name='comet_power'),
     url(r'^comet/queue$', comet_list_queue, name='comet_list_queue'),
     url(r'^comet/queue/info$', comet_info, name='comet_info'),
     url(r'^clouds/$', cloudmesh_clouds, name='cloudmesh_clouds'),

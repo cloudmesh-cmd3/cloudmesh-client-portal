@@ -1,8 +1,8 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
   <head>
     {% block title %} {{ title | safe }} {% endblock %}
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,8 +23,8 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="navbar-fixed-top.css" rel="stylesheet">
-    <link href="map.css" rel="stylesheet">
+    <link href="{% static 'layout/navbar-fixed-top.css' %}" rel="stylesheet">
+    <link href="{% static 'layout/map.css' %}" rel="stylesheet">
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -55,7 +55,8 @@
 
       <a class="navbar-brand" width="600px" href="/">
         <font size="2"> Comet
-          <img src="{{ static("icons/ghost.png") }}" width="20px" />
+            {% load staticfiles %}
+          <img src="{% static 'icons/ghost.png' %}" width="20px" />
         </font>
 
       </a>
@@ -120,8 +121,7 @@
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
         </li>
-        <li><a href="user/login/">Login</a></li>
-        <li><a href="user/register/">Register</a></li>
+        <li><a href="{% url 'user_logout' %}">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -170,6 +170,6 @@
 <script type="text/javascript" src="https://cdn.datatables.net/s/bs/jq-2.1.4,dt-1.10.10,r-2.0.0/datatables.min.js"></script>
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!--<script src="static/assets/js/ie10-viewport-bug-workaround.js"></script>-->
   </body>
 </html>

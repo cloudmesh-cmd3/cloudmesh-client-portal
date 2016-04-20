@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 
 # Ask for the user password after the token
@@ -31,10 +32,14 @@ YUBIKEY_SESSION_ATTEMPT_COUNTER = getattr(settings,
 SESSION_KEYS = [YUBIKEY_SESSION_USER_ID, YUBIKEY_SESSION_AUTH_BACKEND,
                 YUBIKEY_SESSION_ATTEMPT_COUNTER]
 
+
 @never_cache
 def register(request, template_name='cloudmesh_portal/users/register.html',
              redirect_field_name=REDIRECT_FIELD_NAME):
     redirect_to = settings.LOGIN_REDIRECT_URL
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(redirect_to)
+
     if request.method == 'POST':
         # POST request to send form
         form = RegisterForm(data=request.POST)
@@ -77,23 +82,24 @@ def login(request, template_name='cloudmesh_portal/users/login.html',
         if form.is_valid():
             user = form.user
 
-            if YUBIKEY_USE_PASSWORD:
-                # Dual - Factor authentication, redirect to OTP page
-                request.session[YUBIKEY_SESSION_USER_ID] = user.pk
-                request.session[YUBIKEY_SESSION_AUTH_BACKEND] = user.backend
-                request.session[YUBIKEY_SESSION_ATTEMPT_COUNTER] = 1
-
-                return HttpResponseRedirect(reverse('yubico_django_password'))
+            if user is not None:
+                if user.is_active:
+                    # Check for yubikey user or not and then redirect to that.
+                    auth_login(request, user)
+                    return HttpResponseRedirect(redirect_to)
+                else:
+                    # Send back to login page with
+                    return HttpResponseRedirect( reverse(
+                        'yubico_django_password'))
             else:
-                auth_login(request=request, user=user)
-
-                return HttpResponseRedirect(redirect_to)
+                form = LoginForm()
         else:
             form = LoginForm()
     else:
         form = LoginForm()
 
     dictionary = {'form': form, redirect_field_name: redirect_to}
+
     return render_to_response(template_name, dictionary,
                               context_instance=RequestContext(request))
 
@@ -115,3 +121,14 @@ def yubi_otp(request, template_name='cloudmesh_portal/users/password.html',
     dictionary = {'form': form, redirect_field_name: redirect_to}
     return render_to_response(template_name, dictionary,
                               context_instance=RequestContext(request))
+
+
+@never_cache
+def logout(request, next_page='/user/login',
+           template_name='cloudmesh_portal/users/logout.html',
+           redirect_field_name=REDIRECT_FIELD_NAME):
+    """
+    Displays the Logout Message.
+    """
+    auth_logout(request)
+    return HttpResponseRedirect(next_page)
