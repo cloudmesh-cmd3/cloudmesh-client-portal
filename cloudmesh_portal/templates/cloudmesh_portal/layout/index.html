@@ -121,6 +121,8 @@
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
         </li>
+        <li><a href="/user/profile/{{ username }}">
+          {{ username }}</a></li>
         <li><a href="{% url 'user_logout' %}">Logout</a></li>
       </ul>
     </div>

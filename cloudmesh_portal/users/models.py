@@ -4,7 +4,7 @@ from django_countries.fields import CountryField
 
 
 class PortalUser(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, null=True, blank=True)
     address = models.CharField(max_length=100)
     additional_info = models.CharField(max_length=300)
     country = CountryField()

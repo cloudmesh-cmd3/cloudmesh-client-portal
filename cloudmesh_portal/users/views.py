@@ -42,7 +42,7 @@ SESSION_KEYS = [YUBIKEY_SESSION_USER_ID, YUBIKEY_SESSION_AUTH_BACKEND,
 @never_cache
 def register(request, template_name='cloudmesh_portal/users/register.html',
              redirect_field_name=REDIRECT_FIELD_NAME):
-    redirect_to = settings.LOGIN_URL
+    redirect_to = settings.LOGIN_REDIRECT_URL
     if request.user.is_authenticated():
         return HttpResponseRedirect(redirect_to)
     if request.method == 'POST':
@@ -50,20 +50,28 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             print form.username
-            # TODO add validation error if user is already there.
-            user = User.objects.create_user(form.cleaned_data['username'],
-                                            form.cleaned_data['email'],
-                                            form.cleaned_data['password'])
-            user.last_name = form.cleaned_data['lastname']
-            user.first_name = form.cleaned_data['firstname']
-            user.save()
-            p = PortalUser.create(user=user, address=form.cleaned_data[
+            try:
+                new_user = User.objects.create_user(username=form.cleaned_data[
+                                                    'username'],
+                                                email=form.cleaned_data['email'],
+                                                password=form.cleaned_data[
+                                                    'password'])
+            except Exception as e:
+                print e.message
+
+            new_user.last_name = form.cleaned_data['lastname']
+            new_user.first_name = form.cleaned_data['firstname']
+            new_user.backend = 'django.contrib.auth.backends.ModelBackend'
+            new_user.save()
+            p = PortalUser.create(user=new_user, address=form.cleaned_data[
                 'address'],
                            additional_info=form.cleaned_data['additional_info'],
                            citizen=form.cleaned_data['citizen'],
                            country=form.cleaned_data['country'])
             p.save()
-            user = authenticate(username=user.username, password=user.password)
+            user = authenticate(username=new_user.username,
+                                password=new_user.password)
+            auth_login(request, user)
             return HttpResponseRedirect(redirect_to)
     else:
         # GET request to get form
