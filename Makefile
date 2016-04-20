@@ -2,7 +2,7 @@ view:
 	open http://127.0.0.1:8000/comet/status
 
 migrate:
-	python manage.py migrate
+	python manage.py migrate --run-syncdb
 
 run: migrate
 	python manage.py runserver

@@ -1,40 +1,35 @@
 {% load i18n %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 
 {% block content %}
 <div id="User Registration">
-<h1>{% trans 'Yubikey Register' %}</h1>
+<h1>{% trans 'User Register' %}</h1>
     {% trans 'Please Register here:' %}</p>
     <table>
         <form action="" method="post" onkeypress="return event.keyCode != 13" id="register_form">{% csrf_token %}
-    {{ form.as_table }}
+    {% bootstrap_form form layout='horizontal' size='sm' %}
 
             {% if form.errors %}
                 {% for field in form %}
                     {% for error in field.errors %}
-                        <div class="alert alert-error">
-                            <strong>{{ error|escape }}</strong>
-                        </div>
+                        <p>{{ errors }}</p>
                     {% endfor %}
                 {% endfor %}
             {% endif %}
 
-    <tr><td></td><td><input type="submit" id="yubikey_register_button"
-            value="{% trans 'Register' %}" /></td></tr>
+    <tr><td></td><td>{% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "star" %} Register
+    </button>
+  {% endbuttons %}</td></tr>
     </form>
     </table>
-
-    <span>Please register your yubikey at <a href="https://upgrade.yubico.com/getapikey/" target="_blank">API</a> before registering here.</span><br>
-    <span>Please register your yubikey only if you intend to use it as a factor of authentication.</span>
-</div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/s/bs/jq-2.1.4,dt-1.10.10,r-2.0.0/datatables.min.js"></script>
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 {% endblock %}
+</div>

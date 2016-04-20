@@ -1,4 +1,12 @@
 {% load i18n %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 
 {% block content %}
 <div id="login">
@@ -6,8 +14,13 @@
 <p>{% trans 'Please Login with username and password.' %}</p>
 <form action="" method="post" onkeypress="return event.keyCode != 13"
       id="login_form">{% csrf_token %}
-{{ form.as_p }}
-<p><input type="submit" id="login_button" value="{% trans 'Login' %}" /></p>
+
+    {% bootstrap_form form layout='horizontal' size='sm' %}
+<p>{% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "star" %} Submit
+    </button>
+  {% endbuttons %}</p>
 </form>
 </div>
 {% endblock %}

@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 
 
 # Ask for the user password after the token
@@ -41,7 +42,7 @@ SESSION_KEYS = [YUBIKEY_SESSION_USER_ID, YUBIKEY_SESSION_AUTH_BACKEND,
 @never_cache
 def register(request, template_name='cloudmesh_portal/users/register.html',
              redirect_field_name=REDIRECT_FIELD_NAME):
-    redirect_to = settings.LOGIN_REDIRECT_URL
+    redirect_to = settings.LOGIN_URL
     if request.user.is_authenticated():
         return HttpResponseRedirect(redirect_to)
     if request.method == 'POST':
@@ -56,14 +57,14 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
             user.last_name = form.cleaned_data['lastname']
             user.first_name = form.cleaned_data['firstname']
             user.save()
-            p = PortalUser(user=user, address=form.cleaned_data['address'],
+            p = PortalUser.create(user=user, address=form.cleaned_data[
+                'address'],
                            additional_info=form.cleaned_data['additional_info'],
                            citizen=form.cleaned_data['citizen'],
                            country=form.cleaned_data['country'])
             p.save()
-        else:
-            # Not a valid form, open Register form with an error message.
-            form = RegisterForm()
+            user = authenticate(username=user.username, password=user.password)
+            return HttpResponseRedirect(redirect_to)
     else:
         # GET request to get form
         form = RegisterForm()
@@ -95,12 +96,9 @@ def login(request, template_name='cloudmesh_portal/users/login.html',
                     return HttpResponseRedirect(redirect_to)
                 else:
                     # Send back to login page with
-                    return HttpResponseRedirect( reverse(
-                        'yubico_django_password'))
+                    return HttpResponseRedirect(reverse('user_login'))
             else:
                 form = LoginForm()
-        else:
-            form = LoginForm()
     else:
         form = LoginForm()
 

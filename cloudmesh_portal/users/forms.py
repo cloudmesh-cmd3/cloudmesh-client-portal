@@ -69,7 +69,7 @@ class LoginForm(forms.Form):
                                widget=forms.PasswordInput(),
                                required=True)
 
-    def __int__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.user = None
 
@@ -78,7 +78,7 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            self.user = authenticate(username=username,password=password)
+            self.user = authenticate(username=username, password=password)
 
         if self.user is None:
             raise forms.ValidationError(_('Invalid Credentials. Please '
