@@ -69,9 +69,8 @@ def register(request, template_name='cloudmesh_portal/users/register.html',
                            citizen=form.cleaned_data['citizen'],
                            country=form.cleaned_data['country'])
             p.save()
-            user = authenticate(username=new_user.username,
-                                password=new_user.password)
-            auth_login(request, user)
+            authenticate(username=new_user.username, password=new_user.password)
+            auth_login(request, new_user)
             return HttpResponseRedirect(redirect_to)
     else:
         # GET request to get form
