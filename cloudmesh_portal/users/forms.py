@@ -89,7 +89,7 @@ class LoginForm(forms.Form):
         return self.cleaned_data
 
 
-class YubikeyForm(forms.Form):
+class YubikeyFormPassword(forms.Form):
     def __init__(self, *args, **kwargs):
         super(YubikeyForm, self).__init__(*args, **kwargs)
 
@@ -121,7 +121,7 @@ class YubikeyForm(forms.Form):
 class YubikeyForm(forms.Form):
     device_id = forms.CharField(max_length=12)
     client_id = forms.IntegerField()
-    enabled = forms.BooleanField()
+    secret_key = forms.CharField(max_length=80)
 
     def __init__(self, *args, **kwargs):
         super(YubikeyForm, self).__init__(*args, **kwargs)
@@ -130,36 +130,36 @@ class YubikeyForm(forms.Form):
         model = YubicoKey
         exclude = ('user', )
 
-    def save(self, *args, **kwargs):
-        u = self.instance.user
-        yubi_form = super(YubikeyForm, self).save(*args, **kwargs)
-        return yubi_form
+    def clean(self):
+        device = self.cleaned_data['device_id']
+        if YubicoKey.objects.filter(device_id=device).exists():
+            raise forms.ValidationError("That yubikey is already taken")
+        return self.cleaned_data
 
 
 class ProfileForm(forms.Form):
+    email = forms.EmailField(label=_('Email'),
+                             widget=forms.EmailInput())
+    username = forms.CharField(label=_('Username'))
+    firstname = forms.CharField(label=_('Firstname'))
+    lastname = forms.CharField(label=_('Lastname'))
+    address = forms.CharField(label=_('Address'))
+    additional_info = forms.CharField(label=_('Additional Info'))
+
+    class Meta:
+        model = PortalUser
+        fields = ['Email', 'Username', 'Firstname', 'Lastname', 'Address',
+                  'Additional Info']
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
-        try:
-            self.fields['email'].initial = self.instance.user.email
-            self.fields['first_name'].initial = self.instance.user.first_name
-            self.fields['last_name'].initial = self.instance.user.last_name
-            self.fields['active'].initial = self.instance.user.is_active
-        except User.DoesNotExist:
-            pass
-
-    email = forms.EmailField(label="Primary email", help_text='')
-
-    class Meta:
-      model = PortalUser
-      exclude = ('user',)
 
     def save(self, *args, **kwargs):
         """
         Update the primary email address on the related User object as well.
         """
         u = self.instance.user
-        u.email = self.cleaned_data['email']
+        u.email = self.cleaned_data['Email']
         u.save()
         profile = super(ProfileForm, self).save(*args,**kwargs)
         return profile

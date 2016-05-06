@@ -1,5 +1,43 @@
 {% extends 'cloudmesh_portal/layout/index.html' %}
+{% load i18n %}
+{# Load the tag library #}
+{% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 {% block content %}
- <div> Hello World! </div>
+<ul>
+    <h3>To use yubikey, you will need Client ID & Secret Key.</h3>
+    <h4>Steps to get your yubikey api key:</h4>
+    <br>
+    <li>
+        Go to link: <a href="https://upgrade.yubico.com/getapikey/">Get API
+    Key</a>
+    </li>
+    <li>
+        Please enter your email id.
+    </li>
+    <li>
+        Click on the next input box, plug in your yubikey to USB port of your
+        computer, press the button at the center of the yubikey to generate
+        one-time password.
+    </li>
+    <li>
+        You will be redirected to another page with Client ID & Secret Key.
+    </li>
+    <li>
+        Use that Client ID & Secret Key in Yubikey add page.
+    </li>
+    <li>
+        Plug in your Yubikey and Press the button at Device ID.
+    </li>
+    <br>
+    <h4>Hang tight while Yubico releases one-click all operations.
+        Currently available only for Chrome.</h4>
+    <p>For More information about one-click, check: <a
+            href="https://demo.yubico.com/u2f">One-Click</a> or U2F. </p>
+</ul>
 {% endblock %}

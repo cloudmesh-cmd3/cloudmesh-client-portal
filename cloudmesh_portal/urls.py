@@ -34,7 +34,7 @@ from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 
-from .users.accounts import profile, add_yubikey, how_to
+from .users.accounts import dashboard, add_yubikey, how_to, user_profile
 
 from .users.views import register, login, yubi_otp, logout
 
@@ -72,7 +72,8 @@ urlpatterns = [
     url(r'^user/login/', login, name='user_login'),
     url(r'^user/logout', logout, name='user_logout'),
     url(r'^user/yubikey/', yubi_otp, name='yubico_django_otp'),
-    url(r'^dashboard/', profile, name='account_profile'),
+    url(r'^user/account/', user_profile, name='user_account'),
+    url(r'^dashboard/', dashboard, name='account_profile'),
     url(r'^hpc/list/$', hpc_list, name='hpc_list'),
     url(r'^hpc/run/list/$', hpc_run_list, name='hpc_run_list'),
     url(r'^hpc/queue/(?P<cluster>\w+)/$', hpc_queue, name='hpc_queue'),

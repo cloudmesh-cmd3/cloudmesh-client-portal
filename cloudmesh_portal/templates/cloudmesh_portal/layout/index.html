@@ -53,7 +53,7 @@
         <span class="icon-bar"></span>
       </button>
 
-      <a class="navbar-brand" width="600px" href="/">
+      <a class="navbar-brand" width="600px" href="/dashboard/">
         <font size="2"> Comet
             {% load staticfiles %}
           <img src="{% static 'icons/ghost.png' %}" width="20px" />
@@ -128,7 +128,7 @@
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
         </li>
-        <li><a href="/user/profile/{{ username }}">
+        <li><a href="/user/account/">
           {{ username }}</a></li>
         <li><a href="{% url 'user_logout' %}">Logout</a></li>
       </ul>
@@ -165,7 +165,12 @@
           </div>
     {% endblock %}
 
-    {% block content %}{% endblock %}
+    {% block content %}
+    <h3>
+      Welcome to Cloudmesh Portal. You have successfully logged in as a user!
+    </h3>
+
+    {% endblock %}
 
 </div> <!-- /container -->
 

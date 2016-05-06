@@ -16,8 +16,8 @@ class PortalUser(models.Model):
 
     @classmethod
     def create(cls, user, address, additional_info, country, citizen):
-        portal_user = cls(user=user,address=address,
-                          additional_info=additional_info,country=country,
+        portal_user = cls(user=user, address=address,
+                          additional_info=additional_info, country=country,
                           citizen=citizen)
         return portal_user
 

@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'cloudmesh_portal/layout/index.html' %}
+{% load i18n %}
+{# Load the tag library #}
+{% load bootstrap3 %}
 
-</body>
-</html>
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block content %}
+
+<div id="login">
+<h1>{% trans 'Profile' %}</h1>
+<form action="" method="post" onkeypress="return event.keyCode != 13"
+      id="profile_form">{% csrf_token %}
+
+    {% bootstrap_form form layout='horizontal' size='sm' %}
+<p>{% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "star" %} Submit
+    </button>
+  {% endbuttons %}</p>
+</form>
+</div>
+
+
+{% endblock %}
