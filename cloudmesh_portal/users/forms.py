@@ -3,6 +3,8 @@ import re
 from django import forms
 from django.conf import settings
 from django.contrib.auth.models import User
+from models import PortalUser
+from django_yubico.models import YubicoKey
 from django.utils.translation import ugettext_lazy as _
 from django_countries import countries
 from django_countries.fields import LazyTypedChoiceField
@@ -114,3 +116,50 @@ class YubikeyForm(forms.Form):
                 otp_list.append(otp)
 
         return self.cleaned_data
+
+
+class YubikeyForm(forms.Form):
+    device_id = forms.CharField(max_length=12)
+    client_id = forms.IntegerField()
+    enabled = forms.BooleanField()
+
+    def __init__(self, *args, **kwargs):
+        super(YubikeyForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = YubicoKey
+        exclude = ('user', )
+
+    def save(self, *args, **kwargs):
+        u = self.instance.user
+        yubi_form = super(YubikeyForm, self).save(*args, **kwargs)
+        return yubi_form
+
+
+class ProfileForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        try:
+            self.fields['email'].initial = self.instance.user.email
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+            self.fields['active'].initial = self.instance.user.is_active
+        except User.DoesNotExist:
+            pass
+
+    email = forms.EmailField(label="Primary email", help_text='')
+
+    class Meta:
+      model = PortalUser
+      exclude = ('user',)
+
+    def save(self, *args, **kwargs):
+        """
+        Update the primary email address on the related User object as well.
+        """
+        u = self.instance.user
+        u.email = self.cleaned_data['email']
+        u.save()
+        profile = super(ProfileForm, self).save(*args,**kwargs)
+        return profile

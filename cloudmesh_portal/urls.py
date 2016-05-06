@@ -34,7 +34,7 @@ from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 
-from .users.accounts import profile
+from .users.accounts import profile, add_yubikey, how_to
 
 from .users.views import register, login, yubi_otp, logout
 
@@ -66,6 +66,8 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^$', homepage, name='home'),
+    url(r'^yubikey/add/', add_yubikey,name='yubikey_add'),
+    url(r'^yubikey/howto/', how_to, name='yubikey_how_to'),
     url(r'^user/register/', register, name='user_register'),
     url(r'^user/login/', login, name='user_login'),
     url(r'^user/logout', logout, name='user_logout'),
