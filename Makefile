@@ -19,6 +19,9 @@ doc:
 install:
 	cd ../client; python setup.py install
 
+admin:
+	python manage.py createsuperuser
+
 
 ######################################################################
 # CLEANING
@@ -32,5 +35,3 @@ clean:
 	find . -name "*.pyc" -exec rm {} \;
 	find . -name "*.db" -exec rm {} \;
 	echo "clean done"
-	
-

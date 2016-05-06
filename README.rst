@@ -23,6 +23,14 @@ git clone https://github.com/cloudmesh/portal.git
 cd portal
 pip install -r requirements.txt
 python setup.py install
+make admin
+make run
+
+
+Add Admin
+----------
+
+make admin
 
 
 Run portal
