@@ -30,6 +30,7 @@ clean:
 	rm -rf *.egg-info
 	find . -name "*~" -exec rm {} \;
 	find . -name "*.pyc" -exec rm {} \;
+	find . -name "*.db" -exec rm {} \;
 	echo "clean done"
-
+	
 

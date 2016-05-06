@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template.defaulttags import register
 from sqlalchemy.orm import sessionmaker
 from django_jinja import library
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 
@@ -89,8 +90,9 @@ def dict_table(request, **kwargs):
     return render(request, 'cloudmesh_portal/dict_table.jinja', context)
 
 
-@login_required(login_url='/user/login')
 def homepage(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/user/login')
     context = {
 
     }
