@@ -32,6 +32,8 @@ Add Admin
 
 make admin
 
+open http://127.0.0.1:8000/admin/
+
 
 Run portal
 -----------
@@ -41,4 +43,26 @@ make run
 View portal 
 -------------
 
-Make view
+make view
+
+Todo
+-------------
+
+
+cm portal user add ... --admin
+cm portal user delete
+
+cm portal group add
+cm portal group activate
+cm portal group deactivate
+
+we need groups
+
+admin   - a user that is an admin of the portal
+user    - a user able to use the portal
+applied - a user that just has applied
+
+how do we save a group that was created with gui so we can reimport
+
+
+
