@@ -106,7 +106,7 @@ def cloudmesh_clouds(request):
     config = ConfigDict(filename="cloudmesh.yaml")
     clouds = config["cloudmesh.clouds"]
     active = config["cloudmesh.active"]
-    default = Default.get_cloud()
+    default = Default.cloud
     data = {}
     attributes = ['cm_label',
                   'cm_host',
@@ -178,11 +178,11 @@ def cloudmesh_clouds(request):
 
 def cloudmesh_cloud(request, cloud=None):
     if cloud is None:
-        cloud = Default.get_cloud()
+        cloud = Default.cloud
     config = ConfigDict(filename="cloudmesh.yaml")
     cloud_config = dict(config["cloudmesh.clouds"][cloud])
     active = cloud in config["cloudmesh.active"]
-    default = Default.get_cloud()
+    default = Default.cloud
 
     if 'OS_PASSWORD' in cloud_config['credentials']:
         cloud_config['credentials']['OS_PASSWORD'] = '********'
@@ -228,7 +228,7 @@ def cloudmesh_defaults(request):
 def cloudmesh_images(request, cloud=None):
     banner("images")
     if cloud is None:
-        cloud = Default.get_cloud()
+        cloud = Default.cloud
     # TODO: make the cloudname a parameter
     data = Image.list(cloud, format='dict')
     print (json.dumps(data, indent=4))
@@ -252,7 +252,7 @@ def cloudmesh_images(request, cloud=None):
 
 def cloudmesh_flavors(request, cloud=None):
     if cloud is None:
-        cloud = Default.get_cloud()
+        cloud = Default.cloud
     data = Flavor.list(cloud, format='dict')
     print (json.dumps(data, indent=4))
 
@@ -277,7 +277,7 @@ def cloudmesh_flavors(request, cloud=None):
 
 def cloudmesh_vms(request, cloud=None):
     if cloud is None:
-        cloud = Default.get_cloud()
+        cloud = Default.cloud
     data = Vm.list(cloud=cloud, output_format='dict')
     print (json.dumps(data, indent=4))
     order = ['id',
@@ -302,7 +302,7 @@ def cloudmesh_refresh(request, action=None, cloud=None):
         action = [action]
 
     if cloud is None:
-        cloud = Default.get_cloud()
+        cloud = Default.cloud
         # TODO: should actually be all active clouds
 
     data = Vm.list(cloud=cloud, output_format='dict')
