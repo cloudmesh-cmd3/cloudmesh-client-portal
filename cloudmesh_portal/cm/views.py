@@ -256,10 +256,11 @@ def cloudmesh_flavors(request, cloud=None):
     data = Flavor.list(cloud, format='dict')
     print (json.dumps(data, indent=4))
 
+
     order = [
-        'id',
+        'cm_id',
         'name',
-        'cloud',
+        'category',
         'disk',
         'os_flavor_acces',
         'os_flv_disabled',
