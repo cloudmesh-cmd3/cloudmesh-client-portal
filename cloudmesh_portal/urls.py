@@ -20,6 +20,7 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
+
 from .comet.views import comet_list, comet_ll, comet_list_queue, \
     comet_info, comet_status, comet_console, comet_power
 
@@ -27,7 +28,7 @@ from .views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
     cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
-    cloudmesh_cloud
+    cloudmesh_cloud,cloudmesh_refresh_db, cloudmesh_refresh_vm, cloudmesh_vm_action
 
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 
@@ -77,11 +78,16 @@ urlpatterns = [
     url(r'^cm/cloud/(?P<cloud>\w+)/$', cloudmesh_cloud, name='cloudmesh_cloud'),
     url(r'^cm/default/$', cloudmesh_defaults, name='cloudmesh_default'),
     url(r'^cm/refresh/(?P<action>\w+)/(?P<cloud>\w+)/$', cloudmesh_refresh, name='cloudmesh_refresh'),
+    url(r'^cm/image/refresh/$',cloudmesh_refresh_db, name='cloudmesh_refresh_db'),
+    url(r'^cm/flavor/refresh/$',cloudmesh_refresh_db, name='cloudmesh_refresh_db'),
+    url(r'^cm/vm/refresh/$',cloudmesh_refresh_vm, name='cloudmesh_refresh_vm'),
+    url(r'^cm/vm/vm_action/$',cloudmesh_vm_action, name='cloudmesh_vm_action'),
     url(r'^cm/image/$', cloudmesh_images, name='cloudmesh_image'),
     url(r'^cm/image/(?P<cloud>\w+)/$', cloudmesh_images, name='cloudmesh_image'),
     url(r'^cm/flavor/$', cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^cm/flavor/(?P<cloud>\w+)/$', cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^cm/vm/$', cloudmesh_vms, name='cloudmesh_vm'),
+    url(r'^cm/vm/(?P<info>\w+)/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vm/(?P<cloud>\w+)/$', cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^cm/vcluster/$', cloudmesh_vclusters, name='cloudmesh_vcluster'),
     url(r'^comet/status', comet_status, name='comet_status'),

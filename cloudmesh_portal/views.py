@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from pprint import pprint
 
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
 from django.http import HttpResponse
 from django.template.defaulttags import register
 from sqlalchemy.orm import sessionmaker
@@ -80,6 +82,16 @@ def get_item(dictionary, key):
     if value is None:
         value = "-"
     return value
+
+
+def portal_table(request, **kwargs):
+    context = kwargs
+
+    #debug user alerts
+    for message in messages.get_messages(request):
+        print message
+
+    return render(request, 'cloudmesh_portal/portal_table.jinja', context)
 
 
 def dict_table(request, **kwargs):

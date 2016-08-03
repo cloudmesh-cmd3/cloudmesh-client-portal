@@ -4,6 +4,10 @@ from pprint import pprint
 import json
 
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.http import HttpResponse
+from django.http import JsonResponse
 from cloudmesh_client.common.ConfigDict import ConfigDict
 from cloudmesh_client.default import Default
 from cloudmesh_client.cloud.image import Image
@@ -11,9 +15,11 @@ from cloudmesh_client.cloud.flavor import Flavor
 from cloudmesh_client.cloud.vm import Vm
 from cloudmesh_client.cloud.launcher import Launcher
 from cloudmesh_client.common.util import banner, path_expand
+from django.contrib.messages import constants as message_constants
 
 from ..views import dict_table
-
+from ..views import get_item
+from ..views import portal_table
 
 def cloudmesh_launcher_table(request):
     launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
@@ -201,17 +207,19 @@ def cloudmesh_cloud(request, cloud=None):
 
 
 def cloudmesh_defaults(request):
-    data = json.loads(Default.list(format='json'))
+    data = json.loads(Default.list(output='json'))
+
+    print("RESULT DEFAULT",data)
 
     order = [
-        'cloud',
+        'category',
         'name',
         'value',
         'project',
         'user',
     ]
     header = [
-        'Cloud',
+        'Category',
         'Variable',
         'Value',
         'Project',
@@ -234,9 +242,9 @@ def cloudmesh_images(request, cloud=None):
     print (json.dumps(data, indent=4))
     # TODO set proper columns
     order = [
-        'id',
+        'cm_id',
         'name',
-        'cloud',
+        'category',
         'minDisk',
         'minRam',
         'os_image_size',
@@ -257,9 +265,9 @@ def cloudmesh_flavors(request, cloud=None):
     print (json.dumps(data, indent=4))
 
     order = [
-        'id',
+        'cm_id',
         'name',
-        'cloud',
+        'category',
         'disk',
         'os_flavor_acces',
         'os_flv_disabled',
@@ -276,23 +284,26 @@ def cloudmesh_flavors(request, cloud=None):
 
 
 def cloudmesh_vms(request, cloud=None):
+
     if cloud is None:
         cloud = Default.cloud
-    data = Vm.list(cloud=cloud, output_format='dict')
-    print (json.dumps(data, indent=4))
-    order = ['id',
-             'uuid',
-             'label',
-             'status',
-             'static_ip',
-             'floating_ip',
-             'key_name',
-             'project',
-             'user',
-             'cloud']
-    return dict_table(request,
-                      title="Cloudmesh VMs {}".format(cloud),
-                      data=data, order=order)
+
+        data = Vm.list(category=cloud, output='dict')
+        print("cloud debug",cloud)
+        order = ['cm_id',
+                     'uuid',
+                     'label',
+                     'status',
+                     'static_ip',
+                     'floating_ip',
+                     'project',
+                     'category']
+
+    print("HERE*************************")
+    return portal_table(request,
+                              title="Cloudmesh VMs {}".format(cloud),
+                              data=data, order=order)
+
 
 
 def cloudmesh_refresh(request, action=None, cloud=None):
@@ -307,7 +318,7 @@ def cloudmesh_refresh(request, action=None, cloud=None):
 
     data = Vm.list(cloud=cloud, output_format='dict')
     print (json.dumps(data, indent=4))
-    order = ['id',
+    order = ['cm_id',
              'uuid',
              'label',
              'status',
@@ -316,7 +327,139 @@ def cloudmesh_refresh(request, action=None, cloud=None):
              'key_name',
              'project',
              'user',
-             'cloud']
+             'category']
+
     return dict_table(request,
                       title="Cloudmesh VMs {}".format(cloud),
                       data=data, order=order)
+
+def cloudmesh_refresh_db(request, action=None, cloud=None):
+
+    if action is None:
+        action = ['image']
+    else:
+        action = [action]
+
+    print("******DEBUG*********")
+    print("ACTION IS:",action)
+    print("******DEBUG*********")
+
+    if cloud is None:
+        cloud = Default.cloud
+    # TODO: make the cloudname a parameter
+    data = Image.refresh(cloud)
+
+    print("REFRESH IMAGE DATA",data)
+
+    data = Image.list(cloud, format='dict')
+    print(json.dumps(data, indent=4))
+    # TODO set proper columns
+    order = [
+        'cm_id',
+        'name',
+        'category',
+        'minDisk',
+        'minRam',
+        'os_image_size',
+        'progress',
+        'project',
+        'status',
+    ]
+
+    return (dict_table(request,
+                       title="Cloudmesh Images {}".format(cloud),
+                       data=data,
+                       order=order))
+
+def cloudmesh_refresh_vm(request, action=None, cloud=None):
+
+    if cloud is None:
+        cloud = Default.cloud
+    # TODO: make the cloudname a parameter
+    data = Vm.refresh(cloud=cloud)
+
+    messages.info(request,'Database Refresh was successful!')
+
+    return redirect('cloudmesh_vm')
+
+def cloudmesh_vm_action(request,action=None,cloud=None):
+
+
+    print("******$$$$$$$$$$$$$*********")
+    print("REQUEST")
+    print("******$$$$$$$$$$$$$*********")
+
+    if 'stop_vm' in request.POST:
+
+        try:
+
+            terminate_id=[]
+
+            if request.method == "POST":
+                terminate_id = request.POST.getlist('vm_id')
+
+            print("******DEBUG*********")
+            print("STOP VM:", terminate_id)
+            print("******DEBUG*********")
+
+            if cloud is None:
+                cloud = Default.cloud
+
+            for label in terminate_id:
+                server_name=label
+                print("server_name",server_name)
+                Vm.stop(cloud=cloud,servers=[server_name])
+
+            messages.success(request,'VM Stopped Successfully!')
+
+            return redirect('cloudmesh_vm')
+
+        except Exception:
+
+            messages.error(request,'WARNING! Cannot stop a VM already in stopped state!')
+
+            return redirect('cloudmesh_vm')
+
+
+    if 'start_vm' in request.POST:
+
+        try:
+
+            start_id=[]
+
+            if request.method == "POST":
+                start_id = request.POST.getlist('vm_id')
+
+            print("******DEBUG*********")
+            print("START VM:", start_id)
+            print("******DEBUG*********")
+
+            if cloud is None:
+                cloud = Default.cloud
+
+            for label in start_id:
+                server_name=label
+                print("VM name",server_name)
+                Vm.start(cloud=cloud,servers=[server_name])
+
+            messages.success(request,'VM Started Successfully!')
+
+            return redirect('cloudmesh_vm')
+
+        except Exception:
+
+            messages.error(request, 'WARNING! Cannot start a VM already in stopped state!')
+
+            return redirect('cloudmesh_vm')
+
+    if 'boot_vm' in request.POST:
+
+        messages.error(request,'Feature Not Implemented!')
+
+        return redirect('cloudmesh_vm')
+
+    if 'delete_vm' in request.POST:
+
+        messages.error(request,'Feature Not Implemented!')
+
+        return redirect('cloudmesh_vm')

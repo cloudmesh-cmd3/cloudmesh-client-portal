@@ -23,7 +23,7 @@ from setuptools.command.install import install
 import sys
 import platform
 import os
-from cloudmesh_client.util import banner
+from cloudmesh_client.common.util import banner
 from cloudmesh_client.setup import os_execute
 
 from cloudmesh_portal.version import __version__

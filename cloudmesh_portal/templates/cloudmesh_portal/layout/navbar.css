@@ -1,0 +1,20 @@
+.btn , .form-control {
+    margin-left:10px;
+    margin-right:10px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:5px;
+    margin-top:5px;
+    padding-bottom:5px;
+    margin-bottom:5px;
+}
+
+@media (min-width: 800px) {
+    #navbar_container {
+        max-width: 55%;
+   }
+}
+
+#dictTable tr {
+    text-align: center;
+}
