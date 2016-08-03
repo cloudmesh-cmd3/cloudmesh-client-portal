@@ -1,0 +1,178 @@
+{% extends 'cloudmesh_portal/layout/index.jinja' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+{% include "cloudmesh_portal/layout/navbar.css" %}
+</style>
+
+
+<script type="text/javascript" charset="utf-8">
+
+    var $j = jQuery.noConflict();
+
+        $j(document).ready(function() {
+
+        $('#dictTable').DataTable({
+           aLengthMenu: [
+                [10, 20, 50, 100, 200, -1],
+                [10, 20, 50, 100, 200, "All"]
+            ],
+            iDisplayLength: 10,
+            responsive: true,
+            });
+
+        var table = $('#dictTable').DataTable();
+
+        $j('#select-all').click(function () {
+            $j(':checkbox', table.rows().nodes()).prop('checked', this.checked);
+        });
+
+        $('#terminate').click(function(){
+
+              alert("You have confirmed to stop these VM's!");
+
+        });
+
+        $j(".alert").fadeOut(4000);
+
+        $j('.popover-link').each(function() {
+            $j(this).popover({
+                html: true,
+                trigger: 'manual'
+            }).click(function(e) {
+            $j(this).popover('toggle');
+            $j('.close').remove();
+            $j('.popover-title').append('<button type="button" class="close">&times;</button>');
+            $j('.close').click(function(e){
+                $j(this).parents('.popover').remove();
+            });
+        });
+        });
+     });
+
+</script>
+
+<ul class="list-unstyled messages">
+  {% for message in get_messages(request) %}
+    {% if message.tags == 'info' %}
+        <div class="alert alert-info fade in">
+         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+         <strong>{{ message }}</strong></div>
+    {% elif message.tags == 'success' %}
+        <div class="alert alert-success fade in">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ message }}</strong></div>
+    {% else %}
+        <div class="alert alert-danger fade in">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ message }}</strong></div>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+{% if 'vm' in request.path %}
+<form action="vm_action/" method="post">
+{% csrf_token %}
+
+<table  id="dictTable" class="table table-bordered table-hover">
+   <thead>
+        <tr class="bg-info text-capitalize">
+          <td>
+          Select
+          <input type="checkbox" id="select-all" class="checkbox"/>
+          </td>
+            {% if header %}
+                {% for attribute in header %}
+                        <th>{{ attribute }} </th>
+                {% endfor %}
+            {% else %}
+                {% for attribute in order %}
+                        <th>{{ attribute }} </th>
+                {% endfor %}
+            {% endif %}
+        </tr>
+    </thead>
+    {% if data is mapping  %}
+    <tbody>
+        {% for element in data %}
+        <tr>
+            {% if 'vm' in request.path %}
+            <td>
+                  <input type="checkbox" name="vm_id" value="{{ data[element].get('name') }}"/>
+
+                    <a class="popover-link" rel='popover' data-placement='right' data-container="body"
+                    data-original-title='{{ data[element].get('label')}} VM Details'
+                    data-content='&lt;p&gt;Security Group: {{ data[element].get('security_groups')}}&lt;/p&gt;
+                    &lt;p&gt;Launched At: {{ data[element].get('launched_at')}}&lt;p&gt;
+                    &lt;p&gt;Availability Zone: {{ data[element].get('launched_at')}}&lt;/p&gt;
+                    &lt;p&gt;Provider: {{ data[element].get('provider')}}&lt;p&gt;
+                    &lt;p&gt;Updated At: {{ data[element].get('updated_at')}}&lt;p&gt;'>
+                   <span class="glyphicon glyphicon-list-alt"></span></a>
+            </td>
+            {% endif %}
+               {% for a in order %}
+               <td>
+                   {% if a in ["st","status", "avail", "state", "down", "active", "default"] %}
+                        {{ state_color(data[element][a]) |safe }}
+                   {% else %}
+                        {{ data[element][a] | safe}}
+                   {% endif %}
+            {% endfor %}
+               </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% endif %}
+
+
+
+<nav class="navbar navbar-inverse" >
+  <div class="container-fluid" id="navbar_container">
+    <div class="navbar-header">
+    <ul class="nav navbar-nav">
+      {% if 'image' in request.path %}
+            <a href="/cm/image/refresh" class="btn btn-info btn-lg">
+            <span class="glyphicon glyphicon-refresh"></span> Refresh Data</a>
+      {% elif 'flavor' in request.path %}
+             <a href="/cm/flavor/refresh" class="btn btn-info btn-sm">
+             <span class="glyphicon glyphicon-refresh"></span> Refresh Data</a>
+      {% else %}
+            </li>
+            <a href="/cm/vm/refresh" class="btn btn-info btn-sm">
+            <span class="glyphicon glyphicon-refresh"></span> Refresh Data</a>
+            </li>
+      {% endif %}
+      <li>
+        <button type="submit" class="btn btn-success btn-sm" id="boot" name="boot_vm">
+        <span class="glyphicon glyphicon-cloud"></span> Boot VM
+        </button>
+      </li>
+      <li>
+        <button type="submit" class="btn btn-info btn-sm" name="start_vm">
+        <span class="glyphicon glyphicon-play"></span> Start VM
+        </button>
+      </li>
+      <li>
+        <button type="submit" class="btn btn-warning btn-sm" id="terminate" name="stop_vm">
+        <span class="glyphicon glyphicon-stop"></span> Stop VM
+        </button>
+      </li>
+      <li>
+        <button type="submit" class="btn btn-danger btn-sm" id="boot" name="delete_vm">
+        <span class="glyphicon glyphicon-trash"></span> Delete VM
+        </button>
+      </li>
+      </ul>
+    </div>
+</nav>
+</table>
+</form>
+
+
+{% endif %}
+{% endblock %}
