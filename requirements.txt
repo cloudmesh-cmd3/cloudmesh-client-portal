@@ -9,7 +9,5 @@ django-jinja
 djangorestframework
 markdown
 django-filter
-aldjemy
-nwdiag
 pygal
 django-jinja-bootstrap-form
