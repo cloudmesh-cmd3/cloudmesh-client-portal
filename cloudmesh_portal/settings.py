@@ -84,6 +84,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'cloudmesh_portal.urls'
+# ROOT_URLCONF = 'urls'
 
 # os.path.join(BASE_DIR, 'templates'),
 
