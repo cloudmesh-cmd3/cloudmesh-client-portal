@@ -1,23 +1,24 @@
 view:
-	open http://127.0.0.1:8000/comet/status
+	open http://127.0.0.1:8000
 
 migrate:
-	python manage.py migrate
+	cd cloudmesh_portal; python manage.py migrate
 
 run: migrate
-	python manage.py runserver
+	cd cloudmesh_portal; python manage.py runserver
 
 cleandb:
 	rm -f db.*
 
 initdb: cleandb
-	python manage.py syncdb
+	cd cloudmesh_portal; python manage.py syncdb
 
 doc:
-	open http://127.0.0.1:8080/docs/
+	open http://127.0.0.1:8000
 
 install:
 	cd ../client; python setup.py install
+	cd ../workflow; python setup.py install
 
 
 ######################################################################
