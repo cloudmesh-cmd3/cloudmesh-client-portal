@@ -2,12 +2,10 @@ cloudmesh_client
 cloudmesh_workflow
 jinja2schema
 django-rest-swagger
-django-bootstrap3
-django-admin-bootstrapped
-django-bootstrap-themes
 django-jinja
 djangorestframework
 markdown
 django-filter
 pygal
 django-jinja-bootstrap-form
+django-bootstrap-ui
