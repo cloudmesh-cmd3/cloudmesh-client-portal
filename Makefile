@@ -20,6 +20,8 @@ install:
 	cd ../client; python setup.py install
 	cd ../workflow; python setup.py install
 
+sdist:
+	cd cloudmesh_portal/cloudmesh_portal_hpc; python setup.py sdist 
 
 ######################################################################
 # CLEANING
