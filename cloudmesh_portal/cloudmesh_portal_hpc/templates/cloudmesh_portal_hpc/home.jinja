@@ -1,0 +1,40 @@
+{% extends 'cloudmesh_portal_hpc/index.jinja' %}
+
+
+{% block jumbotron %}
+<div class="jumbotron">
+
+<h1> Cloudmesh Client Portal</h1>
+
+
+          <div class="row placeholders">
+
+              <p>Cloudmesh Client portal allows you to create <b>virtual clusters</b> on a number of
+              clouds and high performance computers. This includes</p>
+
+              <ul>
+               <li>SDSC Comet</li>
+               <li>Openstack clouds</li>
+               <li>AWS</li>
+               <li>Azure</li>
+               <li>HPC SLURM queues</li>
+              </ul>
+
+              <p>
+              The cloudmesh client portal is based on cloudmesh client as intended to by run
+              not as a community portal but as a client portal.
+              </p>
+
+
+              <a class="btn btn-lg btn-primary"
+                 href="http://cloudmesh.github.io/client/"
+                 role="button">More information cloudmesh client &raquo;</a>
+              <br><br>
+              <a class="btn btn-lg btn-primary"
+                 href="http://www.rocksclusters.org/"
+                 role="button">More information Rocks &raquo;</a>
+
+          </div>
+
+
+{% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import datetime
 from django_jinja import library
-
+from django.template import loader
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -14,10 +14,17 @@ def current_datetime(request):
     return HttpResponse(html)
 
 
-def homepage(request):
+def home(request):
     context = {
-        'title': "HPC Home"
+        'title': ""
     }
-    return render(request,
-                  'cloudmesh_portal_hpc/home.html',
-                  context)
+
+    print ">>>>>", context
+    # template = loader.get_template('cloudmesh_portal_hpc/home.html')
+
+    # print template
+
+    # return HttpResponse(template.render(context, request))
+
+
+    return render(request, 'cloudmesh_portal_hpc/home.jinja', context)

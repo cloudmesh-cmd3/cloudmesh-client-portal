@@ -8,4 +8,4 @@ markdown
 django-filter
 pygal
 django-jinja-bootstrap-form
-django-bootstrap-ui
+django-bootstrap3

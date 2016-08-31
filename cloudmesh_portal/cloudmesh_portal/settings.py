@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap_ui',
+    'django_jinja',
+    'bootstrap3',
+    'cloudmesh_portal_hpc',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -54,6 +56,13 @@ MIDDLEWARE_CLASSES = [
 ROOT_URLCONF = 'cloudmesh_portal.urls'
 
 TEMPLATES = [
+    {
+        "BACKEND": "django_jinja.backend.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "match_extension": ".jinja",
+        }
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -122,4 +131,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # django-bootstrap-ui settings
-DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-paper'
+DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-cosmo'
