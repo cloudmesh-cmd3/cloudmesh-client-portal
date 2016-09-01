@@ -9,6 +9,7 @@
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
+
         $('#dictTable').DataTable({
            aLengthMenu: [
                 [10, 20, 50, 100, 200, -1],
@@ -17,40 +18,43 @@
             iDisplayLength: 10,
             responsive: true,
         });
-    } );
+    });
+
 </script>
 
 <table  id="dictTable" class="table table-striped table-bordered">
-    <thead>
+   <thead>
         <tr>
-            {% for attribute in order %}
-                    <th> {{ attribute }} </th>
-            {% endfor %}
-            <th>Info</th>
-            <th>Queue</th>
+            {% if header %}
+                {% for attribute in header %}
+                        <th>{{ attribute }} </th>
+                {% endfor %}
+            {% else %}
+                {% for attribute in order %}
+                        <th>{{ attribute }} </th>
+                {% endfor %}
+            {% endif %}
         </tr>
     </thead>
     {% if data is mapping  %}
     <tbody>
         {% for element in data %}
         <tr>
-
             {% for a in order %}
                <td>
-                   {% if a in ["st","status", "avail", "state", "down"] %}
+                   {% if a in ["st","status", "avail", "state", "down", "active", "default"] %}
                         {{ state_color(data[element][a]) |safe }}
                    {% else %}
-                        {{ data[element][a] }}
+                        {{ data[element][a] | safe}}
                    {% endif %}
                </td>
 
             {% endfor %}
-            <td><a href="/hpc/info/{{ element }}/">Info</a></td>
-            <td><a href="/hpc/queue/{{ element }}/">Queue</a></td>
         </tr>
         {% endfor %}
     </tbody>
     {% endif %}
+
 </table>
 
 
