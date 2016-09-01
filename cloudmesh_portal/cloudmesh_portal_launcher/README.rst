@@ -1,7 +1,8 @@
-Cloudmesh HPC
+Cloudmesh TBD
 =============
 
-Cloudmesh HPC allows you to add high performance queuing systems of supercomputers to your django applications,
+Cloudmesh TBD allows you to add  TBD
+to your django applications,
 
 Detailed documentation will bi in the "docs" directory.
 
@@ -12,12 +13,12 @@ Quick start
 
     INSTALLED_APPS = [
         ...
-        'cloudmesh_portal_hpc',
+        'cloudmesh_portal_TBD',
     ]
 
 2. Include the URLconf in your project urls.py like this::
 
-    url(r'^hpc/', include('hpc.urls')),
+    url(r'^TBD/', include('TBD.urls')),
 
 
 3. Make sure you include the HPC queues you like to work with in the
@@ -28,5 +29,5 @@ Quick start
    
 3. Run `python manage.py migrate` to create the hpc models.
 
-4. Start the development server and visit http://127.0.0.1:8000/hpc
+4. Start the development server and visit http://127.0.0.1:8000/TBD
    to create to use it.

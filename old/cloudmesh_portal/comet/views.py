@@ -1,15 +1,16 @@
 from __future__ import unicode_literals
-from pprint import pprint
-import json
 
-from django.shortcuts import render, redirect
+import json
+from pprint import pprint
+
+from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
 from cloudmesh_client.comet.cluster import Cluster
 from cloudmesh_client.comet.comet import Comet
-from cloudmesh_client.cloud.hpc.BatchProvider import BatchProvider
 from cloudmesh_client.common.hostlist import Parameter
+from django.shortcuts import render, redirect
 
+from cloudmesh_portal.cloudmesh_portal.views import dict_table
 from ..charts import Chart
-from ..views import dict_table
 
 
 def comet_dict_table(request, **kwargs):

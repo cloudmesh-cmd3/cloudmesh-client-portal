@@ -25,7 +25,7 @@ install:
 sdist:
 	cd cloudmesh_portal/cloudmesh_portal_hpc; python setup.py sdist 
 
-deploy:
+deploy: sdist
 	pip install cloudmesh_portal/cloudmesh_portal_hpc/dist/django-cloudmesh-portal-hpc-*.tar.gz
 
 

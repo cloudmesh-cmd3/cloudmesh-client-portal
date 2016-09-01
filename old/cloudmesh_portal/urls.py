@@ -13,25 +13,21 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.contrib.flatpages.sitemaps import FlatPageSitemap
 from django.contrib.sitemaps.views import sitemap
-from django.conf.urls import url, include
-from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
-
-from .comet.views import comet_list, comet_ll, comet_list_queue, \
-    comet_info, comet_status, comet_console, comet_power
-
-from .views import homepage, cloudmesh_vclusters
+from cloudmesh_portal.cloudmesh_portal.views import homepage, cloudmesh_vclusters
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
     cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
     cloudmesh_cloud,cloudmesh_refresh_db, cloudmesh_refresh_vm, cloudmesh_vm_action
-
+from .comet.views import comet_list, comet_ll, comet_list_queue, \
+    comet_info, comet_status, comet_console, comet_power
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
-
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 
 

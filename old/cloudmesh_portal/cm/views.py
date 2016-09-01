@@ -1,25 +1,23 @@
-from __future__ import unicode_literals
 from __future__ import print_function
-from pprint import pprint
+from __future__ import unicode_literals
+
 import json
+from pprint import pprint
 
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.contrib import messages
-from django.http import HttpResponse
-from django.http import JsonResponse
-from cloudmesh_client.common.ConfigDict import ConfigDict
-from cloudmesh_client.default import Default
-from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
-from cloudmesh_client.cloud.vm import Vm
+from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.launcher import Launcher
+from cloudmesh_client.cloud.vm import Vm
+from cloudmesh_client.common.ConfigDict import ConfigDict
 from cloudmesh_client.common.util import banner, path_expand
-from django.contrib.messages import constants as message_constants
+from cloudmesh_client.default import Default
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.shortcuts import render
 
-from ..views import dict_table
-from ..views import get_item
-from ..views import portal_table
+from cloudmesh_portal.cloudmesh_portal.views import dict_table
+from cloudmesh_portal.cloudmesh_portal.views import portal_table
+
 
 def cloudmesh_launcher_table(request):
     launcher_config = ConfigDict(path_expand("~/.cloudmesh/cloudmesh_launcher.yaml"))
