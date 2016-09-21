@@ -29,7 +29,7 @@ session = Session()
 def dict_table(request, **kwargs):
     context = kwargs
     pprint(context)
-    return render(request, 'cloudmesh_portal_hpc/dict_table.jinja', context)
+    return render(request, 'cloudmesh_portal_comet/dict_table.jinja', context)
 
 
 def index(request):
@@ -38,7 +38,7 @@ def index(request):
 def comet_dict_table(request, **kwargs):
     context = kwargs
     # pprint(context)
-    return render(request, 'cloudmesh_portal/comet/comet_dict_table.jinja', context)
+    return render(request, 'cloudmesh_portal_comet/comet_dict_table.jinja', context)
 
 
 def comet_logon(request):
@@ -47,7 +47,7 @@ def comet_logon(request):
         c = Comet.logon()
         print("LOGON OK")
         return render(request,
-                      'cloudmesh_portal/comet/logon_error.jinja')
+                      'cloudmesh_portal_comet/logon_error.jinja')
     except:
         return c
 
@@ -151,7 +151,7 @@ def comet_status(request):
     }
 
     return render(request,
-                  'cloudmesh_portal/comet/status.jinja',
+                  'cloudmesh_portal_comet/status.jinja',
                   context)
 
 
@@ -267,7 +267,7 @@ def comet_console(request, cluster, node=None):
     # print (url)
     context["url"] = url
     return render(request,
-                  'cloudmesh_portal/comet/console.jinja',
+                  'cloudmesh_portal_comet/console.jinja',
                   context)
 
 
