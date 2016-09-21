@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'cloudmesh_portal_hpc',
     'cloudmesh_portal_comet',
+    'cloudmesh_portal_cm',
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -25,10 +25,12 @@ install:
 sdist:
 	cd cloudmesh_portal/cloudmesh_portal_hpc; python setup.py sdist
 	cd cloudmesh_portal/cloudmesh_portal_comet; python setup.py sdist
+	cd cloudmesh_portal/cloudmesh_portal_cm; python setup.py sdist
 
 deploy: sdist
 	pip install cloudmesh_portal/cloudmesh_portal_hpc/dist/django-cloudmesh-portal-hpc-*.tar.gz
 	pip install cloudmesh_portal/cloudmesh_portal_comet/dist/django-cloudmesh-portal-comet-*.tar.gz
+	pip install cloudmesh_portal/cloudmesh_portal_cm/dist/django-cloudmesh-portal-cm*.tar.gz
 
 
 uninstall:
