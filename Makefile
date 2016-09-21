@@ -23,14 +23,17 @@ install:
 	make -f Makefile deploy
 
 sdist:
-	cd cloudmesh_portal/cloudmesh_portal_hpc; python setup.py sdist 
+	cd cloudmesh_portal/cloudmesh_portal_hpc; python setup.py sdist
+	cd cloudmesh_portal/cloudmesh_portal_comet; python setup.py sdist
 
 deploy: sdist
 	pip install cloudmesh_portal/cloudmesh_portal_hpc/dist/django-cloudmesh-portal-hpc-*.tar.gz
+	pip install cloudmesh_portal/cloudmesh_portal_hpc/dist/django-cloudmesh-portal-comet-*.tar.gz
 
 
 uninstall:
 	pip uninstall django-cloudmesh-portal-hpc
+	pip uninstall django-cloudmesh-portal-comet
 
 ######################################################################
 # CLEANING
