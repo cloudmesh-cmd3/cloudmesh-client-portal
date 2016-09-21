@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='Apache 2.0 License',
-    description='A Django app to interact with hpc queues.',
+    description='A Django app to interact with comets virtual clusters.',
     long_description=README,
     url='https://www.example.com/',
     author='Gregor von Laszewski',

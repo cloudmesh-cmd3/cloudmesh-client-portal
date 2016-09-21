@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_jinja',
     'bootstrap3',
     'cloudmesh_portal_hpc',
+    'cloudmesh_portal_comet',
 ]
 
 MIDDLEWARE_CLASSES = [
