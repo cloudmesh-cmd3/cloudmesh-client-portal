@@ -21,12 +21,12 @@ from django.contrib.sitemaps.views import sitemap
 from rest_framework import routers, serializers, viewsets
 
 from cloudmesh_portal.cloudmesh_portal.views import homepage, cloudmesh_vclusters
+from cloudmesh_portal.cloudmesh_portal_comet.views import comet_list, comet_ll, comet_list_queue, \
+    comet_info, comet_status, comet_console, comet_power
 from .cm.views import cloudmesh_defaults, cloudmesh_images, \
     cloudmesh_flavors, cloudmesh_vms, cloudmesh_clouds, \
     cloudmesh_launcher, cloudmesh_launcher_start, cloudmesh_launcher_table, cloudmesh_refresh, \
     cloudmesh_cloud,cloudmesh_refresh_db, cloudmesh_refresh_vm, cloudmesh_vm_action
-from .comet.views import comet_list, comet_ll, comet_list_queue, \
-    comet_info, comet_status, comet_console, comet_power
 from .hpc.views import hpc_list, hpc_info, hpc_queue, hpc_run_list
 from .workflow.views import workflow_list, workflow_detail, workflow_graph
 

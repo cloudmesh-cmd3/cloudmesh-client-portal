@@ -20,6 +20,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^comet/', include('cloudmesh_portal_comet.urls')),
     url(r'^hpc/', include('cloudmesh_portal_hpc.urls')),
     url(r'^admin/', admin.site.urls),
 ]
