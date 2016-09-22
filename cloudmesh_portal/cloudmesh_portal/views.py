@@ -91,13 +91,13 @@ def portal_table(request, **kwargs):
     for message in messages.get_messages(request):
         print message
 
-    return render(request, 'cloudmesh_portal/portal_table.jinja', context)
+    return render(request, 'cloudmesh_portal_cm/portal_table.jinja', context)
 
 
 def dict_table(request, **kwargs):
     context = kwargs
     pprint(context)
-    return render(request, 'cloudmesh_portal/dict_table.jinja', context)
+    return render(request, 'cloudmesh_portal_cm/dict_table.jinja', context)
 
 
 def homepage(request):
@@ -105,5 +105,5 @@ def homepage(request):
         'title': "Comet Home"
     }
     return render(request,
-                  'cloudmesh_portal/home.jinja',
+                  'cloudmesh_portal_cm/home.jinja',
                   context)

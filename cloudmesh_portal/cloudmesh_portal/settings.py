@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_jinja',
     'bootstrap3',
+    'cloudmesh_portal_cm',
     'cloudmesh_portal_hpc',
     'cloudmesh_portal_comet',
-    'cloudmesh_portal_cm',
 ]
 
 MIDDLEWARE_CLASSES = [
