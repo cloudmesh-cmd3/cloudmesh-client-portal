@@ -286,9 +286,9 @@ def cloudmesh_vms(request, cloud=None):
     if cloud is None:
         cloud = Default.cloud
 
-        data = Vm.list(category=cloud, output='dict')
-        print("cloud debug",cloud)
-        order = ['cm_id',
+    data = Vm.list(category=cloud, output='dict')
+    print("cloud debug",cloud)
+    order = ['cm_id',
                      'uuid',
                      'label',
                      'status',
@@ -296,6 +296,7 @@ def cloudmesh_vms(request, cloud=None):
                      'floating_ip',
                      'project',
                      'category']
+
 
     print("HERE*************************")
     return portal_table(request,
