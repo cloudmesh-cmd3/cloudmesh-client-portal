@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^flavor/$', views.cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^flavor/(?P<cloud>\w+)/$', views.cloudmesh_flavors, name='cloudmesh_flavor'),
     url(r'^vm/$', views.cloudmesh_vms, name='cloudmesh_vm'),
-    url(r'^vm/(?P<info>\w+)/$', views.cloudmesh_vms, name='cloudmesh_vm'),
     url(r'^vm/(?P<cloud>\w+)/$', views.cloudmesh_vms, name='cloudmesh_vm'),
-#    url(r'^vcluster/$', views.cloudmesh_vclusters, name='cloudmesh_vcluster'),
+
+    #    url(r'^vcluster/$', views.cloudmesh_vclusters, name='cloudmesh_vcluster'),
 ]
