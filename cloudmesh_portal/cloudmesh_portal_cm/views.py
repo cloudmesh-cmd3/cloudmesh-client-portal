@@ -18,6 +18,18 @@ from django.shortcuts import render
 from sqlalchemy.orm import sessionmaker
 
 
+from jinja2 import Environment
+from django.contrib import messages
+from django.template.defaulttags import register
+
+def environment(**options):
+    env = Environment(**options)
+    env.globals.update({
+        'get_messages': messages.get_messages,
+        })
+    return env
+
+
 def portal_table(request, **kwargs):
     context = kwargs
 
@@ -182,7 +194,7 @@ def cloudmesh_cloud(request, cloud=None):
         'title': "Cloud {cm_heading}".format(**cloud_config),
     }
     return render(request,
-                  'cloudmesh_portal/cm/cloud_table.jinja',
+                  'cloudmesh_portal_cm/cloud_table.jinja',
                   context)
 
 
