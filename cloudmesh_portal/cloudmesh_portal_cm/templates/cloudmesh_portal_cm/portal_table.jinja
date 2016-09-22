@@ -57,14 +57,6 @@
 
 </script>
 
-<!- TODO: THIS DOES NOT WORK YET
-
-UndefinedError
-Exception Value:
-'get_messages' is undefined
-Exception Location:	/Users/big/PycharmProjects/portal/cloudmesh_portal/cloudmesh_portal_cm/templates/cloudmesh_portal_cm/portal_table.jinja in block "content", line 61
-Python Executable:	/Users/big/ENV2/bin/python
-
 
 <ul class="list-unstyled messages">
   {% for message in get_messages(request) %}
@@ -83,7 +75,6 @@ Python Executable:	/Users/big/ENV2/bin/python
     {% endif %}
   {% endfor %}
 </ul>
--->
 
 {% if 'vm' in request.path %}
 <form action="vm_action/" method="post">

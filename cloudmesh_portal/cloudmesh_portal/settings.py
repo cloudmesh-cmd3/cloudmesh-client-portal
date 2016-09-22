@@ -63,6 +63,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "match_extension": ".jinja",
+            "environment":"cloudmesh_portal.jinjaconfig.environment",
         }
     },
     {
