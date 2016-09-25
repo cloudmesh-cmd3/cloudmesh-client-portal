@@ -13,9 +13,30 @@
 
 <script type="text/javascript" charset="utf-8">
 
-    var $j = jQuery.noConflict();
+
+        var $j = jQuery.noConflict();
 
         $j(document).ready(function() {
+
+        {% include "cloudmesh_portal/layout/jquery.cookie.js" %}
+
+         var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $j('[data-toggle="tooltip"]').tooltip();
+
 
         $('#dictTable').DataTable({
            aLengthMenu: [
@@ -38,7 +59,13 @@
 
         });
 
-        $j(".alert").fadeOut(4000);
+        $j('#delete').click(function(){
+
+              alert("VM will persisted in the database!");
+
+        });
+
+        $j(".alert").fadeOut(8000);
 
         $j('.popover-link').each(function() {
             $j(this).popover({
@@ -53,9 +80,81 @@
             });
         });
         });
-     });
+
+
+
+        $j('#custom_boot').click(function() {
+
+          $.ajax({
+            type: 'GET',
+            url: 'vm_action/',
+            cache: false,
+            data: {},
+            dataType: 'json',
+            success: function(res) {
+
+           console.log("RES"+res);
+
+           $j('#cloud_name').val(res[0]);
+
+           $j('#group_name').val(res[1]);
+
+           $.each(res[2],function(key,image){
+
+           $j('#image').append(
+             '<option>'+
+             image+
+             '</option>'
+            );
+            });
+
+           $.each(res[3],function(key,flavor){
+
+           $j('#flavor').append(
+             '<option>'+
+             flavor+
+             '</option>'
+            );
+            });
+            }
+        });
+        }); //end of function
+
+
+        $j('#custom_boot_vm').click(function() {
+
+            $.ajax({
+            url: 'vm_action/',
+            contentType : 'application/json',
+            dataType: 'json',
+            type: 'POST',
+            data: JSON.stringify( {"cloud_name": $('#cloud_name').val(), "vm_count": $('#vm_count').val(),
+                                    "group": $('#group').val(), "image": $('#image').val() ,
+                                    "flavor": $('#flavor').val() , "group_name": $('#group_name').val()
+                                } ),
+            success: function(data){
+
+                   $j('#response').append(
+                    '<div class="alert alert-success">'+
+                    '<a href="#" class="close" data-dismiss="alert" aria-label="close">'+'</a>'+
+                    '<strong>'
+                    +data+
+                    '</strong>'+
+                   '</div>');
+            }
+            });
+
+        $j('#modal_close').click(function(){
+            $j('#response').html("");
+            $j('#myModal').html("");
+        });
+
+        });
+
+        }); //end of document ready
 
 </script>
+
 
 <ul class="list-unstyled messages">
   {% for message in get_messages(request) %}
@@ -103,16 +202,32 @@
         <tr>
             {% if 'vm' in request.path %}
             <td>
-                  <input type="checkbox" name="vm_id" value="{{ data[element].get('name') }}"/>
+                    <div align="center">
+                    <input type="checkbox" name="vm_id" value="{{ data[element].get('name') }}"/>
+                    </div>
+                    <div id="info_popover">
 
-                    <a class="popover-link" rel='popover' data-placement='right' data-container="body"
-                    data-original-title='{{ data[element].get('label')}} VM Details'
-                    data-content='&lt;p&gt;Security Group: {{ data[element].get('security_groups')}}&lt;/p&gt;
-                    &lt;p&gt;Launched At: {{ data[element].get('launched_at')}}&lt;p&gt;
-                    &lt;p&gt;Availability Zone: {{ data[element].get('launched_at')}}&lt;/p&gt;
-                    &lt;p&gt;Provider: {{ data[element].get('provider')}}&lt;p&gt;
-                    &lt;p&gt;Updated At: {{ data[element].get('updated_at')}}&lt;p&gt;'>
-                   <span class="glyphicon glyphicon-list-alt"></span></a>
+                    <a class="popover-link" rel='popover' data-placement='right'
+                        data-container="#info_popover" data-toggle="tooltip" title="VM Information"
+                        data-original-title='{{ data[element].get('label')}} VM Details'
+                        data-content=
+                        '&lt;p&gt;<b>SECURITY GROUP</b>    <br/>{{ data[element].get('security_groups')}}&lt;/p&gt;
+                        &lt;p&gt;<b>KEY</b><br/> {{ data[element].get('key')}}&lt;p&gt;
+                        &lt;p&gt;<b>LAUNCHED AT</b><br/> {{ data[element].get('launched_at')}}&lt;p&gt;
+                        &lt;p&gt;<b>NAME</b><br/>{{ data[element].get('name')}}&lt;p&gt;
+                        &lt;p&gt;<b>AVAILABILITY ZONE</b> <br/>{{ data[element].get('launched_at')}}&lt;/p&gt;
+                        &lt;p&gt;<b>PROVIDER</b><br/> {{ data[element].get('provider')}}&lt;p&gt;
+                        &lt;p&gt;<b>UPDATED AT</b> <br/>{{ data[element].get('updated_at')}}&lt;p&gt;'
+                        >
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                    </a>
+                    </div>
+                    <div>
+                    <button type="submit" class="btn btn-link" data-placement="right" name="boot_vm"
+                        data-toggle="tooltip" title="Click to Boot VM" value="{{ data[element].get('name') }}">
+                      <span class="glyphicon glyphicon-cloud"></span>
+                    </button>
+                    </div>
             </td>
             {% endif %}
                {% for a in order %}
@@ -127,7 +242,6 @@
         </tr>
         {% endfor %}
     </tbody>
-    {% endif %}
 
 
 
@@ -147,8 +261,8 @@
             <span class="glyphicon glyphicon-refresh"></span> Refresh Data</a>
             </li>
       {% endif %}
-      <li>
-        <button type="submit" class="btn btn-success btn-sm" id="boot" name="boot_vm">
+       <li>
+        <button type="button" class="btn btn-success btn-sm" id="custom_boot" name="custom_vm_boot" data-toggle="modal" data-target="#myModal">
         <span class="glyphicon glyphicon-cloud"></span> Boot VM
         </button>
       </li>
@@ -158,12 +272,12 @@
         </button>
       </li>
       <li>
-        <button type="submit" class="btn btn-warning btn-sm" id="terminate" name="stop_vm">
+        <button type="submit" class="btn btn-warning btn-sm" id="stop" name="stop_vm">
         <span class="glyphicon glyphicon-stop"></span> Stop VM
         </button>
       </li>
       <li>
-        <button type="submit" class="btn btn-danger btn-sm" id="boot" name="delete_vm">
+        <button type="submit" class="btn btn-danger btn-sm" id="delete" name="delete_vm">
         <span class="glyphicon glyphicon-trash"></span> Delete VM
         </button>
       </li>
@@ -171,8 +285,50 @@
     </div>
 </nav>
 </table>
-</form>
 
+ <div id="asd">
+           <div id="myModal" class="modal fade" role="dialog">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h4 class="modal-title">Custom VM Boot</h4>
+               </div>
+               <div class="modal-body">
+          <div id="response">
+          </div>
+          <div class="form-group">
+          <label class="control-label">Cloud</label>
+          <input type="text" class="form-control" id="cloud_name">
+          </div>
+          <div class="form-group">
+          <label class="control-label">Number of VM Instances</label>
+          <input type="text" class="form-control" id="vm_count" value="1">
+          </div>
+          <div class="form-group">
+          <label class="control-label"><b>Group</b></label>
+          <input type="text" class="form-control" id="group_name">
+          </div>
+          <div class="form-group">
+          <label class="control-label">Image</label>
+          <select class="selectpicker" id="image">
+          </select>
+          </div>
+          <div class="form-group">
+          <label class="control-label">Flavor</label>
+          <select class="selectpicker" id="flavor">
+          </select>
+          </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" id="modal_close">Close</button>
+                  <button type="button" class="btn btn-success" id="custom_boot_vm">Boot VM</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+ </div>
+{% endif %}
 
 {% endif %}
 {% endblock %}

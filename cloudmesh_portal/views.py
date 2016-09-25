@@ -86,11 +86,9 @@ def get_item(dictionary, key):
 
 def portal_table(request, **kwargs):
     context = kwargs
-
     #debug user alerts
     for message in messages.get_messages(request):
         print message
-
     return render(request, 'cloudmesh_portal/portal_table.jinja', context)
 
 

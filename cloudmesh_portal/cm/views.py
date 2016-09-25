@@ -4,11 +4,14 @@ from pprint import pprint
 import json
 
 from django.shortcuts import render
+import traceback
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from django.http import JsonResponse
+import json
 from cloudmesh_client.common.ConfigDict import ConfigDict
+from cloudmesh_client.cloud.iaas.CloudProvider import CloudProvider
 from cloudmesh_client.default import Default
 from cloudmesh_client.cloud.image import Image
 from cloudmesh_client.cloud.flavor import Flavor
@@ -300,7 +303,6 @@ def cloudmesh_vms(request, cloud=None):
                      'project',
                      'category']
 
-    print("HERE*************************")
     return portal_table(request,
                               title="Cloudmesh VMs {}".format(cloud),
                               data=data, order=order)
@@ -379,7 +381,7 @@ def cloudmesh_refresh_vm(request, action=None, cloud=None):
     # TODO: make the cloudname a parameter
     data = Vm.refresh(cloud=cloud)
 
-    messages.info(request,'Database Refresh was successful!')
+    messages.info(request,'Database refresh was successful!')
 
     return redirect('cloudmesh_vm')
 
@@ -407,11 +409,11 @@ def cloudmesh_vm_action(request,action=None,cloud=None):
                 cloud = Default.cloud
 
             for label in terminate_id:
-                server_name=label
-                print("server_name",server_name)
-                Vm.stop(cloud=cloud,servers=[server_name])
+                vm_name=label
+                print("server_name",vm_name)
+                Vm.stop(cloud=cloud,servers=[vm_name])
 
-            messages.success(request,'VM Stopped Successfully!')
+            messages.success(request,'VM Stop Successful!')
 
             return redirect('cloudmesh_vm')
 
@@ -439,28 +441,174 @@ def cloudmesh_vm_action(request,action=None,cloud=None):
                 cloud = Default.cloud
 
             for label in start_id:
-                server_name=label
-                print("VM name",server_name)
-                Vm.start(cloud=cloud,servers=[server_name])
+                vm_name=label
+                print("VM name",vm_name)
+                Vm.start(cloud=cloud,servers=[vm_name])
 
-            messages.success(request,'VM Started Successfully!')
+            messages.success(request,'VM Start Successful!')
 
             return redirect('cloudmesh_vm')
 
         except Exception:
 
-            messages.error(request, 'WARNING! Cannot start a VM already in stopped state!')
+            messages.error(request, 'WARNING! Cannot start an active VM!')
 
             return redirect('cloudmesh_vm')
 
     if 'boot_vm' in request.POST:
 
-        messages.error(request,'Feature Not Implemented!')
+        try:
 
-        return redirect('cloudmesh_vm')
+            boot_vm = []
+
+            if request.method == "POST":
+                boot_vm = request.POST.getlist('boot_vm')
+
+            print("******DEBUG*********")
+            print("BOOT VM:", boot_vm)
+            print("******DEBUG*********")
+
+            if cloud is None:
+                cloud = Default.cloud
+
+            config = ConfigDict("cloudmesh.yaml")
+
+            for label in boot_vm:
+                vm_name = ""
+                vm_name=label
+                key = config["cloudmesh.clouds.kilo.credentials.OS_USERNAME"]
+                print("VM name, KEY", vm_name,key)
+                Vm.boot(key=key,name=vm_name,image=Default.image,flavor=Default.flavor,cloud=cloud)
+
+            messages.success(request, 'VM Boot Successful!')
+
+            return redirect('cloudmesh_vm')
+
+        except Exception:
+
+            traceback.print_exc()
+
+            messages.error(request, 'Error occured during VM boot! Please try through the console.')
+
+            return redirect('cloudmesh_vm')
 
     if 'delete_vm' in request.POST:
 
-        messages.error(request,'Feature Not Implemented!')
+        try:
 
-        return redirect('cloudmesh_vm')
+            delete_id = []
+
+            if request.method == "POST":
+                delete_id = request.POST.getlist('vm_id')
+
+            #check if VM has actually been selected
+            if delete_id:
+
+                print("******DEBUG*********")
+                print("DELETE VM:", delete_id)
+                print("******DEBUG*********")
+
+                if cloud is None:
+                    cloud = Default.cloud
+
+                for label in delete_id:
+                    vm_name = label
+                    print("VM name", vm_name)
+                    Vm.delete(servers=[vm_name])
+
+                messages.success(request,'VM Delete Successful!')
+
+                return redirect('cloudmesh_vm')
+
+            else:
+
+                raise Exception
+
+        except Exception:
+
+            messages.error(request, 'Error occured while deleting VM! Please try through the console.')
+
+            return redirect('cloudmesh_vm')
+
+    if request.method == "GET":
+
+        print("IN IMAGE GET!!")
+
+        if cloud is None:
+            cloud = Default.cloud
+        # TODO: make the cloudname a parameter
+        image=[]
+        flavor=[]
+
+        image_data = Image.list(cloud, format='dict')
+
+        flavor_data = Flavor.list(cloud, format='dict')
+
+        json_data=[]
+        image_dict=[]
+        flavor_dict=[]
+
+        if image_data:
+            for key,val in image_data.items():
+                for k,v in val.items():
+                    if k == 'name':
+                        image.append(val.get(k))
+
+        if flavor_data:
+            for key, val in flavor_data.items():
+                for k, v in val.items():
+                    if k == 'name':
+                        flavor.append(val.get(k))
+        else:
+            flavor.append('none')
+
+        default_cloud =[]
+        default_group=[]
+        default_cloud.append(Default.cloud)
+        default_group.append(Default.group)
+
+        json_data.append(default_cloud)
+        json_data.append(default_group)
+        json_data.append(image)
+        json_data.append(flavor)
+
+        print("DEFAULT f&i",Default.image,Default.flavor)
+
+        return HttpResponse(json.dumps(json_data), content_type='application/json')
+
+    #generic, make this check specifically for the BOOT MODAL WINDOW post method
+    if request.method == "POST":
+
+        try:
+
+            data = json.loads(request.body)
+
+            print("JSON REQUEST DATA",data)
+
+            for key,val in data.items():
+                cloud = data.get('cloud_name')
+                image= data.get('image')
+                group=data.get('group_name')
+                number_of_instances=data.get('vm_count')
+                flavor=data.get('flavor')
+
+            config = ConfigDict("cloudmesh.yaml")
+
+            key = config["cloudmesh.clouds.kilo.credentials.OS_USERNAME"]
+            print("BOOTING A NEW VM")
+            print("KEY", key,"NAME",name,"CLOUD",cloud,"GROUP",group,"IMAGE",image,"FLAVOR",flavor)
+
+            Vm.boot(key=key,name=Vm.get_vm_name(name=None),cloud=cloud,group=group,flavor=flavor,image=image)
+
+            #messages.success(request, 'VM was created and booted successfully!')
+
+            #return redirect('cloudmesh_vm')
+
+            return HttpResponse(json.dumps("VM Boot Successful!"), content_type='application/json')
+
+        except Exception:
+
+            messages.error(request, 'Error occured while booting a new VM! Please try through the console.')
+
+            return redirect('cloudmesh_vm')
+
